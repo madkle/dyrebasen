@@ -1,0 +1,24 @@
+{
+  "name": "dyrebasen",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/madkle/dyrebasen.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/madkle/dyrebasen/issues"
+  },
+  "homepage": "https://github.com/madkle/dyrebasen#readme",
+  "dependencies": {
+    "express": "4.17.3",
+    "pg": "8.7.3"
+  }
+}
