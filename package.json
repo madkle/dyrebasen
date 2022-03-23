@@ -19,6 +19,7 @@
   "homepage": "https://github.com/madkle/dyrebasen#readme",
   "dependencies": {
     "express": "4.17.3",
+    "jspdf": "^2.5.1",
     "pg": "8.7.3"
   }
 }

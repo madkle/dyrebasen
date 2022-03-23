@@ -15,5 +15,5 @@ server.use(function(err, req, res, next){
 	}).end();
 });
 server.listen(server.get("port"), function(){
-	
+	console.log("Server started on port: " + PORT);
 });

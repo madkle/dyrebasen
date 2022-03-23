@@ -1,12 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="modules/event.js"></script>
-    <title>Document</title>
-</head>
-<body>
-    <button id="testbtn">Test</button>
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>JS to PDF</title>
+        
+    </head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script>
+    <body>
+        <h1>Convert to PDF</h1>
+        <button onclick="savePDF()">Generate</button>
+    </body>
+    <script>
+        
+        function savePDF() {
+            let doc = new jsPDF();
+
+            const styling = {"margin-x":10,"margin-y":5};
+            const cellHeight = 75;
+            const rows = [];
+            const col = [];
+            const generations = 4;
+            const A4 = {"width": 210, "height": 297};// in mm
+            const contentWidth = A4.width - styling["margin-x"] * 2;
+            
+            const lineSpacing = 10;
+
+            function cellOne() {
+                doc.setFontSize(11);
+                doc.text("Alt med * skal endres til variabler senere", 10, 3)
+                //Overskrift
+                doc.setFontSize(20);
+                doc.setFont("helvetica", "bold");
+                doc.text("Dyrebasen", 30, styling["margin-y"] + 10)
+                //Reg.Dato Reg.av
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(11)
+                doc.text("Reg.Dato* Reg.av*", A4.width - 85, styling["margin-y"] + 10)
+                //Overskrift strek
+                doc.line(14, 16, 190, 16); // horizontal line
+                //Form
+                const infobox = {"x": 15, "y":25, "w":60, "h":50};
+                const formTextHeaders = ["Reg.nr","Vø","Oppdretter","Fødselsdato"];
+                const formTextBody = ["Regnummer*", "Vø-merket*", "Oppdretternavn*", "dd/mm/åå*"];
+
+                //kjønn, tekst
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(11)
+                for (let i = 0; i < formTextHeaders.length; i++) {
+                    doc.text(formTextHeaders[i], infobox.x, infobox.y + (lineSpacing * i));
+                }
+                for (let i = 0; i < formTextBody.length; i++) {
+                    doc.text(formTextBody[i], (infobox.w - infobox.x), infobox.y + (lineSpacing * i));
+                }
+
+                //Kjønn
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(15)
+                doc.text("Kjønn: ", A4.width-85, styling["margin-y"] + lineSpacing * 2)
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(11)
+                doc.text("male*", A4.width - 65, styling["margin-y"] + lineSpacing * 2)
+
+                //Poeng
+                doc.text("Poeng: ", A4.width - 85, styling["margin-y"] + lineSpacing * 3)
+                doc.text("75*/100", A4.width - 65, styling["margin-y"] + lineSpacing * 3)
+
+                //farge
+                const fargebox = {"x": A4.width - 85, "y":lineSpacing * 4, "w":60, "h":20};
+                const farge = [{"colour":"hvit","hex":"#FFFFFF"},{"colour":"Røslig","hex":"#633424"},{"colour":"Brun","hex":"#543620"},{"colour":"Svart","hex":"#000000"}];
+                
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(15)
+                doc.text("Farge: ", fargebox.x, fargebox.y+5)
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(11)
+                
+                for (let i = 0; i < farge.length; i++) {
+                    let rectW = 15;
+                    let rectH = 10;
+                    let rectX = fargebox.x + (rectW * i);
+                    let rectY = fargebox.y + lineSpacing;
+                    
+                    doc.rect(rectX, rectY, rectW, rectH)
+                    doc.text(farge[i].colour, (rectX + rectW/4), (rectY + rectH/2));
+                }
+            }
+
+            cellOne()
+            for (let i = 0;  i<generations; i++){ //en og en rad
+                
+                let x = styling["margin-x"];
+                let y = styling["margin-y"]+(cellHeight*i);
+                rows.push(
+                    {
+                        "x":styling["margin-x"], 
+                        "y": styling["margin-y"]+(cellHeight*i)
+                    },
+                )
+                doc.cell(x, y, contentWidth, cellHeight, ` `);
+
+
+            };
+
+            doc.save("output.pdf");
+
+        }
+        
+    </script>
 </html>
