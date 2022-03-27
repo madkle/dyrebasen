@@ -7,6 +7,7 @@ server.set("port", PORT);
 server.use(express.static("public"));
 server.use(express.json());
 
+
 //general error handlogig----------------
 server.use(function(err, req, res, next){
 	res.status(500).json({

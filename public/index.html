@@ -17,12 +17,15 @@
         function savePDF() {
             let doc = new jsPDF();
 
-            const styling = {"margin-x":10,"margin-y":5};
-            const cellHeight = 75;
+            const styling = {"margin-x":10, "margin-y":5};
+            
             const rows = [];
             const col = [];
             const generations = 4;
             const A4 = {"width": 210, "height": 297};// in mm
+            const cellHeight = (A4.height - styling["margin-y"]*2)/generations;
+            
+            //const cellHeight = 70;
             const contentWidth = A4.width - styling["margin-x"] * 2;
             
             const lineSpacing = 10;
@@ -88,7 +91,19 @@
                 }
             }
 
+            function celltwo() {
+                const TOP = cellHeight + lineSpacing;
+                const LEFT = 15;
+                doc.setFontSize(11);
+                doc.text("Alt med * skal endres til variabler senere", LEFT, TOP);
+                doc.text("Alt med * skal endres til variabler senere", LEFT, TOP + lineSpacing);
+                doc.text("Alt med * skal endres til variabler senere", LEFT, TOP + lineSpacing*2);
+                doc.text("Alt med * skal endres til variabler senere", LEFT, TOP + lineSpacing*3);
+                
+                
+            }
             cellOne()
+            celltwo()
             for (let i = 0;  i<generations; i++){ //en og en rad
                 
                 let x = styling["margin-x"];
