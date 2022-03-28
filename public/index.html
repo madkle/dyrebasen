@@ -92,18 +92,144 @@
             }
 
             function celltwo() {
-                const TOP = cellHeight + lineSpacing;
+                const TOP = cellHeight + styling["margin-y"];
                 const LEFT = 15;
+                const MID_DIVIDER = {
+                    "x1": A4.width/2,
+                    "y1": cellHeight + styling["margin-y"],
+                    "x2": A4.width/2,
+                    "y2": (cellHeight*2) + styling["margin-y"]
+                }
+                //Innhold
                 doc.setFontSize(11);
-                doc.text("Alt med * skal endres til variabler senere", LEFT, TOP);
-                doc.text("Alt med * skal endres til variabler senere", LEFT, TOP + lineSpacing);
-                doc.text("Alt med * skal endres til variabler senere", LEFT, TOP + lineSpacing*2);
-                doc.text("Alt med * skal endres til variabler senere", LEFT, TOP + lineSpacing*3);
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(15)
+                doc.text("Far", LEFT, TOP + lineSpacing);
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(11);
+                doc.text("Reg Nr: x*", LEFT, TOP + lineSpacing*2);
+                doc.text("V.Ø: x*", LEFT, TOP + lineSpacing*3);
+                doc.text("Oppdretter: x*", LEFT, TOP + lineSpacing*4);
+               
+                //Poeng
+                doc.text("Poeng: ", MID_DIVIDER.x1 - 40, TOP + lineSpacing)
+                doc.text("75*/100",  MID_DIVIDER.x1 - 18, TOP + lineSpacing)
+
+                //innavlsgrad
+                doc.text("Innavlsgrad: ", MID_DIVIDER.x1 - 40, TOP + lineSpacing*2)
+                doc.text("50*%",  MID_DIVIDER.x1 - 18, TOP + lineSpacing*2)
+
+
+                //farge
+                const fargebox = {"x": MID_DIVIDER.x1 - 40, "y":TOP+lineSpacing*3, "w":40, "h":lineSpacing*4};
+                const farge = [{"colour":"hvit","hex":"#FFFFFF"},{"colour":"Røslig","hex":"#633424"},{"colour":"Brun","hex":"#543620"},{"colour":"Svart","hex":"#000000"}];
                 
                 
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(15)
+                doc.text("Farge: ", fargebox.x, fargebox.y+5)
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(11)
+                
+                for (let i = 0; i < farge.length; i++) {
+                    let rectW = 15;
+                    let rectH = 10;
+                    let rectX = MID_DIVIDER.x1 - (rectW + rectW*0.25);// + (rectW * i);
+                    let rectY = fargebox.y + lineSpacing*i;
+                    
+                    doc.rect(rectX, rectY, rectW, rectH)
+                    doc.text(farge[i].colour, (rectX + rectW/4), (rectY + rectH/2));
+                }
+                
+                //divider
+                doc.setLineWidth(0.4);
+                doc.line(MID_DIVIDER.x1, MID_DIVIDER.y1, MID_DIVIDER.x2, MID_DIVIDER.y2);
+                
+            }
+            
+            function cellThree() {
+                const TOP = cellHeight + styling["margin-y"];
+                const LEFT = A4.width/2 + 5;
+                const EDGE = A4.width - styling["margin-x"];
+                
+                //Innhold
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(15)
+                doc.text("Mor", LEFT, TOP + lineSpacing);
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(11);
+                doc.text("Reg Nr: x*", LEFT, TOP + lineSpacing*2);
+                doc.text("V.Ø: x*", LEFT, TOP + lineSpacing*3);
+                doc.text("Oppdretter: x*", LEFT, TOP + lineSpacing*4);
+               
+                //Poeng
+                doc.text("Poeng: ", EDGE - 40, TOP + lineSpacing)
+                doc.text("75*/100",  EDGE - 18, TOP + lineSpacing)
+
+                //innavlsgrad
+                doc.text("Innavlsgrad: ", EDGE - 40, TOP + lineSpacing*2)
+                doc.text("50*%",  EDGE - 18, TOP + lineSpacing*2)
+
+
+                //farge
+                const fargebox = {"x": EDGE - 40, "y":TOP+lineSpacing*3, "w":40, "h":lineSpacing*4};
+                const farge = [{"colour":"hvit","hex":"#FFFFFF"},{"colour":"Røslig","hex":"#633424"},{"colour":"Brun","hex":"#543620"},{"colour":"Svart","hex":"#000000"}];
+                
+                
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(15)
+                doc.text("Farge: ", fargebox.x, fargebox.y+5)
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(11)
+                
+                for (let i = 0; i < farge.length; i++) {
+                    let rectW = 15;
+                    let rectH = 10;
+                    let rectX = EDGE - (rectW + rectW*0.25);// + (rectW * i);
+                    let rectY = fargebox.y + lineSpacing*i;
+                    
+                    doc.rect(rectX, rectY, rectW, rectH)
+                    doc.text(farge[i].colour, (rectX + rectW/4), (rectY + rectH/2));
+                }
+                
+            }
+            
+            function cellFour(i) {
+                const CELLWIDTH = A4.width/4
+                const LEFT = styling["margin-x"] + CELLWIDTH * i;
+                const TOP = cellHeight * 2 + styling["margin-y"];
+                const PADDING = 5;
+                const Gender = ["Far","Mor"]
+                if (i < 2) {
+                    parentText = `F ${Gender[i%2]}`
+                } else{
+                    parentText = `M ${Gender[i%2]}`
+                }
+                
+                doc.line(CELLWIDTH * i, TOP, CELLWIDTH * i, cellHeight*3+styling["margin-y"])
+                //innhold
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(15);
+                doc.text(parentText, LEFT + PADDING, TOP + lineSpacing);
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(11);
+
+                doc.text("Reg Nr: x*", LEFT + PADDING, TOP + lineSpacing*2);
+                doc.text("V.Ø: x*", LEFT + PADDING, TOP + lineSpacing*3);
+                doc.text("Oppdretter: x*", LEFT + PADDING, TOP + lineSpacing*4);
+
+
             }
             cellOne()
             celltwo()
+            cellThree()
+            
+            let count = 0;
+            while (count < 4) {
+                cellFour(count)
+                count++ 
+            }
+            
             for (let i = 0;  i<generations; i++){ //en og en rad
                 
                 let x = styling["margin-x"];
@@ -114,7 +240,7 @@
                         "y": styling["margin-y"]+(cellHeight*i)
                     },
                 )
-                doc.cell(x, y, contentWidth, cellHeight, ` `);
+                doc.rect(x, y, contentWidth, cellHeight);
 
 
             };
