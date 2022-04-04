@@ -1,4 +1,5 @@
 const express = require("express");
+const routes = require("./routes/routing.js")
 const server = express();
 const PORT = process.env.PORT || 8080;
 server.set("port", PORT);
@@ -6,7 +7,7 @@ server.set("port", PORT);
 // middleware ---------------------------
 server.use(express.static("public"));
 server.use(express.json());
-
+server.use(routes);
 //general error handlogig----------------
 server.use(function(err, req, res, next){
 	res.status(500).json({
@@ -15,5 +16,5 @@ server.use(function(err, req, res, next){
 	}).end();
 });
 server.listen(server.get("port"), function(){
-	
+	console.log("server running", server.get("port"));
 });
