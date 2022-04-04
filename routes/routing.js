@@ -38,7 +38,21 @@ router.get("/dyr/:id", async function(req, res, next){
         res.status(200).json({error:err}).end();
     }
 });
-
+//Slett dyr
+router.delete("/dyr/:id", async function(req, res, next){
+    inpId = req.params.id;
+    let sql = `
+    DELETE FROM dyr 
+    WHERE did = ${inpId} 
+    RETURNING *
+    `;
+    try {
+        let result = await pool.query(sql);
+        res.status(200).json(result.rows).end();
+    } catch (err) {
+        res.status(200).json({error:err}).end();
+    }
+});
 
 // bruker ------------------------------------------
 //hent alle brukere
@@ -56,7 +70,7 @@ router.get("/bruker", async function(req, res, next){
 });
 
 //hent spesifikk bruker
-router.get("/dyr/:id", async function(req, res, next){
+router.get("/bruker/:id", async function(req, res, next){
     let inpId = req.params.id;
     let sql = `
     SELECT * 
@@ -71,7 +85,20 @@ router.get("/dyr/:id", async function(req, res, next){
     }
 });
 
-
+router.delete("/bruker/:id", async function(req, res, next){
+    inpId = req.params.id;
+    let sql = `
+    DELETE FROM bruker 
+    WHERE bid = ${inpId} 
+    RETURNING *
+    `;
+    try {
+        let result = await pool.query(sql);
+        res.status(200).json(result.rows).end();
+    } catch (err) {
+        res.status(200).json({error:err}).end();
+    }
+});
 
 
 
