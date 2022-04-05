@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    
+    <title>AlleDyr</title>
+</head>
+<body>
+
+    <!----------- HTML-elements -------------->
+
+    <h1>Registrer nytt dyr</h1>
+
+    <form>
+        <label for="inpDid">DyreID:</label><br>
+        <input id="inpDid" type="text" /><br><br>
+
+        <label for="inpRegNr">Reg.nr:</label><br>
+        <input id="inpRegNr" type="text" /><br><br>
+
+        <label for="inpVø">V.Ø:</label><br>
+        <input id="inpVø" type="text" /><br><br>
+
+        <label for="inpFdato">Fødselsdato:</label><br>
+        <input id="inpFdato" type="text" /><br><br>
+
+        <label for="inpKullNr">Kullnummer</label><br>
+        <input id="inpKullNr" type="text" /><br><br>
+
+        <label for="inpKjønn">Kjønn:</label><br>
+        <input id="inpKjønn" type="text" /><br><br>
+
+        <label for="inpInnavlsgrad">Innavlsgrad:</label><br>
+        <input id="inpInnavlsgrad" type="text" /><br><br>
+
+        <label for="inpPoeng">Poeng:</label><br>
+        <input id="inpPoeng" type="text" /><br><br>
+
+        <label for="inpFarge">Farge:</label><br>
+        <input id="inpFarge" type="text" /><br><br>
+
+        <label for="inpFar">Far:</label><br>
+        <input id="inpFar" type="text" /><br><br>
+
+        <label for="inpMor">Mor:</label><br>
+        <input id="inpMor" type="text" /><br><br>
+
+        <button id="btnAddAnimal">Legg til dyr</button><br>
+        <h3 id="txtResult">Resultat...</h3>
+
+
+    </form>
+
+
+    <!------------- JavaScript --------------->
+    <script>
+        
+        let inpDid = document.getElementById('inpDid');
+        let inpRegNr = document.getElementById('inpRegNr');
+        let inpVø = document.getElementById('inpVø');
+        let inpFdato = document.getElementById('inpFdato');
+        let inpKullNr = document.getElementById('inpKullNr');
+        let inpKjønn = document.getElementById('inpKjønn');
+        let inpInnavlsgrad = document.getElementById('inpInnavlsgrad');
+        let inpPoeng = document.getElementById('inpPoeng');
+        let inpFarge = document.getElementById('inpFarge');
+        let inpFar = document.getElementById('inpFar');
+        let inpMor = document.getElementById('inpMor');
+
+
+        btnAddAnimal.addEventListener('click', async function(evt) {
+
+            let url = "/dyr";
+
+            let updata = {
+                did: inpDid.value,
+                regnr: inpRegNr.value,
+                vø: inpVø.value,
+                fdato: inpFdato.value,
+                kullnr: inpKullNr.value,
+                kjønn: inpKjønn.value,
+                innavlsgrad: inpInnavlsgrad.value,
+                poeng: inpPoeng.value,
+                farge: inpFarge.value,
+                far: inpFar.value,
+                mor: inpMor.value
+            }
+
+            let cfg = {
+                method: "POST",
+                headers: {"content-type":"application(json"},
+                body: JSON.stringify(updata)
+            }
+
+            try {
+                let response = await fetch(url, cfg);
+                let data = await response.json();
+
+                if (response.status != 200) {
+                    throw data.error;
+                }
+
+                txtResult.innerHTML = data.msg;
+            }
+            catch(error) {
+                console.log(error);
+                txtResult.innerHTML = "Noe gikk galt - sjekk konsollvinduet"
+            }
+        })
+
+
+
+
+        async function listAnimals() {
+
+            let url = "/dyr";
+
+            try {
+                let response = await fetch(url, cfg);
+                let data = await response.json();
+
+                if (response.status != 200) {
+                    throw data.error;
+                }
+
+                for (let value of data) {
+
+                    let html = "<h2>" + value.did + "</h2>";
+                    html += "<p>" + value.regnr + "</p>";
+                    html += "<p>" + value.vø + "</p>";
+                    html += "<p>" + value.fdato + "</p>";
+                    html += "<p>" + value.kullnr + "</p>";
+                    html += "<p>" + value.kjønn + "</p>";
+                    html += "<p>" + value.innavlsgrad + "</p>";
+                    html += "<p>" + value.poeng + "</p>";
+                    html += "<p>" + value.farge + "</p>";
+                    html += "<p>" + value.far + "</p>";
+                    html += "<p>" + value.mor + "</p><hr>";
+
+                    let div = document.createElement("div");
+                    div.innerHTML = html;
+                    container.appendChild(div);
+                }
+            }
+            catch(error) {
+                console.log(error);
+            }
+        }
+        
+        listAnimals();
+
+    </script>
+
+    <!---------------- CSS ------------------->
+    <style>        
+
+    </style>
+
+</body>
+
+</html>
