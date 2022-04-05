@@ -84,20 +84,20 @@
                 colNr++;
                 startTextLine++;
                 //farge
-                const farge = [{"colour":"hvit","rgb":{"Red":255,"Green": 255,"Blue": 255}}];
+                const colour = [{"colour":"hvit","rgb":{"Red":255,"Green": 255,"Blue": 255}}];
                 
-                for (let i = 1; i <= farge.length; i++) {
+                for (let i = 1; i <= colour.length; i++) {
                     let rectW = 15;
                     let rectH = 10;
                     let rectX = bodyAlignRight;
                     let rectY =  y + lineSpacing*(i+startTextLine);
                     
                     console.log( y, lineSpacing, i, startTextLine);
-                    doc.setFillColor(farge[i-1].rgb.Red, farge[i-1].rgb.Green, farge[i-1].rgb.Blue)
+                    doc.setFillColor(colour[i-1].rgb.Red, colour[i-1].rgb.Green, colour[i-1].rgb.Blue)
                     //doc.setFillColor(255,255,0)
                     doc.rect(rectX, rectY, rectW, rectH, "FD");
                     doc.setFont("helvetica", "bold");
-                    doc.text(farge[i-1].colour, (rectX + rectW/4), (rectY + rectH/2));
+                    doc.text(colour[i-1].colour, (rectX + rectW/4), (rectY + rectH/2));
                     doc.setFont("helvetica", "normal");
                     
                 }
