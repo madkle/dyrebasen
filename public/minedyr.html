@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    
+    <title>AlleDyr</title>
+</head>
+<body>
+
+    <!----------- HTML-elements -------------->
+
+    <h1 style="margin-left: 10px;">MINE DYR</h1>
+
+    <div id="container"></div>
+
+    <img id="testBilde" src="bilder/kanin_eksempelbilde.jpeg">
+        
+    <!------------- JavaScript --------------->
+    <script>
+        
+        let container = document.getElementById('container');
+
+        let testBilde = document.getElementById('testBilde'); 
+
+
+        async function listAnimals() {
+
+            let url = "/dyr";
+
+            try {
+                let response = await fetch(url);
+                let data = await response.json();
+
+                if (response.status != 200) {
+                    throw data.error;
+                }
+                
+                container.innerHTML = " ";
+
+                for (let value of data) {
+
+                    let html = `
+                        <img src="${testBilde.src}" width="100px"/>
+                        <h2>ID: ${value.did} </h2>
+                        <p>Reg.nr: ${value.regnr}</p>
+                        <p>V.Ø.: ${value.vø}</p>
+                        <p>Fødselsdato: ${value.fdato} </p>
+                        <p>Kullnummer: ${value.kullnr} </p>
+                        <p>Kjønn: ${value.kjønn} </p>
+                        <p>Innavlsgrad: ${value.innavlsgrad}</p>
+                        <p>Poeng: ${value.poeng} </p>
+                        <p>Farge: ${value.farge}</p>
+                        <p>Far: ${value.far} </p>
+                        <p>Mor: ${value.mor} </p><br><hr>
+                    `
+                    let div = document.createElement("div");
+                    div.innerHTML = html;
+                    container.appendChild(div);
+
+                    let delbtn = document.createElement("button");
+                    delbtn.innerHTML = "Slett";
+
+                    delbtn.addEventListener('click', function(evt){
+                        deleteAnimal(value.did);
+                    });
+
+                    div.insertBefore(delbtn, div.lastElementChild);
+                }
+            }
+            catch(error) {
+                console.log(error);
+            }
+        }listAnimals();
+
+       /*  async function deleteAnimal(dyrID) {
+            
+            let url = "/dyr";
+
+            let updata = {
+                did: dyrID
+            }
+            
+            let cfg = {
+                method: "DELETE",
+                headers: {"content-type":"application/json"},
+                body: JSON.stringify(updata)
+            }
+
+            try {
+                let response = await fetch(url, cfg);
+                let data = await response.json();
+
+                if (response.status != 200) {
+                    throw data.error;
+                }
+                
+                listAnimals();
+            }
+            catch(error) {
+                console.log(error);
+            }
+        } */
+        
+        
+
+
+        
+
+    </script>
+
+    <!---------------- CSS ------------------->
+    <style>       
+    
+    div {
+        margin-left: 10px;
+
+        
+    }
+
+
+
+
+    </style>
+
+</body>
+
+</html>
