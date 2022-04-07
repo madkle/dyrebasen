@@ -8,107 +8,73 @@
         
     </head>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script>
+    <script src="js/pdf.js"></script>
     <body>
         <h1>Convert to PDF</h1>
-        <button onclick="savePDF()">Generate</button>
+        <button onclick="generatePDF()">Generate</button>
     </body>
     <script>
         
-        function savePDF() {
+
+        
+
+        async function generatePDF(){
+            
+            async function getParents(child) {
+                let findParents = [await getSingleAnimal(child.far), await getSingleAnimal(child.mor)];
+                let family = {
+                    parents: findParents,
+                    fathersParents: [await getSingleAnimal(findParents[0].far),await getSingleAnimal(findParents[0].mor)],
+                    mothersParents:[await getSingleAnimal(findParents[1].far),await getSingleAnimal(findParents[1].mor)]
+                }
+                
+                return family;
+            }
+            //console.log(mainAnimal);
+
             let doc = new jsPDF();
 
-            const styling = {"margin-x":10, "margin-y":5};
+            const mainAnimal = await getSingleAnimal(6);
+            let family = await getParents(mainAnimal);
             
-            const rows = [];
-            const col = [];
+
+
+            const styling = {margin_x:10, margin_y:5};
+            
             const generations = 3;
             const A4 = {"width": 210, "height": 297};// in mm
-            const cellHeight = (A4.height - styling["margin-y"]*2 - 50)/generations;
+            const cellHeight = (A4.height - styling.margin_y*2 - 50)/generations;
             const PADDING = 5;
-            const contentWidth = A4.width - styling["margin-x"] * 2;
+            const contentWidth = A4.width - styling.margin_x * 2;
             
-            const lineSpacing = 10;    
-            
+            const lineSpacing = 10;
+            function lookupColour(inpColour) {
+                inpColour = inpColour.toLowerCase();
 
-            function universalInfo(x,y,r,h,it,row){
-                
-                let startTextLine = 2
-                if (row !== 0) {
-                    let parentArr = ["Far", "Mor"];
-                    let parentLetterArr = "";
-                    if (row >= 2) {
-                        parentLetterArr = parentArr[0].slice(0,1)
-                        if (it >= 2) {
-                            parentLetterArr = parentArr[1].slice(0,1)
-                        }
-                        
-                    }
-                    let parentText = `${parentLetterArr} ${parentArr[it%2]}`;
-                    
-                    doc.setFont("helvetica", "bold");
-                    doc.setFontSize(15);
-                    doc.text(parentText, x + PADDING, y + lineSpacing*startTextLine);
-                    doc.setFont("helvetica", "normal");
-                    
-                    startTextLine++;
-                }
-                doc.setFontSize(11);
-                let contentText = ["Reg Nr: x*","V.Ø: x*","Oppdretter: x*"]
-                for (let i = 0; i < contentText.length; i++){
-                    doc.text(`${contentText[i]} `, x + PADDING, y + lineSpacing*(i+startTextLine));
-                }
-            }
-            function advancedInfo(x,y,r,h,rowNr){
-                let headAlignRight = r - 40;
-                let bodyAlignRight = r - 15;
-                let colNr = 0;
-                let startTextLine = 2;
-                if (rowNr === 0){
-                    startTextLine = 3;
-                };
-                
-                //Poeng
-                let content = [
-                    ["Poeng:", "Innavlsgrad:","Farge:"],
-                    ["75*/100", "50*%"]
+                let colourArr = [
+                    {colour:"hvit", rgb:{red: 255, green: 255, blue: 255}},
+                    {colour:"viltgul", rgb:{red: 169, green: 116, blue: 84}},
+                    {colour:"brun", rgb:{red: 165, green: 42, blue: 42}},
+                    {colour:"madagaskar",rgb:{red: 182, green: 143, blue: 115}},
                 ];
 
-                for (let i = 0; i < content[colNr].length; i++){
-                    doc.text(`${content[colNr][i]}`,  headAlignRight, y + lineSpacing*(i+startTextLine));
-                }
-                colNr++
+                let foundColour = null;
 
-                for (let i = 0; i < content[colNr].length; i++){
-                    doc.text(`${content[colNr][i]}`,  bodyAlignRight, y + lineSpacing*(i+startTextLine));
-                }
-                colNr++;
-                startTextLine++;
-                //farge
-                const colour = [{"colour":"hvit","rgb":{"Red":255,"Green": 255,"Blue": 255}}];
-                
-                for (let i = 1; i <= colour.length; i++) {
-                    let rectW = 15;
-                    let rectH = 10;
-                    let rectX = bodyAlignRight;
-                    let rectY =  y + lineSpacing*(i+startTextLine);
-                    
-                    console.log( y, lineSpacing, i, startTextLine);
-                    doc.setFillColor(colour[i-1].rgb.Red, colour[i-1].rgb.Green, colour[i-1].rgb.Blue)
-                    //doc.setFillColor(255,255,0)
-                    doc.rect(rectX, rectY, rectW, rectH, "FD");
-                    doc.setFont("helvetica", "bold");
-                    doc.text(colour[i-1].colour, (rectX + rectW/4), (rectY + rectH/2));
-                    doc.setFont("helvetica", "normal");
-                    
-                }
+                colourArr.forEach(element => {
+                    if (element.colour === inpColour) {
+                        foundColour = element;
+                    }
+                });
+
+                return foundColour;
             }
-            
-            function mainCell(x,y,r,h){
+
+            function rowOne(x,y,r,h,it,row) {
+                let startTextLine = 2;
                 let headAlignRight = r - 40;
                 let bodyAlignRight = r - 15;
                 let cellPadding = 7;
-                let startTextLine = 0;
-                
+
                 doc.setFontSize(20);
                 doc.setFont("helvetica", "bold");
                 doc.text("Dyrebasen", x + 20, y + cellPadding);
@@ -119,44 +85,145 @@
 
                 doc.line(x + PADDING, y + cellPadding + 2, r, y + cellPadding + 2);
 
-                doc.text("Fødselsdato dd/mm/åå*", x + PADDING, y + lineSpacing*5);
+                let contentLeftText = [`Reg Nr: ${mainAnimal.regnr}`,`V.Ø: ${mainAnimal.vø}`,`Oppdretter: ${mainAnimal.aid_FK}`,`Fødselsdato ${mainAnimal.fdato}`]
+                for (let i = 0; i < contentLeftText.length; i++){
+                    doc.text(`${contentLeftText[i]} `, x + PADDING, y + lineSpacing*(i+startTextLine));
+                }
 
-                doc.text("Kjønn:", headAlignRight, y + lineSpacing*2);
-                doc.text("male*", bodyAlignRight, y + lineSpacing*2);
+                contentRightText = [`Kjønn: ${mainAnimal.kjønn}`, `Poeng: ${mainAnimal.poeng}/100`,`Innavlsgrad: ${mainAnimal.innavlsgrad}%`, `Farge:`]
+                for (let i = 0; i < contentRightText.length; i++){
+                    doc.text(`${contentRightText[i]}`,  headAlignRight, y + lineSpacing*(i+startTextLine));
+        
+                }
+                startTextLine = contentRightText.length + 1;
+
+                let colourInformation = lookupColour(mainAnimal.farge)
+
+                let rectW = 15;
+                let rectH = 10;
+                let rectX = bodyAlignRight;
+                let rectY =  y + PADDING/2 + lineSpacing * startTextLine;
+                
+                doc.setFillColor(colourInformation.rgb.red, colourInformation.rgb.green, colourInformation.rgb.blue)
+                doc.rect(rectX, rectY, rectW, rectH, "FD");
+                doc.setFont("helvetica", "bold");
+                doc.text(colourInformation.colour, bodyAlignRight, y + lineSpacing * startTextLine);
+                doc.setFont("helvetica", "normal");
             }
-            function createCell(numberOfCols, iteration, rowNumber){
+
+            async function rowTwo(x,y,r,h,it,row) {
+                //finne foreldrene
+                let currentAnimal = family.parents[it%2]
+                //-------------
+
+                let startTextLine = 1;
+                let headAlignRight = r - 40;
+                let bodyAlignRight = r - 15;
+
+                //Far eller Mor
+                let parentArr = ["Far","Mor"];
+                let parentText = "";
+                parentText = parentArr[it%2]
+                
+                //---------------
+                doc.text(parentText, x + PADDING, y + lineSpacing*startTextLine)
+                startTextLine++
+
+                let contentLeftText = [`Reg Nr: ${currentAnimal.regnr}`,`V.Ø: ${currentAnimal.vø}`,`Oppdretter: ${currentAnimal.aid_FK}`];
+                
+                for (let i = 0; i < contentLeftText.length; i++){
+                    doc.text(`${contentLeftText[i]} `, x + PADDING, y + lineSpacing*(i+startTextLine));
+                }
+                contentRightText = [`Poeng: ${currentAnimal.poeng}/100`,`Innavlsgrad: ${currentAnimal.innavlsgrad}%`, `Farge:`]
+                for (let i = 0; i < contentRightText.length; i++){
+                    doc.text(`${contentRightText[i]}`,  headAlignRight, y + lineSpacing*(i+startTextLine));
+        
+                }
+                startTextLine = contentRightText.length + 1;
+
+                let colourInformation = lookupColour(currentAnimal.farge)
+
+                let rectW = 15;
+                let rectH = 10;
+                let rectX = bodyAlignRight;
+                let rectY =  y + PADDING/2 + lineSpacing * startTextLine;
+                
+                doc.setFillColor(colourInformation.rgb.red, colourInformation.rgb.green, colourInformation.rgb.blue)
+                doc.rect(rectX, rectY, rectW, rectH, "FD");
+                doc.setFont("helvetica", "bold");
+                doc.text(colourInformation.colour, bodyAlignRight, y + lineSpacing * startTextLine);
+                doc.setFont("helvetica", "normal");
+            }
+
+            async function rowThree(x,y,r,h,it,row) {
+                let currentAnimal = null;
+                let antCol = 4
+                let parentArr = ["Far","Mor"];
+                let parentText = "";
+                
+
+                if (it < antCol/2) {
+                    currentAnimal = family.fathersParents[it%2];
+                    parentText = `F ${parentArr[it%2]}`
+                }else{
+                    currentAnimal = family.mothersParents[it%2]
+                    parentText = `M ${parentArr[it%2]}`
+                }
+
+                
+
+                let startTextLine = 2;
+                let headAlignRight = r - 40;
+
+                doc.text(parentText, x + PADDING, y + lineSpacing*startTextLine)
+                startTextLine++
+
+                let contentLeftText = [`Reg Nr: ${currentAnimal.regnr}`,`V.Ø: ${currentAnimal.vø}`,`Oppdretter: ${currentAnimal.aid_FK}`];
+                
+                for (let i = 0; i < contentLeftText.length; i++){
+                    doc.text(`${contentLeftText[i]} `, x + PADDING, y + lineSpacing*(i+startTextLine));
+                }
+            }
+
+            async function createCell(numberOfCols, iteration, rowNumber){
                 const cellWidth = contentWidth/numberOfCols;
-                let CellLeft = styling["margin-x"] + cellWidth*iteration; //x
-                let CellTop = styling["margin-y"] + cellHeight*rowNumber; //y
+                let CellLeft = styling.margin_x + cellWidth*iteration; //x
+                let CellTop = styling.margin_y + cellHeight*rowNumber; //y
                 let CellRight = cellWidth + cellWidth*iteration;
                 doc.rect(CellLeft, CellTop, cellWidth, cellHeight);
-                universalInfo(CellLeft, CellTop, CellRight, cellHeight, iteration, rowNumber);
-                if(rowNumber === 0){
-                    mainCell(CellLeft, CellTop, CellRight, cellHeight);
-                }
-                if (rowNumber < 2){
-                    advancedInfo(CellLeft, CellTop, CellRight, cellHeight, rowNumber);
-                }
                 
+                switch (rowNumber) {
+                    case 0:
+                        await rowOne(CellLeft, CellTop, CellRight, cellHeight, iteration, rowNumber)
+                        break;
+                
+                    case 1:
+                        await rowTwo(CellLeft, CellTop, CellRight, cellHeight, iteration, rowNumber)
+                        break;
+
+                    case 2:
+                        await rowThree(CellLeft, CellTop, CellRight, cellHeight, iteration, rowNumber)
+                        break;
+                }
+            
             }
+
             let nmbCol = 1;
-            let it = 0;
             let row = 0;
             let multiplyer = 2;
-            
             for (let i = 0; i < generations; i++){
                 let count = 0;
                 while (count < nmbCol) {                    
-                    createCell(nmbCol,count,row);
+                    await createCell(nmbCol,count,row);
                     count++;
                 }
-                nmbCol = nmbCol*2;
+                nmbCol = nmbCol * multiplyer;
                 row++;
             }
 
 
             doc.save("output.pdf");
         }
-        
+
     </script>
 </html>

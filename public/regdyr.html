@@ -116,7 +116,7 @@
                 let url = "/dyr";
 
                 try {
-                    let response = await fetch(url, cfg);
+                    let response = await fetch(url);
                     let data = await response.json();
 
                     if (response.status != 200) {
