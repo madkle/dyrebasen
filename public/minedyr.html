@@ -145,6 +145,10 @@
         cursor: pointer;
     }
 
+    body {
+        background-color: rgb(248, 208, 159);
+    }
+
 
 
     /* did: inpDid.value,
@@ -160,9 +164,13 @@
                 mor: inpMor.value */
 
     .item1 {grid-area: img;
-            width: 150px;}
+            width: 125px;
+            border-radius: 100px;
+            align-self: center;
+            justify-self: center;}
     .item2 {grid-area: did;
-            padding-left: 40px;}
+            align-self: center;
+            justify-self: center;}
     .item3 {grid-area: regNr;}
     .item4 {grid-area: vø;}
     .item5 {grid-area: fDato;}
@@ -194,11 +202,12 @@
             "img vø poeng rediger"
             "img kullNr kjønn kjønn"
             "img fDato farge farge"
-            "did far mor mor"
+            "img far mor mor"
             "did genstam genstam genstam";
         border: 1px solid black;
         cursor: pointer;
         margin: 10px;
+        background-color: bisque;
     }
 
     /* .mineDyr>img {
