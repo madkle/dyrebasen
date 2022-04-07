@@ -13,8 +13,6 @@
 
     <div id="container"></div>
 
-    <img id="testBilde" src="bilder/kanin_eksempelbilde.jpeg">
-        
     <!------------- JavaScript --------------->
     <script>
         
@@ -36,10 +34,29 @@
                 }
                 
                 container.innerHTML = " ";
+                /* container.classList.add("mineDyr"); */
 
                 for (let value of data) {
 
-                    let html = "<img>" + testBilde + "</img>";
+                     let testBilde = document.createElement("img");
+                     testBilde.setAttribute("src", "bilder/kanin_eksempelbilde.jpeg");
+
+                    
+                    let html = `<img class="item1" src="${testBilde.src}" width="100px"/>
+                                <h2 class="item2">ID: ${value.did} </h2>
+                                <p class="item3">Reg.nr: ${value.regnr}</p>
+                                <p class="item4">V.Ø.: ${value.vø}</p>
+                                <p class="item5">Fødselsdato: ${value.fdato} </p>
+                                <p class="item6">Kullnummer: ${value.kullnr} </p>
+                                <p class="item7">Kjønn: ${value.kjønn} </p>
+                                <p class="item8">Innavlsgrad: ${value.innavlsgrad}</p>
+                                <p class="item9">Poeng: ${value.poeng} </p>
+                                <p class="item10">Farge: ${value.farge}</p>
+                                <p class="item11">Far: ${value.far} </p>
+                                <p class="item12">Mor: ${value.mor} </p><br><hr>`
+                    
+
+                    /* let html = "<img>" + testBilde + "</img>";
                     html += "<h2>" + "ID: " + value.did + "</h2>";
                     html += "<p>" + "Reg.nr: " + value.regnr + "</p>";
                     html += "<p>" + "V.Ø.: " + value.vø + "</p>";
@@ -50,20 +67,34 @@
                     html += "<p>" + "Poeng: " + value.poeng + "</p>";
                     html += "<p>" + "Farge: " + value.farge + "</p>";
                     html += "<p>" + "Far: " + value.far + "</p>";
-                    html += "<p>" + "Mor: " + value.mor + "</p><br><hr>";
+                    html += "<p>" + "Mor: " + value.mor + "</p><br><hr>"; */
 
                     let div = document.createElement("div");
                     div.innerHTML = html;
                     container.appendChild(div);
+                    div.classList.add("mineDyr");
 
                     let delbtn = document.createElement("button");
-                    delbtn.innerHTML = "Slett";
+                    delbtn.classList.add("slett");
+                    delbtn.innerHTML = "✕";
 
                     delbtn.addEventListener('click', function(evt){
                         deleteAnimal(value.did);
                     });
 
-                    div.insertBefore(delbtn, div.lastElementChild);
+                    div.appendChild(delbtn);
+                    /* div.insertBefore(delbtn, div.lastElementChild); */
+                    
+                    let editbtn = document.createElement("button");
+                    editbtn.classList.add("rediger")
+                    editbtn.innerText ="✏️";
+
+                    let genStam = document.createElement("button");
+                    genStam.classList.add("genstam");
+                    genStam.innerText ="Generer stamtavle";
+
+                    div.appendChild(editbtn);
+                    div.appendChild(genStam);
                 }
             }
             catch(error) {
@@ -110,14 +141,114 @@
     <!---------------- CSS ------------------->
     <style>       
     
-    div {
-        margin-left: 10px;
-
-        
+    button:hover {
+        cursor: pointer;
     }
 
 
 
+    /* did: inpDid.value,
+                regnr: inpRegNr.value,
+                vø: inpVø.value,
+                fdato: inpFdato.value,
+                kullnr: inpKullNr.value,
+                kjønn: inpKjønn.value,
+                innavlsgrad: inpInnavlsgrad.value,
+                poeng: inpPoeng.value,
+                farge: inpFarge.value,
+                far: inpFar.value,
+                mor: inpMor.value */
+
+    .item1 {grid-area: img;
+            width: 150px;}
+    .item2 {grid-area: did;
+            padding-left: 40px;}
+    .item3 {grid-area: regNr;}
+    .item4 {grid-area: vø;}
+    .item5 {grid-area: fDato;}
+    .item6 {grid-area: kullNr;}
+    .item7 {grid-area: kjønn;}
+    .item8 {grid-area: innavlsgrad;}
+    .item9 {grid-area: poeng;}
+    .item10 {grid-area: farge;}
+    .item11 {grid-area: far;}
+    .item12 {grid-area: mor;}
+    .slett {grid-area: slett;
+            margin: 5px;}
+    .rediger {grid-area: rediger;
+            margin: 5px;}
+    .genstam {grid-area: genstam;
+            height: 35px;
+            margin-top: 10px;
+            margin-right: 5px;}
+            
+
+
+
+    .mineDyr {
+        display: grid;
+        grid-template-columns: 200px 200px 200px 35px;
+        grid-template-rows: 35px 35px 35px 35px 35px 35px;
+        grid-template-areas: 
+            "img regNr innavlsgrad slett"
+            "img vø poeng rediger"
+            "img kullNr kjønn kjønn"
+            "img fDato farge farge"
+            "did far mor mor"
+            "did genstam genstam genstam";
+        border: 1px solid black;
+        cursor: pointer;
+        margin: 10px;
+    }
+
+    /* .mineDyr>img {
+        grid-area: img;
+        width: 100px;
+    }
+
+    .mineDyr>h2 {
+        grid-area: did;
+    }
+
+    .mineDyr>p:nth-child(3) {
+        grid-area: regNr;
+    }
+
+    .mineDyr>p:nth-child(4) {
+        grid-area: vø;
+    }
+
+    .mineDyr>p:nth-child(5) {
+        grid-area: fDato;
+    }
+
+    .mineDyr>p:nth-child(6) {
+        grid-area: kullNr;
+    }
+
+    .mineDyr>p:nth-child(7) {
+        grid-area: kjønn;
+    }
+
+    .mineDyr>p:nth-child(8) {
+        grid-area: innavlsgrad;
+    }
+
+    .mineDyr>p:nth-child(9) {
+        grid-area: poeng;
+    }
+
+    .mineDyr>p:nth-child(10) {
+        grid-area: farge;
+    }
+
+    .mineDyr>p:nth-child(11) {
+        grid-area: far;
+    }
+
+    .mineDyr>p:nth-child(12) {
+        grid-area: mor;
+    } */
 
     </style>
 
