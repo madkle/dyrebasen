@@ -28,11 +28,9 @@
                     fathersParents: [await getSingleAnimal(findParents[0].far), await getSingleAnimal(findParents[0].mor)],
                     mothersParents:[await getSingleAnimal(findParents[1].far),await getSingleAnimal(findParents[1].mor)]
                 }
-                console.log(family);
                 
                 return family;
             }
-            //console.log(mainAnimal);
 
             let doc = new jsPDF();
 
