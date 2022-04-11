@@ -19,7 +19,7 @@ router.get("/dyr", async function(req, res, next){
         let result = await pool.query(sql);
         res.status(200).json(result.rows).end();
     } catch (err) {
-        res.status(200).json({error:err}).end();
+        res.status(500).json({error:err}).end();
     }
 });
 
@@ -33,9 +33,15 @@ router.get("/dyr/:id", async function(req, res, next){
     `;
     try {
         let result = await pool.query(sql);
-        res.status(200).json(result.rows).end();
+        if (result.rows.length > 0) {
+            res.status(200).json(result.rows).end();
+        }else{
+            res.status(404).json({}).end();
+            //throw "404 no animal found. Check ID";
+        }
+        
     } catch (err) {
-        res.status(200).json({error:err}).end();
+        res.status(500).json({error:err}).end();
     }
 });
 //Slett dyr
@@ -50,7 +56,7 @@ router.delete("/dyr/:id", async function(req, res, next){
         let result = await pool.query(sql);
         res.status(200).json(result.rows).end();
     } catch (err) {
-        res.status(200).json({error:err}).end();
+        res.status(500).json({error:err}).end();
     }
 });
 
@@ -65,7 +71,7 @@ router.get("/bruker", async function(req, res, next){
         let result = await pool.query(sql);
         res.status(200).json(result.rows).end();
     } catch (err) {
-        res.status(200).json({error:err}).end();
+        res.status(500).json({error:err}).end();
     }
 });
 
@@ -81,7 +87,7 @@ router.get("/bruker/:id", async function(req, res, next){
         let result = await pool.query(sql);
         res.status(200).json(result.rows).end();
     } catch (err) {
-        res.status(200).json({error:err}).end();
+        res.status(500).json({error:err}).end();
     }
 });
 
@@ -96,7 +102,7 @@ router.delete("/bruker/:id", async function(req, res, next){
         let result = await pool.query(sql);
         res.status(200).json(result.rows).end();
     } catch (err) {
-        res.status(200).json({error:err}).end();
+        res.status(500).json({error:err}).end();
     }
 });
 

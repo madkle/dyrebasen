@@ -11,22 +11,24 @@
     <script src="js/pdf.js"></script>
     <body>
         <h1>Convert to PDF</h1>
-        <button onclick="generatePDF()">Generate</button>
+        <button onclick="generatePDF(4)">Generate</button>
     </body>
     <script>
         
 
         
 
-        async function generatePDF(){
+        async function generatePDF(clickedAnimal){
             
             async function getParents(child) {
+                
                 let findParents = [await getSingleAnimal(child.far), await getSingleAnimal(child.mor)];
                 let family = {
                     parents: findParents,
-                    fathersParents: [await getSingleAnimal(findParents[0].far),await getSingleAnimal(findParents[0].mor)],
+                    fathersParents: [await getSingleAnimal(findParents[0].far), await getSingleAnimal(findParents[0].mor)],
                     mothersParents:[await getSingleAnimal(findParents[1].far),await getSingleAnimal(findParents[1].mor)]
                 }
+                console.log(family);
                 
                 return family;
             }
@@ -34,7 +36,7 @@
 
             let doc = new jsPDF();
 
-            const mainAnimal = await getSingleAnimal(6); //--------------------------DETTE KOBLES TIL KNAPP ID
+            const mainAnimal = await getSingleAnimal(clickedAnimal); //--------------------------DETTE KOBLES TIL KNAPP ID
             let family = await getParents(mainAnimal);
             
 
