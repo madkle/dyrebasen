@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script>
+    
+    <script src="js/pdf.js"></script>
     <title>AlleDyr</title>
 </head>
 <body>
@@ -13,14 +16,13 @@
 
     <div id="container"></div>
 
-    <img id="testBilde" src="bilder/kanin_eksempelbilde.jpeg">
         
     <!------------- JavaScript --------------->
     <script>
         
         let container = document.getElementById('container');
 
-        let testBilde = document.getElementById('testBilde'); 
+        let testBilde = "bilder/kanin_eksempelbilde.jpeg"; 
 
 
         async function listAnimals() {
@@ -40,7 +42,7 @@
                 for (let value of data) {
 
                     let html = `
-                        <img src="${testBilde.src}" width="100px"/>
+                        <img src="${testBilde}" width="100px"/>
                         <h2>ID: ${value.did} </h2>
                         <p>Reg.nr: ${value.regnr}</p>
                         <p>V.Ø.: ${value.vø}</p>
@@ -57,15 +59,29 @@
                     div.innerHTML = html;
                     container.appendChild(div);
 
+
+                    let generateBtn = document.createElement("button");
+                    generateBtn.innerHTML = "Generer Stamtavle";
+
+                    generateBtn.addEventListener('click', function(evt){
+                        generatePDF(value.did);
+                    });
+
+                    div.insertBefore(generateBtn, div.lastElementChild);
+
+
                     let delbtn = document.createElement("button");
                     delbtn.innerHTML = "Slett";
 
                     delbtn.addEventListener('click', function(evt){
                         deleteAnimal(value.did);
                     });
-
                     div.insertBefore(delbtn, div.lastElementChild);
                 }
+                    
+
+
+                    
             }
             catch(error) {
                 console.log(error);
