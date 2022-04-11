@@ -23,6 +23,7 @@ router.get("/dyr", async function(req, res, next){
     }
 });
 
+
 //hent spesifikt dyr
 router.get("/dyr/:id", async function(req, res, next){
     let inpId = req.params.id;

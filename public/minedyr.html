@@ -6,6 +6,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script>
     
     <script src="js/pdf.js"></script>
+    <script src="js/dyr.js"></script>
     <title>AlleDyr</title>
 </head>
 <body>
@@ -26,68 +27,60 @@
 
 
         async function listAnimals() {
+            let data = await getAllAnimals();
 
-            let url = "/dyr";
+            container.innerHTML = "";
 
-            try {
-                let response = await fetch(url);
-                let data = await response.json();
-
-                if (response.status != 200) {
-                    throw data.error;
+            for (let value of data) {
+                let parents = {
+                    far: await getSingleAnimal(value.far),
+                    mor: await getSingleAnimal(value.mor)
                 }
-                
-                container.innerHTML = " ";
-
-                for (let value of data) {
-
-                    let html = `
-                        <img src="${testBilde}" width="100px"/>
-                        <h2>ID: ${value.did} </h2>
-                        <p>Reg.nr: ${value.regnr}</p>
-                        <p>V.Ø.: ${value.vø}</p>
-                        <p>Fødselsdato: ${value.fdato} </p>
-                        <p>Kullnummer: ${value.kullnr} </p>
-                        <p>Kjønn: ${value.kjønn} </p>
-                        <p>Innavlsgrad: ${value.innavlsgrad}</p>
-                        <p>Poeng: ${value.poeng} </p>
-                        <p>Farge: ${value.farge}</p>
-                        <p>Far: ${value.far} </p>
-                        <p>Mor: ${value.mor} </p><br><hr>
-                    `
-                    let div = document.createElement("div");
-                    div.innerHTML = html;
-                    container.appendChild(div);
+                console.log(parents);
+                let html = `
+                    <img src="${testBilde}" width="100px"/>
+                    <h2>ID: ${value.did} </h2>
+                    <p>Reg.nr: ${value.regnr}</p>
+                    <p>V.Ø.: ${value.vø}</p>
+                    <p>Fødselsdato: ${value.fdato} </p>
+                    <p>Kullnummer: ${value.kullnr} </p>
+                    <p>Kjønn: ${value.kjønn} </p>
+                    <p>Innavlsgrad: ${value.innavlsgrad}</p>
+                    <p>Poeng: ${value.poeng} </p>
+                    <p>Farge: ${value.farge}</p>
+                    <p>Far: ${parents.far.regnr} </p>
+                    <p>Mor: ${parents.mor.regnr} </p><br><hr>
+                `
+                let div = document.createElement("div");
+                div.innerHTML = html;
+                container.appendChild(div);
 
 
-                    let generateBtn = document.createElement("button");
-                    generateBtn.innerHTML = "Generer Stamtavle";
+                let generateBtn = document.createElement("button");
+                generateBtn.innerHTML = "Generer Stamtavle";
 
-                    generateBtn.addEventListener('click', function(evt){
-                        generatePDF(value.did);
-                    });
+                generateBtn.addEventListener('click', function(evt){
+                    generatePDF(value.did);
+                });
 
-                    div.insertBefore(generateBtn, div.lastElementChild);
+                div.insertBefore(generateBtn, div.lastElementChild);
 
 
-                    let delbtn = document.createElement("button");
-                    delbtn.innerHTML = "Slett";
+                let delbtn = document.createElement("button");
+                delbtn.innerHTML = "Slett";
 
-                    delbtn.addEventListener('click', function(evt){
-                        deleteAnimal(value.did);
-                    });
-                    div.insertBefore(delbtn, div.lastElementChild);
-                }
+                delbtn.addEventListener('click', function(evt){
+                    deleteAnimal(value.did);
+                });
+                div.insertBefore(delbtn, div.lastElementChild);
+            }
                     
 
 
-                    
-            }
-            catch(error) {
-                console.log(error);
-            }
-        }listAnimals();
+            
+        }
 
+        listAnimals();
        /*  async function deleteAnimal(dyrID) {
             
             let url = "/dyr";

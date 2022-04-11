@@ -32,21 +32,22 @@ async function getSingleAnimal(id) {
     catch(error) {
         console.log(error);
     }
-}
+};
+async function getParents(child) {
+        
+    let findParents = [await getSingleAnimal(child.far), await getSingleAnimal(child.mor)];
+    let family = {
+        parents: findParents,
+        fathersParents: [await getSingleAnimal(findParents[0].far), await getSingleAnimal(findParents[0].mor)],
+        mothersParents:[await getSingleAnimal(findParents[1].far),await getSingleAnimal(findParents[1].mor)]
+    }
+    
+    return family;
+};
 
 async function generatePDF(clickedAnimal){
             
-    async function getParents(child) {
-        
-        let findParents = [await getSingleAnimal(child.far), await getSingleAnimal(child.mor)];
-        let family = {
-            parents: findParents,
-            fathersParents: [await getSingleAnimal(findParents[0].far), await getSingleAnimal(findParents[0].mor)],
-            mothersParents:[await getSingleAnimal(findParents[1].far),await getSingleAnimal(findParents[1].mor)]
-        }
-        
-        return family;
-    }
+    
 
     let doc = new jsPDF();
 
