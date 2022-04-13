@@ -31,12 +31,13 @@
 
             container.innerHTML = "";
 
+            console.log(data);
             for (let value of data) {
+                
                 let parents = {
                     far: await getSingleAnimal(value.far),
                     mor: await getSingleAnimal(value.mor)
                 }
-                console.log(parents);
                 let html = `
                     <img src="${testBilde}" width="100px"/>
                     <h2>ID: ${value.did} </h2>
