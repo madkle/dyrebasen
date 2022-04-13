@@ -34,7 +34,6 @@
                 }
                 
                 container.innerHTML = " ";
-                /* container.classList.add("mineDyr"); */
 
                 for (let value of data) {
 
@@ -55,19 +54,6 @@
                                 <p class="item11">Far: ${value.far} </p>
                                 <p class="item12">Mor: ${value.mor} </p><br><hr>`
                     
-
-                    /* let html = "<img>" + testBilde + "</img>";
-                    html += "<h2>" + "ID: " + value.did + "</h2>";
-                    html += "<p>" + "Reg.nr: " + value.regnr + "</p>";
-                    html += "<p>" + "V.Ø.: " + value.vø + "</p>";
-                    html += "<p>" + "Fødselsdato: " + value.fdato + "</p>";
-                    html += "<p>" + "Kullnummer: " + value.kullnr + "</p>";
-                    html += "<p>" + "Kjønn: " + value.kjønn + "</p>";
-                    html += "<p>" + "Innavlsgrad: " + value.innavlsgrad + "</p>";
-                    html += "<p>" + "Poeng: " + value.poeng + "</p>";
-                    html += "<p>" + "Farge: " + value.farge + "</p>";
-                    html += "<p>" + "Far: " + value.far + "</p>";
-                    html += "<p>" + "Mor: " + value.mor + "</p><br><hr>"; */
 
                     let div = document.createElement("div");
                     div.innerHTML = html;
@@ -149,20 +135,6 @@
         background-color: rgb(248, 208, 159);
     }
 
-
-
-    /* did: inpDid.value,
-                regnr: inpRegNr.value,
-                vø: inpVø.value,
-                fdato: inpFdato.value,
-                kullnr: inpKullNr.value,
-                kjønn: inpKjønn.value,
-                innavlsgrad: inpInnavlsgrad.value,
-                poeng: inpPoeng.value,
-                farge: inpFarge.value,
-                far: inpFar.value,
-                mor: inpMor.value */
-
     .item1 {grid-area: img;
             width: 125px;
             border-radius: 100px;
@@ -189,9 +161,7 @@
             height: 35px;
             margin-top: 10px;
             margin-right: 5px;}
-            
-
-
+        
 
     .mineDyr {
         display: grid;
@@ -200,9 +170,9 @@
         grid-template-areas: 
             "img regNr innavlsgrad slett"
             "img vø poeng rediger"
-            "img kullNr kjønn kjønn"
             "img fDato farge farge"
-            "img far mor mor"
+            "img kullNr far far"
+            "img kjønn mor mor"
             "did genstam genstam genstam";
         border: 1px solid black;
         cursor: pointer;

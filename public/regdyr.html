@@ -84,6 +84,7 @@
                 farge: inpFarge.value,
                 far: inpFar.value,
                 mor: inpMor.value
+                //BILDE må legges inn
             }
 
             let cfg = {
@@ -107,47 +108,6 @@
                 txtResult.innerHTML = "Noe gikk galt - sjekk konsollvinduet"
             }
         })
-
-
-
-
-        async function listAnimals() {
-
-            let url = "/dyr";
-
-            try {
-                let response = await fetch(url, cfg);
-                let data = await response.json();
-
-                if (response.status != 200) {
-                    throw data.error;
-                }
-
-                for (let value of data) {
-
-                    let html = "<h2>" + value.did + "</h2>";
-                    html += "<p>" + value.regnr + "</p>";
-                    html += "<p>" + value.vø + "</p>";
-                    html += "<p>" + value.fdato + "</p>";
-                    html += "<p>" + value.kullnr + "</p>";
-                    html += "<p>" + value.kjønn + "</p>";
-                    html += "<p>" + value.innavlsgrad + "</p>";
-                    html += "<p>" + value.poeng + "</p>";
-                    html += "<p>" + value.farge + "</p>";
-                    html += "<p>" + value.far + "</p>";
-                    html += "<p>" + value.mor + "</p><hr>";
-
-                    let div = document.createElement("div");
-                    div.innerHTML = html;
-                    container.appendChild(div);
-                }
-            }
-            catch(error) {
-                console.log(error);
-            }
-        }
-        
-        listAnimals();
 
     </script>
 
