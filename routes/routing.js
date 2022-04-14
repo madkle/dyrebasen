@@ -106,7 +106,23 @@ router.delete("/bruker/:id", async function(req, res, next){
         res.status(500).json({error:err}).end();
     }
 });
-
-
+//ny bruker
+router.post("/bruker", async function (req,res, next) {
+    let updata = req.body
+    let sql = `INSERT INTO bruker (aid, fornavn, etternavn) 
+    VALUES(DEFAULT, $1, $2) 
+    returning *`;
+    let values = [updata.fornavn,updata.etternavn];
+    try {
+        let result = await pool.query(sql,values);
+        if (result.rows.length > 0) {
+            res.status(200).json({msg: `The user ${updata.fornavn} ${updata.etternavn} was added`}).end()
+        }else{
+            throw "could not add user to database"
+        }
+    } catch (err) {
+        res.status(500).json({error:err}).end();
+    }
+})
 
 module.exports = router;
