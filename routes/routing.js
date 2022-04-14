@@ -60,7 +60,31 @@ router.delete("/dyr/:id", async function(req, res, next){
         res.status(500).json({error:err}).end();
     }
 });
+// publiser nytt dyr
+router.post("/dyr", async function(req, res, next)  {
 
+    let updata = req.body;
+    try{
+        
+        let sql = `INSERT INTO dyr (did, regnr, vø, fdato, kullnr, kjønn, innavlsgrad, poeng, farge, far, mor , bidfk, aidfk, bilde) 
+        VALUES 
+        (DEFAULT, $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) returning *`;
+        let values = [ 
+          updata.regnr, updata.vø, updata.fdato, updata.kullnr, updata.kjønn, updata.innavlsgrad, updata.poeng, updata.farge, updata.far, updata.mor , updata.bidFK, updata.aidFK, updata.bilde
+        ];
+        //console.log(values);
+        let result= await pool.query(sql, values);
+        if(result.rows.length > 0){
+            res.status(200).json({msg : "added to database"}).end();
+        
+        }
+        else{
+        throw "Kould not ad to the database.";
+        }
+    }catch(err){
+        res.status(500).json({error: err}).end();
+    }
+});
 // bruker ------------------------------------------
 //hent alle brukere
 router.get("/bruker", async function(req, res, next){
@@ -91,7 +115,7 @@ router.get("/bruker/:id", async function(req, res, next){
         res.status(500).json({error:err}).end();
     }
 });
-
+// slett slet spesefik bruker
 router.delete("/bruker/:id", async function(req, res, next){
     inpId = req.params.id;
     let sql = `
@@ -106,7 +130,88 @@ router.delete("/bruker/:id", async function(req, res, next){
         res.status(500).json({error:err}).end();
     }
 });
+// publiserer ny bruker
+router.post("/bruker", async function(req, res, next)  {
 
+    let updata = req.body;
+    try{
+        let sql = "INSERT INTO bruker (bid, fornavn, etternavn) VALUES (DEFAULT, $1, $2) returning *";
+        let values = [ updata.fornavn, updata.etternavn];
+        let result= await pool.query(sql, values);
+        if(result.rows.length > 0){
+            res.status(200).json({msg : "added to database"}).end();
+        
+        }
+        else{
+        throw "Kould not ad to the database.";
+        }
+    }catch(err){
+        res.status(500).json({error: err}).end();
+    }
+});
+// dyreart
+// hent alt dyreart
+router.get("/dyreart", async function(req, res, next){
+    let sql = `
+    SELECT * 
+    FROM dyreart
+    `;
+    try {
+        let result = await pool.query(sql);
+        res.status(200).json(result.rows).end();
+    } catch (err) {
+        res.status(500).json({error:err}).end();
+    }
+});
+
+//hent spesifikk dyreart
+router.get("/dyreart/:id", async function(req, res, next){
+    let inpId = req.params.id;
+    let sql = `
+    SELECT * 
+    FROM dyreart
+    WHERE bid = ${inpId}
+    `;
+    try {
+        let result = await pool.query(sql);
+        res.status(200).json(result.rows).end();
+    } catch (err) {
+        res.status(500).json({error:err}).end();
+    }
+});
+// slett slet spesefik bruker
+router.delete("/dyreart/:id", async function(req, res, next){
+    inpId = req.params.id;
+    let sql = `
+    DELETE FROM dyreart 
+    WHERE bid = ${inpId} 
+    RETURNING *
+    `;
+    try {
+        let result = await pool.query(sql);
+        res.status(200).json(result.rows).end();
+    } catch (err) {
+        res.status(500).json({error:err}).end();
+    }
+});
+// publiserer ny bruker
+router.post("/dyreart", async function(req, res, next)  {
+
+    let updata = req.body;
+    try{
+        let sql = "INSERT INTO dyreart (aid, navn) VALUES (DEFAULT, $1) returning *";
+        let values = [updata.navn];
+        let result= await pool.query(sql, values);
+        if(result.rows.length > 0){
+            res.status(200).json({msg : "added to database"}).end();
+        }
+        else{
+        throw "Kould not ad to the database.";
+        }
+    }catch(err){
+        res.status(500).json({error: err}).end();
+    }
+});
 
 
 module.exports = router;
