@@ -48,6 +48,8 @@
         <button id="btnAddAnimal">Legg til dyr</button><br>
         <h3 id="txtResult">Resultat...</h3>
 
+        <!-- Innputfelt for bilde mangler -->
+
 
     </form>
 
@@ -66,6 +68,7 @@
         let inpFarge = document.getElementById('inpFarge');
         let inpFar = document.getElementById('inpFar');
         let inpMor = document.getElementById('inpMor');
+        /* variabel for bilde mangler */
 
 
         btnAddAnimal.addEventListener('click', async function(evt) {
@@ -84,7 +87,7 @@
                 farge: inpFarge.value,
                 far: inpFar.value,
                 mor: inpMor.value
-                //BILDE må legges inn
+                //bilde må legges inn
             }
 
             let cfg = {

@@ -14,5 +14,50 @@
     <input id="regpasword" type="password"><br><br>
     <button>Registrer</button>
 
+    <script>
+
+
+        function createCredentialString(username, password) {
+
+            let combinedStr = username + ":" + password;
+            let b64Str = btoa(combinedStr);
+
+            return "basic" + b64Str;
+        }
+
+        let cred = createCredentialString("dorthe", "vintervollen");
+        console.log(cred);
+
+        let cfg = {
+            method: "POST",
+            headers: {
+                "authorization": createCredentialString("dorthe", "vintervollen")
+            }
+        }
+
+        function decodeCred(credString) {
+            let cred = {};
+
+            let b64Str = credString.replace("basic ", "");
+            let asciiString = Buffer.from(b64Str, "baset64").toString("ascii");
+
+            cred.username = asciiString.replace(/:.*/, "");
+
+            return cred;
+        }
+
+        server.post("/users/login", function(req, res, next) {
+
+            credString = req.headers.authorization;
+            let cred = decodeCred(credString);
+
+            console.log(cred.username);
+            console.log(cred.password);
+
+
+            res.status(200).send("Hello from POST").end();
+        })
+
+    </script>
 </body>
 </html>
