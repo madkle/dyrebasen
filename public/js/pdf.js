@@ -13,8 +13,8 @@ async function getSingleAnimal(id) {
             return data[0];
         }
         let blankFamily = {
-            aidFK: null,
-            bidFK: null,
+            aidfk: null,
+            bidfk: null,
             did: null,
             far: null,
             farge: null,
@@ -103,7 +103,7 @@ async function generatePDF(clickedAnimal){
 
         doc.line(x + PADDING, y + cellPadding + 2, r, y + cellPadding + 2);
 
-        let contentLeftText = [`Reg Nr: ${mainAnimal.regnr}`,`V.Ø: ${mainAnimal.vø}`,`Oppdretter: ${mainAnimal.aidFK}`,`Fødselsdato ${mainAnimal.fdato}`]
+        let contentLeftText = [`Reg Nr: ${mainAnimal.regnr}`,`V.Ø: ${mainAnimal.vø}`,`Oppdretter: ${mainAnimal.aidfk}`,`Fødselsdato ${mainAnimal.fdato}`]
         for (let i = 0; i < contentLeftText.length; i++){
             doc.text(`${contentLeftText[i]} `, x + PADDING, y + lineSpacing*(i+startTextLine));
         }
@@ -147,7 +147,7 @@ async function generatePDF(clickedAnimal){
         doc.text(parentText, x + PADDING, y + lineSpacing*startTextLine)
         startTextLine++
 
-        let contentLeftText = [`Reg Nr: ${currentAnimal.regnr}`,`V.Ø: ${currentAnimal.vø}`,`Oppdretter: ${currentAnimal.aidFK}`];
+        let contentLeftText = [`Reg Nr: ${currentAnimal.regnr}`,`V.Ø: ${currentAnimal.vø}`,`Oppdretter: ${currentAnimal.aidfk}`];
         
         for (let i = 0; i < contentLeftText.length; i++){
             doc.text(`${contentLeftText[i]} `, x + PADDING, y + lineSpacing*(i+startTextLine));
@@ -198,7 +198,7 @@ async function generatePDF(clickedAnimal){
         doc.text(parentText, x + PADDING, y + lineSpacing*startTextLine)
         startTextLine++
 
-        let contentLeftText = [`Reg Nr: ${currentAnimal.regnr}`,`V.Ø: ${currentAnimal.vø}`,`Oppdretter: ${currentAnimal.aidFK}`];
+        let contentLeftText = [`Reg Nr: ${currentAnimal.regnr}`,`V.Ø: ${currentAnimal.vø}`,`Oppdretter: ${currentAnimal.aidfk}`];
         
         for (let i = 0; i < contentLeftText.length; i++){
             doc.text(`${contentLeftText[i]} `, x + PADDING, y + lineSpacing*(i+startTextLine));
