@@ -95,18 +95,13 @@
             }
         }listAnimals();
 
-       /*  async function deleteAnimal(dyrID) {
+        async function deleteAnimal(dyrID) {
             
-            let url = "/dyr";
-
-            let updata = {
-                did: dyrID
-            }
+            let url = `/dyr/${dyrID}`;
             
             let cfg = {
                 method: "DELETE",
-                headers: {"content-type":"application/json"},
-                body: JSON.stringify(updata)
+                headers: {"content-type":"application/json"}
             }
 
             try {
@@ -122,7 +117,7 @@
             catch(error) {
                 console.log(error);
             }
-        } */
+        }
         
         
 
