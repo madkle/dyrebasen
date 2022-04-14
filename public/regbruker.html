@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ny bruker</title>
+</head>
+<body>
+    <h2>Ny bruker</h2>
+    <label for="regusername">Brukernavn:</label>
+    <input id="regusername" type="text"><br><br>
+    <label for="regpasword">Passord:</label>
+    <input id="regpasword" type="password"><br><br>
+    <button>Registrer</button>
+
+    <script>
+
+
+        function createCredentialString(username, password) {
+
+            let combinedStr = username + ":" + password;
+            let b64Str = btoa(combinedStr);
+
+            return "basic" + b64Str;
+        }
+
+        let cred = createCredentialString("dorthe", "vintervollen");
+        console.log(cred);
+
+        let cfg = {
+            method: "POST",
+            headers: {
+                "authorization": createCredentialString("dorthe", "vintervollen")
+            }
+        }
+
+        function decodeCred(credString) {
+            let cred = {};
+
+            let b64Str = credString.replace("basic ", "");
+            let asciiString = Buffer.from(b64Str, "baset64").toString("ascii");
+
+            cred.username = asciiString.replace(/:.*/, "");
+
+            return cred;
+        }
+
+        server.post("/users/login", function(req, res, next) {
+
+            credString = req.headers.authorization;
+            let cred = decodeCred(credString);
+
+            console.log(cred.username);
+            console.log(cred.password);
+
+
+            res.status(200).send("Hello from POST").end();
+        })
+
+    </script>
+</body>
+</html>
