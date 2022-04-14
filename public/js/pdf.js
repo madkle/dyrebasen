@@ -114,19 +114,19 @@ async function generatePDF(clickedAnimal){
 
         }
         startTextLine = contentRightText.length + 1;
-
-        let colourInformation = lookupColour(mainAnimal.farge)
-
-        let rectW = 15;
-        let rectH = 10;
-        let rectX = bodyAlignRight;
-        let rectY =  y + PADDING/2 + lineSpacing * startTextLine;
-        
-        doc.setFillColor(colourInformation.rgb.red, colourInformation.rgb.green, colourInformation.rgb.blue)
-        doc.rect(rectX, rectY, rectW, rectH, "FD");
-        doc.setFont("helvetica", "bold");
-        doc.text(colourInformation.colour, bodyAlignRight, y + lineSpacing * startTextLine);
-        doc.setFont("helvetica", "normal");
+        if (mainAnimal.farge !== null) {
+            let colourInformation = lookupColour(mainAnimal.farge)
+            let rectW = 15;
+            let rectH = 10;
+            let rectX = bodyAlignRight;
+            let rectY =  y + PADDING/2 + lineSpacing * startTextLine;
+            
+            doc.setFillColor(colourInformation.rgb.red, colourInformation.rgb.green, colourInformation.rgb.blue)
+            doc.rect(rectX, rectY, rectW, rectH, "FD");
+            doc.setFont("helvetica", "bold");
+            doc.text(colourInformation.colour, bodyAlignRight, y + lineSpacing * startTextLine);
+            doc.setFont("helvetica", "normal");
+        }        
     }
 
     async function rowTwo(x,y,r,h,it,row) {
@@ -159,18 +159,20 @@ async function generatePDF(clickedAnimal){
         }
         startTextLine = contentRightText.length + 1;
 
-        let colourInformation = lookupColour(currentAnimal.farge)
-
-        let rectW = 15;
-        let rectH = 10;
-        let rectX = bodyAlignRight;
-        let rectY =  y + PADDING/2 + lineSpacing * startTextLine;
         
-        doc.setFillColor(colourInformation.rgb.red, colourInformation.rgb.green, colourInformation.rgb.blue)
-        doc.rect(rectX, rectY, rectW, rectH, "FD");
-        doc.setFont("helvetica", "bold");
-        doc.text(colourInformation.colour, bodyAlignRight, y + lineSpacing * startTextLine);
-        doc.setFont("helvetica", "normal");
+        if (currentAnimal.farge !== null) {
+            let colourInformation = lookupColour(currentAnimal.farge)
+            let rectW = 15;
+            let rectH = 10;
+            let rectX = bodyAlignRight;
+            let rectY =  y + PADDING/2 + lineSpacing * startTextLine;
+            
+            doc.setFillColor(colourInformation.rgb.red, colourInformation.rgb.green, colourInformation.rgb.blue)
+            doc.rect(rectX, rectY, rectW, rectH, "FD");
+            doc.setFont("helvetica", "bold");
+            doc.text(colourInformation.colour, bodyAlignRight, y + lineSpacing * startTextLine);
+            doc.setFont("helvetica", "normal");
+        }
     }
 
     async function rowThree(x,y,r,h,it,row) {
