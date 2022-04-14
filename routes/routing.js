@@ -170,7 +170,7 @@ router.get("/dyreart/:id", async function(req, res, next){
     let sql = `
     SELECT * 
     FROM dyreart
-    WHERE bid = ${inpId}
+    WHERE aid = ${inpId}
     `;
     try {
         let result = await pool.query(sql);
@@ -184,7 +184,7 @@ router.delete("/dyreart/:id", async function(req, res, next){
     inpId = req.params.id;
     let sql = `
     DELETE FROM dyreart 
-    WHERE bid = ${inpId} 
+    WHERE aid = ${inpId} 
     RETURNING *
     `;
     try {
