@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script>
+    
+    <script src="js/pdf.js"></script>
+    <script src="js/dyr.js"></script>
     <title>AlleDyr</title>
 </head>
 <body>
@@ -72,12 +76,15 @@
                     /* div.insertBefore(delbtn, div.lastElementChild); */
                     
                     let editbtn = document.createElement("button");
-                    editbtn.classList.add("rediger")
+                    editbtn.classList.add("rediger");
                     editbtn.innerText ="✏️";
 
                     let genStam = document.createElement("button");
                     genStam.classList.add("genstam");
                     genStam.innerText ="Generer stamtavle";
+                    genStam.addEventListener('click', function(evt){
+                        generatePDF(value.did);
+                    })
 
                     div.appendChild(editbtn);
                     div.appendChild(genStam);
@@ -228,6 +235,10 @@
     .mineDyr>p:nth-child(12) {
         grid-area: mor;
     } */
+    
+
+
+
 
     </style>
 
