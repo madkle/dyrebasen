@@ -13,8 +13,8 @@ async function getSingleAnimal(id) {
             return data[0];
         }
         let blankFamily = {
-            aid_FK: null,
-            bid_FK: null,
+            aidfk: null,
+            bidfk: null,
             did: null,
             far: null,
             farge: null,
@@ -25,7 +25,8 @@ async function getSingleAnimal(id) {
             mor: null,
             poeng: null,
             regnr: null,
-            vø: null
+            vø: null,
+            bilde: null
         }
         return blankFamily;
     }
@@ -102,7 +103,7 @@ async function generatePDF(clickedAnimal){
 
         doc.line(x + PADDING, y + cellPadding + 2, r, y + cellPadding + 2);
 
-        let contentLeftText = [`Reg Nr: ${mainAnimal.regnr}`,`V.Ø: ${mainAnimal.vø}`,`Oppdretter: ${mainAnimal.aid_FK}`,`Fødselsdato ${mainAnimal.fdato}`]
+        let contentLeftText = [`Reg Nr: ${mainAnimal.regnr}`,`V.Ø: ${mainAnimal.vø}`,`Oppdretter: ${mainAnimal.aidfk}`,`Fødselsdato ${mainAnimal.fdato}`]
         for (let i = 0; i < contentLeftText.length; i++){
             doc.text(`${contentLeftText[i]} `, x + PADDING, y + lineSpacing*(i+startTextLine));
         }
@@ -113,19 +114,19 @@ async function generatePDF(clickedAnimal){
 
         }
         startTextLine = contentRightText.length + 1;
-
-        let colourInformation = lookupColour(mainAnimal.farge)
-
-        let rectW = 15;
-        let rectH = 10;
-        let rectX = bodyAlignRight;
-        let rectY =  y + PADDING/2 + lineSpacing * startTextLine;
-        
-        doc.setFillColor(colourInformation.rgb.red, colourInformation.rgb.green, colourInformation.rgb.blue)
-        doc.rect(rectX, rectY, rectW, rectH, "FD");
-        doc.setFont("helvetica", "bold");
-        doc.text(colourInformation.colour, bodyAlignRight, y + lineSpacing * startTextLine);
-        doc.setFont("helvetica", "normal");
+        if (mainAnimal.farge !== null) {
+            let colourInformation = lookupColour(mainAnimal.farge)
+            let rectW = 15;
+            let rectH = 10;
+            let rectX = bodyAlignRight;
+            let rectY =  y + PADDING/2 + lineSpacing * startTextLine;
+            
+            doc.setFillColor(colourInformation.rgb.red, colourInformation.rgb.green, colourInformation.rgb.blue)
+            doc.rect(rectX, rectY, rectW, rectH, "FD");
+            doc.setFont("helvetica", "bold");
+            doc.text(colourInformation.colour, bodyAlignRight, y + lineSpacing * startTextLine);
+            doc.setFont("helvetica", "normal");
+        }        
     }
 
     async function rowTwo(x,y,r,h,it,row) {
@@ -146,7 +147,7 @@ async function generatePDF(clickedAnimal){
         doc.text(parentText, x + PADDING, y + lineSpacing*startTextLine)
         startTextLine++
 
-        let contentLeftText = [`Reg Nr: ${currentAnimal.regnr}`,`V.Ø: ${currentAnimal.vø}`,`Oppdretter: ${currentAnimal.aid_FK}`];
+        let contentLeftText = [`Reg Nr: ${currentAnimal.regnr}`,`V.Ø: ${currentAnimal.vø}`,`Oppdretter: ${currentAnimal.aidfk}`];
         
         for (let i = 0; i < contentLeftText.length; i++){
             doc.text(`${contentLeftText[i]} `, x + PADDING, y + lineSpacing*(i+startTextLine));
@@ -158,18 +159,20 @@ async function generatePDF(clickedAnimal){
         }
         startTextLine = contentRightText.length + 1;
 
-        let colourInformation = lookupColour(currentAnimal.farge)
-
-        let rectW = 15;
-        let rectH = 10;
-        let rectX = bodyAlignRight;
-        let rectY =  y + PADDING/2 + lineSpacing * startTextLine;
         
-        doc.setFillColor(colourInformation.rgb.red, colourInformation.rgb.green, colourInformation.rgb.blue)
-        doc.rect(rectX, rectY, rectW, rectH, "FD");
-        doc.setFont("helvetica", "bold");
-        doc.text(colourInformation.colour, bodyAlignRight, y + lineSpacing * startTextLine);
-        doc.setFont("helvetica", "normal");
+        if (currentAnimal.farge !== null) {
+            let colourInformation = lookupColour(currentAnimal.farge)
+            let rectW = 15;
+            let rectH = 10;
+            let rectX = bodyAlignRight;
+            let rectY =  y + PADDING/2 + lineSpacing * startTextLine;
+            
+            doc.setFillColor(colourInformation.rgb.red, colourInformation.rgb.green, colourInformation.rgb.blue)
+            doc.rect(rectX, rectY, rectW, rectH, "FD");
+            doc.setFont("helvetica", "bold");
+            doc.text(colourInformation.colour, bodyAlignRight, y + lineSpacing * startTextLine);
+            doc.setFont("helvetica", "normal");
+        }
     }
 
     async function rowThree(x,y,r,h,it,row) {
@@ -195,7 +198,7 @@ async function generatePDF(clickedAnimal){
         doc.text(parentText, x + PADDING, y + lineSpacing*startTextLine)
         startTextLine++
 
-        let contentLeftText = [`Reg Nr: ${currentAnimal.regnr}`,`V.Ø: ${currentAnimal.vø}`,`Oppdretter: ${currentAnimal.aid_FK}`];
+        let contentLeftText = [`Reg Nr: ${currentAnimal.regnr}`,`V.Ø: ${currentAnimal.vø}`,`Oppdretter: ${currentAnimal.aidfk}`];
         
         for (let i = 0; i < contentLeftText.length; i++){
             doc.text(`${contentLeftText[i]} `, x + PADDING, y + lineSpacing*(i+startTextLine));
