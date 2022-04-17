@@ -4,13 +4,95 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
 </head>
-<body>
-    <ol>
+<body class="bg-2">
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand">DYREBASEN</a>
+          
+        </div>
+      </nav>
+
+
+        <div class="container-fluid p-5 bg-2">
+            <h1 class="text-center">Velkommen til Dyrebasen!</h1>
+            <!-- CARD / INNLOGGING -->
+            <div class="container mt-3 mb-5" id="cardLogin">
+                <div class="card bg-2" style="border: none;">
+                    <div class="card-body">
+                        <div class="container" >
+                            <form>
+                            
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="email">Brukernavn:</label>
+                                        <input type="email" class="form-control" id="usr" placeholder="Skriv inn brukernavn" name="email">
+                                    </div>
+
+                                    <div class="col">
+                                        <label for="pwd">Passord:</label>
+                                        <input type="password" class="form-control" id="pwd" placeholder="Skriv inn passord" name="pswd">
+                                    </div>
+                        
+                                    <div class="text-center mt-2">
+                                        <button formaction="testMineDyr.html" type="submit" class="btn btn-secondary " id="btnLogin">Logg inn</button>
+                                    </div>
+                            
+                                    <div class="form-check mt-2">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input text-body" type="checkbox" name="remember"> Husk meg
+                                        </label>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+        </div>
+
+      
+
+
+    <!-- <ol>
         <li><a href="generatepdf.html">generatepdf</a></li>
         <li><a href="minedyr.html">minedyr</a></li>
         <li><a href="regdyr.html">regdyr</a></li>
         <li><a href="loadImg.html">test</a></li>
-    </ol>
+    </ol> -->
+
+    <style>
+
+        #cardLogin {
+            width: 500px;
+        }
+        
+        #btnLogin {
+            border-radius: 25px;
+            width: 250px;
+            align-self: center;
+        }
+
+        #pwd {
+            border-radius: 25px;
+        }
+        #usr {
+            border-radius: 25px;
+        }
+        
+
+        .bg-2 {
+            background-color: antiquewhite;
+        }
+    </style>
+
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
 </body>
 </html>
