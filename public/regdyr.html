@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">    
     <title>AlleDyr</title>
+
+    <script src="./js/dyr.js"></script>
 </head>
 <body>
 
@@ -11,53 +13,52 @@
 
     <h1>Registrer nytt dyr</h1>
 
-    <form>
-        <label for="inpDid">DyreID:</label><br>
-        <input id="inpDid" type="text" /><br><br>
-
+    <!--<form>-->
         <label for="inpRegNr">Reg.nr:</label><br>
-        <input id="inpRegNr" type="text" /><br><br>
+        <input id="inpRegNr" type="number"  /><br><br>
 
         <label for="inpVø">V.Ø:</label><br>
         <input id="inpVø" type="text" /><br><br>
 
         <label for="inpFdato">Fødselsdato:</label><br>
-        <input id="inpFdato" type="text" /><br><br>
+        <input id="inpFdato" type="date" /><br><br>
 
         <label for="inpKullNr">Kullnummer</label><br>
-        <input id="inpKullNr" type="text" /><br><br>
+        <input id="inpKullNr" type="number" /><br><br>
 
         <label for="inpKjønn">Kjønn:</label><br>
         <input id="inpKjønn" type="text" /><br><br>
 
         <label for="inpInnavlsgrad">Innavlsgrad:</label><br>
-        <input id="inpInnavlsgrad" type="text" /><br><br>
+        <input id="inpInnavlsgrad" type="number" /><br><br>
 
         <label for="inpPoeng">Poeng:</label><br>
-        <input id="inpPoeng" type="text" /><br><br>
+        <input id="inpPoeng" type="number" /><br><br>
 
         <label for="inpFarge">Farge:</label><br>
         <input id="inpFarge" type="text" /><br><br>
 
         <label for="inpFar">Far:</label><br>
-        <input id="inpFar" type="text" /><br><br>
+        <input id="inpFar" type="number" /><br><br>
 
         <label for="inpMor">Mor:</label><br>
-        <input id="inpMor" type="text" /><br><br>
+        <input id="inpMor" type="number" /><br><br>
 
+        <!--
+        <label for="inpImg">Bilde av kaninen:</label><br>
+        <input id="inpImg" type="file" /><br><br>
+        --->
         <button id="btnAddAnimal">Legg til dyr</button><br>
         <h3 id="txtResult">Resultat...</h3>
 
-        <!-- Innputfelt for bilde mangler -->
 
 
-    </form>
+    <!--</form>-->
 
 
     <!------------- JavaScript --------------->
     <script>
-        
-        let inpDid = document.getElementById('inpDid');
+        let btnAddAnimal = document.getElementById('btnAddAnimal');
         let inpRegNr = document.getElementById('inpRegNr');
         let inpVø = document.getElementById('inpVø');
         let inpFdato = document.getElementById('inpFdato');
@@ -68,15 +69,10 @@
         let inpFarge = document.getElementById('inpFarge');
         let inpFar = document.getElementById('inpFar');
         let inpMor = document.getElementById('inpMor');
-        /* variabel for bilde mangler */
-
-
-        btnAddAnimal.addEventListener('click', async function(evt) {
-
-            let url = "/dyr";
-
+        
+        btnAddAnimal.addEventListener('click', async function () {
+            
             let updata = {
-                did: inpDid.value,
                 regnr: inpRegNr.value,
                 vø: inpVø.value,
                 fdato: inpFdato.value,
@@ -86,32 +82,16 @@
                 poeng: inpPoeng.value,
                 farge: inpFarge.value,
                 far: inpFar.value,
-                mor: inpMor.value
-                //bilde må legges inn
+                mor: inpMor.value,
+                bid: null,
+                aid: null,
+                bilde: null
             }
 
-            let cfg = {
-                method: "POST",
-                headers: {"content-type":"application(json"},
-                body: JSON.stringify(updata)
-            }
-
-            try {
-                let response = await fetch(url, cfg);
-                let data = await response.json();
-
-                if (response.status != 200) {
-                    throw data.error;
-                }
-
-                txtResult.innerHTML = data.msg;
-            }
-            catch(error) {
-                console.log(error);
-                txtResult.innerHTML = "Noe gikk galt - sjekk konsollvinduet"
-            }
+            await addAnimal(updata)
         })
 
+        
     </script>
 
     <!---------------- CSS ------------------->

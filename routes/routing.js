@@ -8,7 +8,21 @@ const pool = new pg.Pool({
     ssl:{rejectUnauthorized: false}
 });
 
-// dyr ------------------------------------------
+const normalize = require("../modules/normalize.js");
+/*-------------------------temp middleware------------------------
+function normalize(variables) {
+    for (const data in variables) {
+        if (variables[data] === '') {
+            variables[data] = null
+        }
+    }
+    return variables;
+}
+*/
+
+//-------------------------//temp middleware------------------------
+
+ // dyr ------------------------------------------
 //hent alle dyr
 router.get("/dyr", async function(req, res, next){
     let sql = `
@@ -61,29 +75,30 @@ router.delete("/dyr/:id", async function(req, res, next){
     }
 });
 // publiser nytt dyr
-router.post("/dyr", async function(req, res, next)  {
 
-    let updata = req.body;
+router.post("/dyr", normalize, async function(req, res, next)  {
+
+    let updata = req.body
+    
     try{
-        
         let sql = `INSERT INTO dyr (did, regnr, vø, fdato, kullnr, kjønn, innavlsgrad, poeng, farge, far, mor , bidfk, aidfk, bilde) 
         VALUES 
         (DEFAULT, $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) returning *`;
         let values = [ 
-          updata.regnr, updata.vø, updata.fdato, updata.kullnr, updata.kjønn, updata.innavlsgrad, updata.poeng, updata.farge, updata.far, updata.mor , updata.bidFK, updata.aidFK, updata.bilde
+          updata.regnr, updata.vø, updata.fdato, updata.kullnr, updata.kjønn, updata.innavlsgrad, updata.poeng, updata.farge, updata.far, updata.mor , updata.bid, updata.aid, updata.bilde
         ];
-        //console.log(values);
         let result= await pool.query(sql, values);
+        //console.log(result);
         if(result.rows.length > 0){
             res.status(200).json({msg : "added to database"}).end();
-        
         }
         else{
-        throw "Kould not ad to the database.";
+            throw "could not add to database";
         }
     }catch(err){
         res.status(500).json({error: err}).end();
     }
+    
 });
 // bruker ------------------------------------------
 //hent alle brukere
@@ -131,7 +146,7 @@ router.delete("/bruker/:id", async function(req, res, next){
     }
 });
 // publiserer ny bruker
-router.post("/bruker", async function(req, res, next)  {
+router.post("/bruker",normalize, async function(req, res, next)  {
 
     let updata = req.body;
     try{
