@@ -33,8 +33,6 @@ async function addAnimal(updata) {
         if (response.status != 200) {
             throw data.error;
         }
-
-        txtResult.innerHTML = data.msg;
     }
     catch(error) {
         console.log(error);

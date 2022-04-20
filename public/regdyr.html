@@ -13,7 +13,7 @@
 
     <h1>Registrer nytt dyr</h1>
 
-    <!--<form>-->
+    <form>
         <label for="inpRegNr">Reg.nr:</label><br>
         <input id="inpRegNr" type="number"  /><br><br>
 
@@ -50,10 +50,7 @@
         --->
         <button id="btnAddAnimal">Legg til dyr</button><br>
         <h3 id="txtResult">Resultat...</h3>
-
-
-
-    <!--</form>-->
+    </form>
 
 
     <!------------- JavaScript --------------->
@@ -70,8 +67,9 @@
         let inpFar = document.getElementById('inpFar');
         let inpMor = document.getElementById('inpMor');
         
-        btnAddAnimal.addEventListener('click', async function () {
-            
+        btnAddAnimal.addEventListener('click', async function (evt) {
+          evt.preventDefault();
+
             let updata = {
                 regnr: inpRegNr.value,
                 vø: inpVø.value,
@@ -88,7 +86,9 @@
                 bilde: null
             }
 
-            await addAnimal(updata)
+            await addAnimal(updata);
+
+            location.href = "./minedyr.html"
         })
 
         
