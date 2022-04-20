@@ -9,25 +9,14 @@ const pool = new pg.Pool({
 });
 
 const normalize = require("../modules/normalize.js");
-/*-------------------------temp middleware------------------------
-function normalize(variables) {
-    for (const data in variables) {
-        if (variables[data] === '') {
-            variables[data] = null
-        }
-    }
-    return variables;
-}
-*/
 
-//-------------------------//temp middleware------------------------
-
- // dyr ------------------------------------------
+// dyr ------------------------------------------
 //hent alle dyr
 router.get("/dyr", async function(req, res, next){
     let sql = `
     SELECT * 
     FROM dyr
+    ORDER BY did
     `;
     try {
         let result = await pool.query(sql);
@@ -106,6 +95,7 @@ router.get("/bruker", async function(req, res, next){
     let sql = `
     SELECT * 
     FROM bruker
+    ORDER BY bid
     `;
     try {
         let result = await pool.query(sql);
@@ -170,6 +160,7 @@ router.get("/dyreart", async function(req, res, next){
     let sql = `
     SELECT * 
     FROM dyreart
+    ORDER BY aid
     `;
     try {
         let result = await pool.query(sql);
