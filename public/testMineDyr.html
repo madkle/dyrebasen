@@ -25,7 +25,7 @@
                 <a class="nav-link" href="regdyr.html">Registrer ny kanin</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="minedyr.html">Mine kaniner</a>
+                <a class="nav-link active" href="minedyr.html">Mine kaniner</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#">Til salgs</a>
@@ -90,10 +90,11 @@
                     div.innerHTML = html;
                     container.appendChild(div);
                     div.classList.add("mineDyr");
+                    div.classList.add("pt-2");
 
                     let delbtn = document.createElement("button");
                     delbtn.classList.add("slett");
-                    delbtn.innerHTML = "✕";
+                    delbtn.classList.add("btn-close");
 
                     delbtn.addEventListener('click', function(evt){
                         deleteAnimal(value.did);
@@ -154,7 +155,12 @@
     </script>
 
     <!---------------- CSS ------------------->
-    <style>       
+    <style>    
+    
+    button {
+        border-radius: 5px;
+    }
+    
     
     button:hover {
         cursor: pointer;
@@ -183,9 +189,9 @@
     .item11 {grid-area: far;}
     .item12 {grid-area: mor;}
     .slett {grid-area: slett;
-            margin: 5px;}
+            margin: 2px;}
     .rediger {grid-area: rediger;
-            margin: 5px;}
+            margin: 2px;}
     .genstam {grid-area: genstam;
             height: 35px;
             margin-top: 10px;
@@ -207,7 +213,8 @@
         cursor: pointer;
         margin: 10px;
         background-color: bisque;
-        
+
+        max-width: 644px;
     }
 
     /* .mineDyr>img {
