@@ -44,10 +44,9 @@
         <label for="inpMor">Mor:</label><br>
         <input id="inpMor" type="number" /><br><br>
 
-        <!--
         <label for="inpImg">Bilde av kaninen:</label><br>
         <input id="inpImg" type="file" /><br><br>
-        --->
+        
         <button id="btnAddAnimal">Legg til dyr</button><br>
         <h3 id="txtResult">Resultat...</h3>
     </form>
@@ -66,10 +65,20 @@
         let inpFarge = document.getElementById('inpFarge');
         let inpFar = document.getElementById('inpFar');
         let inpMor = document.getElementById('inpMor');
-        
-        btnAddAnimal.addEventListener('click', async function (evt) {
-          evt.preventDefault();
+        let inpBilde = document.getElementById('inpImg');
+        let bildeData = null;
 
+        inpBilde.addEventListener("change", function (evt) {
+            let fr = new FileReader();
+            fr.addEventListener("load", function (evt) {
+                bildeData = fr.result;
+            });
+            fr.readAsDataURL(inpBilde.files[0]);
+        })
+
+        btnAddAnimal.addEventListener('click', async function (evt) {
+            evt.preventDefault();
+            
             let updata = {
                 regnr: inpRegNr.value,
                 vø: inpVø.value,
@@ -83,9 +92,8 @@
                 mor: inpMor.value,
                 bid: null,
                 aid: null,
-                bilde: null
+                bilde: bildeData
             }
-
             await addAnimal(updata);
 
             location.href = "./minedyr.html"

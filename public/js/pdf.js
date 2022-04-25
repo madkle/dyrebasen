@@ -45,18 +45,12 @@ async function getParents(child) {
     
     return family;
 };
-
 async function generatePDF(clickedAnimal){
-            
-    
-
     let doc = new jsPDF();
 
-    const mainAnimal = await getSingleAnimal(clickedAnimal); //--------------------------DETTE KOBLES TIL KNAPP ID
+    const mainAnimal = await getSingleAnimal(clickedAnimal); 
     let family = await getParents(mainAnimal);
     
-
-
     const styling = {margin_x:10, margin_y:5};
     
     const generations = 3;
@@ -92,6 +86,8 @@ async function generatePDF(clickedAnimal){
         let headAlignRight = r - 40;
         let bodyAlignRight = r - 15;
         let cellPadding = 7;
+        const imgWidth = 50;
+        const imgHeight = 50;
 
         doc.setFontSize(20);
         doc.setFont("helvetica", "bold");
@@ -102,6 +98,11 @@ async function generatePDF(clickedAnimal){
         doc.text("Reg. Dato* Reg av*", headAlignRight, y + cellPadding);
 
         doc.line(x + PADDING, y + cellPadding + 2, r, y + cellPadding + 2);
+
+        if (mainAnimal.bilde !== null) {
+            let imgFormat = mainAnimal.bilde.slice(11).split(";")[0];
+            doc.addImage(mainAnimal.bilde,imgFormat, (A4.width/2)-(imgWidth/2) , y + cellPadding,imgWidth,imgHeight)
+        }
 
         let contentLeftText = [`Reg Nr: ${mainAnimal.regnr}`,`V.Ø: ${mainAnimal.vø}`,`Oppdretter: ${mainAnimal.aidfk}`,`Fødselsdato ${mainAnimal.fdato}`]
         for (let i = 0; i < contentLeftText.length; i++){
