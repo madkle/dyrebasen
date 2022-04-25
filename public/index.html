@@ -25,12 +25,12 @@
                 <div class="card bg-2" style="border: none;">
                     <div class="card-body">
                         <div class="container" >
-                            <form>
+                            <form ><!-- action="login.js" for å kjøre innloggingsfilen med inputen fra skjemaet -->
                             
                                 <div class="row">
                                     <div class="col">
                                         <label for="email">Brukernavn:</label>
-                                        <input type="email" class="form-control" id="usr" placeholder="Skriv inn brukernavn" name="email">
+                                        <input type="email" class="form-control" id="usr" placeholder="Skriv inn brukernavn" name="email" autofocus>
                                     </div>
 
                                     <div class="col">
@@ -47,6 +47,8 @@
                                             <input class="form-check-input text-body" type="checkbox" name="remember"> Husk meg
                                         </label>
                                     </div>
+
+                                    <a href="regbruker.html" class="card-link text-center ">Registrer ny bruker</a>
 
                                 </div>
                             </form>
@@ -67,6 +69,8 @@
     </ol> -->
 
     <style>
+
+        
 
         #cardLogin {
             width: 500px;
