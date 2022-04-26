@@ -1,6 +1,43 @@
+function lookupColour(inpColour) {
+    inpColour = inpColour.toLowerCase();
+
+    let colourArr = [
+        {colour:"hvit", rgb:{red: 255, green: 255, blue: 255}},
+        {colour:"viltgul", rgb:{red: 169, green: 116, blue: 84}},
+        {colour:"brun", rgb:{red: 165, green: 42, blue: 42}},
+        {colour:"madagaskar",rgb:{red: 182, green: 143, blue: 115}},
+    ];
+
+    let foundColour = null;
+
+    colourArr.forEach(element => {
+        if (element.colour === inpColour) {
+            foundColour = element;
+        }
+    });
+
+    return foundColour;
+}
 async function getSingleAnimal(id) {
 
     let url = `/dyr/${id}`;
+
+    let blankFamily = {
+        aidfk: null,
+        bidfk: null,
+        did: null,
+        far: null,
+        farge: null,
+        fdato: null,
+        innavlsgrad: null,
+        kjønn: null,
+        kullnr: null,
+        mor: null,
+        poeng: null,
+        regnr: null,
+        vø: null,
+        bilde: null
+    }
 
     try {
         if (id !== null) {
@@ -12,28 +49,13 @@ async function getSingleAnimal(id) {
             
             return data[0];
         }
-        let blankFamily = {
-            aidfk: null,
-            bidfk: null,
-            did: null,
-            far: null,
-            farge: null,
-            fdato: null,
-            innavlsgrad: null,
-            kjønn: null,
-            kullnr: null,
-            mor: null,
-            poeng: null,
-            regnr: null,
-            vø: null,
-            bilde: null
-        }
         return blankFamily;
     }
     catch(error) {
         console.log(error);
     }
 };
+
 async function getParents(child) {
         
     let findParents = [await getSingleAnimal(child.far), await getSingleAnimal(child.mor)];
@@ -47,16 +69,11 @@ async function getParents(child) {
 };
 
 async function generatePDF(clickedAnimal){
-            
-    
-
     let doc = new jsPDF();
 
-    const mainAnimal = await getSingleAnimal(clickedAnimal); //--------------------------DETTE KOBLES TIL KNAPP ID
+    const mainAnimal = await getSingleAnimal(clickedAnimal); 
     let family = await getParents(mainAnimal);
     
-
-
     const styling = {margin_x:10, margin_y:5};
     
     const generations = 3;
@@ -66,32 +83,24 @@ async function generatePDF(clickedAnimal){
     const contentWidth = A4.width - styling.margin_x * 2;
     
     const lineSpacing = 10;
-    function lookupColour(inpColour) {
-        inpColour = inpColour.toLowerCase();
-
-        let colourArr = [
-            {colour:"hvit", rgb:{red: 255, green: 255, blue: 255}},
-            {colour:"viltgul", rgb:{red: 169, green: 116, blue: 84}},
-            {colour:"brun", rgb:{red: 165, green: 42, blue: 42}},
-            {colour:"madagaskar",rgb:{red: 182, green: 143, blue: 115}},
-        ];
-
-        let foundColour = null;
-
-        colourArr.forEach(element => {
-            if (element.colour === inpColour) {
-                foundColour = element;
-            }
-        });
-
-        return foundColour;
-    }
+    
 
     function rowOne(x,y,r,h,it,row) {
         let startTextLine = 2;
         let headAlignRight = r - 40;
         let bodyAlignRight = r - 15;
         let cellPadding = 7;
+        const imgWidth = 50;
+        const imgHeight = 50;
+
+        let fdate = mainAnimal.fdato ;
+        let fdateFormated = null;
+        
+        if (fdate !== null) {
+            //console.log(fdato);
+            let d = new Date(fdate)
+            fdateFormated = `${d.getDate()}/${d.getMonth()}/${d.getFullYear()}`
+        }
 
         doc.setFontSize(20);
         doc.setFont("helvetica", "bold");
@@ -103,7 +112,12 @@ async function generatePDF(clickedAnimal){
 
         doc.line(x + PADDING, y + cellPadding + 2, r, y + cellPadding + 2);
 
-        let contentLeftText = [`Reg Nr: ${mainAnimal.regnr}`,`V.Ø: ${mainAnimal.vø}`,`Oppdretter: ${mainAnimal.aidfk}`,`Fødselsdato ${mainAnimal.fdato}`]
+        if (mainAnimal.bilde !== null) {
+            let imgFormat = mainAnimal.bilde.slice(11).split(";")[0];
+            doc.addImage(mainAnimal.bilde,imgFormat, (A4.width/2)-(imgWidth/2) , y + cellPadding,imgWidth,imgHeight)
+        }
+
+        let contentLeftText = [`Reg Nr: ${mainAnimal.regnr}`,`V.Ø: ${mainAnimal.vø}`,`Oppdretter: ${mainAnimal.aidfk}`,`Fødselsdato: ${fdateFormated}`]
         for (let i = 0; i < contentLeftText.length; i++){
             doc.text(`${contentLeftText[i]} `, x + PADDING, y + lineSpacing*(i+startTextLine));
         }
@@ -130,20 +144,19 @@ async function generatePDF(clickedAnimal){
     }
 
     async function rowTwo(x,y,r,h,it,row) {
-        //finne foreldrene
+        
         let currentAnimal = family.parents[it%2]
-        //-------------
+
 
         let startTextLine = 1;
         let headAlignRight = r - 40;
         let bodyAlignRight = r - 15;
 
-        //Far eller Mor
+        
         let parentArr = ["Far","Mor"];
         let parentText = "";
         parentText = parentArr[it%2]
         
-        //---------------
         doc.text(parentText, x + PADDING, y + lineSpacing*startTextLine)
         startTextLine++
 

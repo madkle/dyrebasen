@@ -9,6 +9,7 @@
     
     <script src="js/pdf.js"></script>
     <script src="js/dyr.js"></script>
+    <script src="js/colour.js"></script>
     <title>AlleDyr</title>
 </head>
 <body>
@@ -51,111 +52,7 @@
 
         let testBilde = document.getElementById('testBilde'); 
 
-
-        async function listAnimals() {
-
-            let url = "/dyr";
-
-            try {
-                let response = await fetch(url);
-                let data = await response.json();
-
-                if (response.status != 200) {
-                    throw data.error;
-                }
-                
-                container.innerHTML = " ";
-
-                for (let value of data) {
-
-                     let testBilde = document.createElement("img");
-                     testBilde.setAttribute("src", "bilder/kanin_eksempelbilde.jpeg");
-
-                    
-                    let html = `<img class="item1" src="${testBilde.src}" width="100px"/>
-                                <h2 class="item2">ID: ${value.did} </h2>
-                                <p class="item3">Reg.nr: ${value.regnr}</p>
-                                <p class="item4">V.Ø.: ${value.vø}</p>
-                                <p class="item5">Fødselsdato: ${value.fdato} </p>
-                                <p class="item6">Kullnummer: ${value.kullnr} </p>
-                                <p class="item7">Kjønn: ${value.kjønn} </p>
-                                <p class="item8">Innavlsgrad: ${value.innavlsgrad}</p>
-                                <p class="item9">Poeng: ${value.poeng} </p>
-                                <p class="item10">Farge: ${value.farge}</p>
-                                <p class="item11">Far: ${value.far} </p>
-                                <p class="item12">Mor: ${value.mor} </p><br>`
-                    
-
-                    let div = document.createElement("div");
-                    div.innerHTML = html;
-                    container.appendChild(div);
-                    div.classList.add("mineDyr");
-                    div.classList.add("pt-2");
-
-                    let delbtn = document.createElement("button");
-                    delbtn.classList.add("slett");
-                    delbtn.classList.add("btn-close");
-
-                    delbtn.addEventListener('click', function(evt){
-                        deleteAnimal(value.did);
-                    });
-
-                    div.appendChild(delbtn);
-                    /* div.insertBefore(delbtn, div.lastElementChild); */
-                    
-                    let editbtn = document.createElement("button");
-                    editbtn.classList.add("rediger");
-                    editbtn.classList.add("btn");
-                    editbtn.classList.add("btn-close");
-                    editbtn.innerText ="✏️";
-
-                    let genStam = document.createElement("button");
-                    genStam.classList.add("genstam");
-                    genStam.classList.add("btn");
-                    genStam.classList.add("btn-outline-dark");
-                    genStam.classList.add("btn-light")
-                    genStam.innerText ="Generer stamtavle";
-                    genStam.addEventListener('click', function(evt){
-                        generatePDF(value.did);
-                    })
-
-                    div.appendChild(editbtn);
-                    div.appendChild(genStam);
-                }
-            }
-            catch(error) {
-                console.log(error);
-            }
-        }listAnimals();
-
-        async function deleteAnimal(dyrID) {
-            
-            let url = `/dyr/${dyrID}`;
-            
-            let cfg = {
-                method: "DELETE",
-                headers: {"content-type":"application/json"}
-            }
-
-            try {
-                let response = await fetch(url, cfg);
-                let data = await response.json();
-
-                if (response.status != 200) {
-                    throw data.error;
-                }
-                
-                listAnimals();
-            }
-            catch(error) {
-                console.log(error);
-            }
-        }
-        
-        
-
-
-        
+        listAnimals(); 
 
     </script>
 
