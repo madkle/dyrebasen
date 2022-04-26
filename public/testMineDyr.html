@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script>
+    
+    <script src="js/pdf.js"></script>
+    <script src="js/dyr.js"></script>
+    <title>AlleDyr</title>
+</head>
+<body>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="minedyr.html">DYREBASEN</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse justify-content-end" id="collapsibleNavbar">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link" href="regdyr.html">Registrer ny kanin</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="minedyr.html">Mine kaniner</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Til salgs</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Min bruker</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+    <!----------- HTML-elements -------------->
+
+    <h1 style="margin-left: 10px;">MINE DYR</h1>
+
+    <div id="container"></div>
+
+    <!------------- JavaScript --------------->
+    <script>
+        
+        let container = document.getElementById('container');
+
+        let testBilde = document.getElementById('testBilde'); 
+
+
+        async function listAnimals() {
+
+            let url = "/dyr";
+
+            try {
+                let response = await fetch(url);
+                let data = await response.json();
+
+                if (response.status != 200) {
+                    throw data.error;
+                }
+                
+                container.innerHTML = " ";
+
+                for (let value of data) {
+
+                     let testBilde = document.createElement("img");
+                     testBilde.setAttribute("src", "bilder/kanin_eksempelbilde.jpeg");
+
+                    
+                    let html = `<img class="item1" src="${testBilde.src}" width="100px"/>
+                                <h2 class="item2">ID: ${value.did} </h2>
+                                <p class="item3">Reg.nr: ${value.regnr}</p>
+                                <p class="item4">V.Ø.: ${value.vø}</p>
+                                <p class="item5">Fødselsdato: ${value.fdato} </p>
+                                <p class="item6">Kullnummer: ${value.kullnr} </p>
+                                <p class="item7">Kjønn: ${value.kjønn} </p>
+                                <p class="item8">Innavlsgrad: ${value.innavlsgrad}</p>
+                                <p class="item9">Poeng: ${value.poeng} </p>
+                                <p class="item10">Farge: ${value.farge}</p>
+                                <p class="item11">Far: ${value.far} </p>
+                                <p class="item12">Mor: ${value.mor} </p><br>`
+                    
+
+                    let div = document.createElement("div");
+                    div.innerHTML = html;
+                    container.appendChild(div);
+                    div.classList.add("mineDyr");
+                    div.classList.add("pt-2");
+
+                    let delbtn = document.createElement("button");
+                    delbtn.classList.add("slett");
+                    delbtn.classList.add("btn-close");
+
+                    delbtn.addEventListener('click', function(evt){
+                        deleteAnimal(value.did);
+                    });
+
+                    div.appendChild(delbtn);
+                    /* div.insertBefore(delbtn, div.lastElementChild); */
+                    
+                    let editbtn = document.createElement("button");
+                    editbtn.classList.add("rediger");
+                    editbtn.innerText ="✏️";
+
+                    let genStam = document.createElement("button");
+                    genStam.classList.add("genstam");
+                    genStam.innerText ="Generer stamtavle";
+                    genStam.addEventListener('click', function(evt){
+                        generatePDF(value.did);
+                    })
+
+                    div.appendChild(editbtn);
+                    div.appendChild(genStam);
+                }
+            }
+            catch(error) {
+                console.log(error);
+            }
+        }listAnimals();
+
+        async function deleteAnimal(dyrID) {
+            
+            let url = `/dyr/${dyrID}`;
+            
+            let cfg = {
+                method: "DELETE",
+                headers: {"content-type":"application/json"}
+            }
+
+            try {
+                let response = await fetch(url, cfg);
+                let data = await response.json();
+
+                if (response.status != 200) {
+                    throw data.error;
+                }
+                
+                listAnimals();
+            }
+            catch(error) {
+                console.log(error);
+            }
+        }
+        
+        
+
+
+        
+
+    </script>
+
+    <!---------------- CSS ------------------->
+    <style>    
+    
+    button {
+        border-radius: 5px;
+    }
+    
+    
+    button:hover {
+        cursor: pointer;
+    }
+
+    body {
+        background-color: rgb(248, 208, 159);
+    }
+
+    .item1 {grid-area: img;
+            width: 125px;
+            border-radius: 100px;
+            align-self: center;
+            justify-self: center;}
+    .item2 {grid-area: did;
+            align-self: center;
+            justify-self: center;}
+    .item3 {grid-area: regNr;}
+    .item4 {grid-area: vø;}
+    .item5 {grid-area: fDato;}
+    .item6 {grid-area: kullNr;}
+    .item7 {grid-area: kjønn;}
+    .item8 {grid-area: innavlsgrad;}
+    .item9 {grid-area: poeng;}
+    .item10 {grid-area: farge;}
+    .item11 {grid-area: far;}
+    .item12 {grid-area: mor;}
+    .slett {grid-area: slett;
+            margin: 2px;}
+    .rediger {grid-area: rediger;
+            margin: 2px;}
+    .genstam {grid-area: genstam;
+            height: 35px;
+            margin-top: 10px;
+            margin-right: 5px;}
+        
+
+    .mineDyr {
+        display: grid;
+        grid-template-columns: 200px 200px 200px 35px;
+        grid-template-rows: 35px 35px 35px 35px 35px 35px;
+        grid-template-areas: 
+            "img regNr innavlsgrad slett"
+            "img vø poeng rediger"
+            "img fDato farge farge"
+            "img kullNr far far"
+            "img kjønn mor mor"
+            "did genstam genstam genstam";
+        border: 1px solid black;
+        cursor: pointer;
+        margin: 10px;
+        background-color: bisque;
+
+        max-width: 644px;
+    }
+
+    /* .mineDyr>img {
+        grid-area: img;
+        width: 100px;
+    }
+
+    .mineDyr>h2 {
+        grid-area: did;
+    }
+
+    .mineDyr>p:nth-child(3) {
+        grid-area: regNr;
+    }
+
+    .mineDyr>p:nth-child(4) {
+        grid-area: vø;
+    }
+
+    .mineDyr>p:nth-child(5) {
+        grid-area: fDato;
+    }
+
+    .mineDyr>p:nth-child(6) {
+        grid-area: kullNr;
+    }
+
+    .mineDyr>p:nth-child(7) {
+        grid-area: kjønn;
+    }
+
+    .mineDyr>p:nth-child(8) {
+        grid-area: innavlsgrad;
+    }
+
+    .mineDyr>p:nth-child(9) {
+        grid-area: poeng;
+    }
+
+    .mineDyr>p:nth-child(10) {
+        grid-area: farge;
+    }
+
+    .mineDyr>p:nth-child(11) {
+        grid-area: far;
+    }
+
+    .mineDyr>p:nth-child(12) {
+        grid-area: mor;
+    } */
+    
+
+
+
+
+    </style>
+
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+</body>
+
+</html>
