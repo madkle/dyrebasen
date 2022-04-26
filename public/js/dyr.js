@@ -74,11 +74,11 @@ async function listAnimals() {
         if (value.bilde === null) {
             value.bilde = testBilde
         }
+        
         let fdato = value.fdato ;
         let dateFormatert = null;
         
         if (fdato !== null) {
-            //console.log(fdato);
             let d = new Date(fdato)
             dateFormatert = `${d.getDate()}/${d.getMonth()}/${d.getFullYear()}`
         }

@@ -6,9 +6,10 @@
     <title>AlleDyr</title>
 
     <script src="./js/dyr.js"></script>
+    <script src="./js/colour.js"></script>
 </head>
 <body>
-
+    
     <!----------- HTML-elements -------------->
 
     <h1>Registrer nytt dyr</h1>
@@ -27,7 +28,10 @@
         <input id="inpKullNr" type="number" /><br><br>
 
         <label for="inpKjønn">Kjønn:</label><br>
-        <input id="inpKjønn" type="text" /><br><br>
+        <select name="inpKjønn" id="inpKjønn">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select><br><br>
 
         <label for="inpInnavlsgrad">Innavlsgrad:</label><br>
         <input id="inpInnavlsgrad" type="number" /><br><br>
@@ -36,7 +40,12 @@
         <input id="inpPoeng" type="number" /><br><br>
 
         <label for="inpFarge">Farge:</label><br>
-        <input id="inpFarge" type="text" /><br><br>
+        <select name="inpFarge" id="inpFarge">
+        </select>
+        <!--
+        <input id="inpAltFarge" type="text" placeholder="Alternativ farge"/>
+        -->
+        <br><br>
 
         <label for="inpFar">Far:</label><br>
         <input id="inpFar" type="number" /><br><br>
@@ -54,6 +63,7 @@
 
     <!------------- JavaScript --------------->
     <script>
+        
         let btnAddAnimal = document.getElementById('btnAddAnimal');
         let inpRegNr = document.getElementById('inpRegNr');
         let inpVø = document.getElementById('inpVø');
@@ -63,10 +73,21 @@
         let inpInnavlsgrad = document.getElementById('inpInnavlsgrad');
         let inpPoeng = document.getElementById('inpPoeng');
         let inpFarge = document.getElementById('inpFarge');
+        //let inpAltFarge = document.getElementById('inpAltFarge');
         let inpFar = document.getElementById('inpFar');
         let inpMor = document.getElementById('inpMor');
         let inpBilde = document.getElementById('inpImg');
+        
         let bildeData = null;
+        
+
+        
+        colourArr.forEach(currColour => {
+            let option = document.createElement("option");
+            option.innerHTML = currColour.colour;
+            option.value = currColour.colour;
+            inpFarge.appendChild(option);
+        });
 
         inpBilde.addEventListener("change", function (evt) {
             let fr = new FileReader();
@@ -78,7 +99,14 @@
 
         btnAddAnimal.addEventListener('click', async function (evt) {
             evt.preventDefault();
-            
+            /*
+            -----------------Konsept for å legge til alternative farger---------------
+            let fargeVerdi = inpFarge.value;
+            console.log(inpAltFarge.value);
+            if (inpAltFarge.value !== '') {
+                fargeVerdi = inpAltFarge.value;
+            }
+            */
             let updata = {
                 regnr: inpRegNr.value,
                 vø: inpVø.value,
@@ -94,9 +122,9 @@
                 aid: null,
                 bilde: bildeData
             }
-            await addAnimal(updata);
+            console.log(updata);
+            //await addAnimal(updata);
 
-            location.href = "./minedyr.html"
         })
 
         
