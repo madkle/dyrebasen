@@ -1,4 +1,3 @@
-/*
 function lookupColour(inpColour) {
     inpColour = inpColour.toLowerCase();
 
@@ -19,7 +18,6 @@ function lookupColour(inpColour) {
 
     return foundColour;
 }
-*/
 async function getSingleAnimal(id) {
 
     let url = `/dyr/${id}`;
