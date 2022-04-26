@@ -6,55 +6,114 @@
     <title>AlleDyr</title>
 
     <script src="./js/dyr.js"></script>
+    <script src="./js/colour.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
 </head>
 <body>
-
+    
     <!----------- HTML-elements -------------->
 
-    <h1>Registrer nytt dyr</h1>
 
-    <form>
-        <label for="inpRegNr">Reg.nr:</label><br>
-        <input id="inpRegNr" type="number"  /><br><br>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="testMineDyr.html">DYREBASEN</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse justify-content-end" id="collapsibleNavbar">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link active" href="regdyr.html">Registrer ny kanin</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="minedyr.html">Mine kaniner</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Til salgs</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Min bruker</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
 
-        <label for="inpVø">V.Ø:</label><br>
-        <input id="inpVø" type="text" /><br><br>
+    <h1 class="m-5">Registrer nytt dyr</h1>
 
-        <label for="inpFdato">Fødselsdato:</label><br>
-        <input id="inpFdato" type="date" /><br><br>
+    <form class="m-5">
+        <label for="inpRegNr" class="form-label">Reg.nr:</label><br>
+        <input id="inpRegNr" type="number" class="form-control" /><br>
 
-        <label for="inpKullNr">Kullnummer</label><br>
-        <input id="inpKullNr" type="number" /><br><br>
+        <label for="inpVø" class="form-label">V.Ø:</label>
+        <input id="inpVø" type="text" class="form-control" /><br>
 
-        <label for="inpKjønn">Kjønn:</label><br>
-        <input id="inpKjønn" type="text" /><br><br>
+        <label for="inpFdato" class="form-label">Fødselsdato:</label>
+        <input id="inpFdato" type="date"  class="form-control"/><br>
 
-        <label for="inpInnavlsgrad">Innavlsgrad:</label><br>
-        <input id="inpInnavlsgrad" type="number" /><br><br>
+        <label for="inpKullNr" class="form-label">Kullnummer</label>
+        <input id="inpKullNr" type="number" class="form-control" /><br>
 
-        <label for="inpPoeng">Poeng:</label><br>
-        <input id="inpPoeng" type="number" /><br><br>
+        <label for="inpKjønn" class="form-label">Kjønn:</label>
+        <div class="form-check" id="inpKjønn">
+          <div>
+            <input type="radio" id="male"  class="form-check-input"/>
+            <label for="male" class="form-check-label">Gutt</label>
+          </div>
+          <div>
+            <input type="radio" id="female" class="form-check-input" >
+            <label for="female" class="form-check-label">Jente</label>
+          </div>
+        </div>
+        <br>
 
-        <label for="inpFarge">Farge:</label><br>
-        <input id="inpFarge" type="text" /><br><br>
+        <label for="inpInnavlsgrad" class="form-label">Innavlsgrad:</label>
+        <input id="inpInnavlsgrad" type="number" class="form-control" /><br>
 
-        <label for="inpFar">Far:</label><br>
-        <input id="inpFar" type="number" /><br><br>
+        <label for="inpPoeng" class="form-label">Poeng:</label>
+        <input id="inpPoeng" type="number" max="100" class="form-control" /><br>
 
-        <label for="inpMor">Mor:</label><br>
-        <input id="inpMor" type="number" /><br><br>
+        <!-- <label for="inpFarge" class="form-label">Farge:</label><br>
+        <select id="inpFarge" class="form-control" >
+          <option>Velg farge</option>
+          <option value="">Viltgul</option>
+          <option value="">Madagaskar</option>
+        </select> -->
+          
+        <label for="inpFarge" class="form-label">Farge:</label>
+        <input class="form-control" list="fargeValg" id="inpFarge" placeholder="Skriv inn en farge...">
+        <datalist id="fargeValg">
+        </datalist>
+        <br>
 
-        <!--
-        <label for="inpImg">Bilde av kaninen:</label><br>
-        <input id="inpImg" type="file" /><br><br>
-        --->
-        <button id="btnAddAnimal">Legg til dyr</button><br>
-        <h3 id="txtResult">Resultat...</h3>
+
+        <label for="inpFar" class="form-label">Far:</label>
+        <input class="form-control" list="valgFar" id="inpFar" placeholder="finn foreldre (regnr)...">
+        <datalist id="valgFar">
+        </datalist>
+        <br>
+
+        <label for="inpMor" class="form-label">Mor:</label>
+        <input class="form-control" list="valgMor" id="inpMor" placeholder="finn foreldre (regnr)...">
+        <datalist id="valgMor">
+        </datalist>
+        <br>
+
+        <label for="inpBilde" class="form-label">Last opp bilde:</label>
+        <input class="form-control" type="file" id="inpBilde"><br>
+
+        <button id="btnAddAnimal" class="form-control mt-4">Legg til dyr</button><br>
+        <h6 id="txtResult">Resultat...</h6><br>
+
+
     </form>
 
 
     <!------------- JavaScript --------------->
     <script>
+        
         let btnAddAnimal = document.getElementById('btnAddAnimal');
         let inpRegNr = document.getElementById('inpRegNr');
         let inpVø = document.getElementById('inpVø');
@@ -64,12 +123,34 @@
         let inpInnavlsgrad = document.getElementById('inpInnavlsgrad');
         let inpPoeng = document.getElementById('inpPoeng');
         let inpFarge = document.getElementById('inpFarge');
+        let fargeValg = document.getElementById('fargeValg')
+        //let inpAltFarge = document.getElementById('inpAltFarge');
         let inpFar = document.getElementById('inpFar');
+        let valgFar = document.getElementById('valgFar');
         let inpMor = document.getElementById('inpMor');
-        
-        btnAddAnimal.addEventListener('click', async function (evt) {
-          evt.preventDefault();
+        let valgMor = document.getElementById('valgMor');
+        let inpBilde = document.getElementById('inpBilde');
+        let bildeData = null;
+        loadFormElements()      
 
+        inpBilde.addEventListener("change", function (evt) {
+            let fr = new FileReader();
+            fr.addEventListener("load", function (evt) {
+                bildeData = fr.result;
+            });
+            fr.readAsDataURL(inpBilde.files[0]);
+        })
+
+        btnAddAnimal.addEventListener('click', async function (evt) {
+            evt.preventDefault();
+            /*
+            -----------------Konsept for å legge til alternative farger---------------
+            let fargeVerdi = inpFarge.value;
+            console.log(inpAltFarge.value);
+            if (inpAltFarge.value !== '') {
+                fargeVerdi = inpAltFarge.value;
+            }
+            */
             let updata = {
                 regnr: inpRegNr.value,
                 vø: inpVø.value,
@@ -83,22 +164,33 @@
                 mor: inpMor.value,
                 bid: null,
                 aid: null,
-                bilde: null
+                bilde: bildeData
             }
-
+            console.log(updata);
             await addAnimal(updata);
 
-            location.href = "./minedyr.html"
         })
 
         
     </script>
 
     <!---------------- CSS ------------------->
-    <style>        
+    <style>     
+      label{
+        font-weight: bold;
+      }   
+
+      #inpFarge {
+        width: 20em;
+      }
+
+      .form-control {
+        width: auto;
+      }
 
     </style>
-
+ <script src="js/popper.min.js"></script>
+ <script src="js/bootstrap.min.js"></script>
 </body>
 
 </html>
