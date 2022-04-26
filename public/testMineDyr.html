@@ -13,7 +13,7 @@
 </head>
 <body>
     <!-- NAVBAR -->
-    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
         <div class="container-fluid">
           <a class="navbar-brand" href="minedyr.html">DYREBASEN</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
@@ -106,6 +106,7 @@
                     let editbtn = document.createElement("button");
                     editbtn.classList.add("rediger");
                     editbtn.classList.add("btn");
+                    editbtn.classList.add("btn-close");
                     editbtn.innerText ="✏️";
 
                     let genStam = document.createElement("button");
