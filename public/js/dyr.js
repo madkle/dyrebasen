@@ -71,35 +71,36 @@ async function listAnimals() {
 
     for (let value of data) {
         let testBilde = "bilder/kanin_standardbilde.jpeg";
+        console.log(value);
         if (value.bilde === null) {
             value.bilde = testBilde
         }
         
         let fdato = value.fdato ;
-        let dateFormatert = null;
+        let dateFormatert = "";
         
         if (fdato !== null) {
             let d = new Date(fdato)
             dateFormatert = `${d.getDate()}/${d.getMonth()}/${d.getFullYear()}`
         }
-        let morID = null;
-        let farID = null;
-        if (value.mor !== null) {
-            for (const parent of data) {
-                if(value.mor === parent.did);{
-                    morID = parent.regnr;
-                }
+        
+        let morID = "";
+        let farID = "";
+        
+        for (const parent of data) {
+            if(value.mor !== null && value.mor === parent.did){
+                morID = parent.regnr;
+            }
+            if(value.far !== null && value.far === parent.did){
+                farID = parent.regnr;
             }
         }
 
-        if (value.far !== null) {
-            for (const parent of data) {
-                if(value.far === parent.did);{
-                    farID = parent.regnr;
-                }
+        for (const item in value) {
+            if (value[item] === null) {
+                value[item] = "";
             }
         }
-
         let html = `
             <img class="item1" src="${value.bilde}" width="100px" alt="bilde av kanin"/>
             <h2 class="item2">ID: ${value.did} </h2>
@@ -111,8 +112,8 @@ async function listAnimals() {
             <p class="item8">Innavlsgrad: ${value.innavlsgrad}</p>
             <p class="item9">Poeng: ${value.poeng} </p>
             <p class="item10">Farge: ${value.farge}</p>
-            <p class="item11">Far: ${value.far} </p>
-            <p class="item12">Mor: ${value.mor} </p><br><hr>
+            <p class="item11">Far: ${farID} </p>
+            <p class="item12">Mor: ${morID} </p><br><hr>
         `
             
 
