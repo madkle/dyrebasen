@@ -62,20 +62,20 @@ async function listAnimals() {
         container.appendChild(div);
         div.classList.add("mineDyr"); 
 
-        /* div.draggable = true; */
+        div.draggable = true;
         
 
-        /* div.addEventListener('click', function(evt) {
+        div.addEventListener('click', function(evt) {
             let valgtDID = value.did;
             localStorage.setItem("did", valgtDID);
             chooseAnimal();
             console.log(value.did);
             console.log(getAllAnimals());
-        }); */
+        });
     }
 }
 
-/* async function chooseAnimal() {
+async function chooseAnimal() {
     let data = await getAllAnimals();
     let valgtDID = localStorage.getItem('did');
 
@@ -115,7 +115,7 @@ async function listAnimals() {
         let html = `
             <img class="item1" src="${value.bilde}" width="100px" alt="bilde av kanin"/>
             <p class="item2">ID: ${valgtDID} </p>
-            <p class="item3">Reg.nr: <br>${value.regnr}</p>
+            <p class="item3">Reg.nr: ${value.regnr}</p>
             <p class="item4">V.Ø.: ${value.vø}</p>
             <p class="item5">Fødselsdato: ${dateFormatert} </p>
             <p class="item6">Kullnummer: ${value.kullnr} </p>
@@ -131,4 +131,4 @@ async function listAnimals() {
         valgtDyr.innerHTML = html;
         valgtDyr.classList.add("valgtDyr"); 
     }
-} */
+}
