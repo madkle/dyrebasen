@@ -87,22 +87,28 @@ router.post("/dyr", normalize, async function(req, res, next)  {
     }
     
 });
+async function syncPool (sql, values){
+    let result= await pool.query(sql, values);
+        return result;
+}
 router.put("/dyr", async function(req, res, next)  {
     let updata = req.body; 
     //loop på updata key
     for (const key in updata) {
-        if(key === "did"){continue}
+        console.log("Key nå er : " + key)
+        if(key === "regnr" || updata[key] === ""|| updata[key] === null){continue}
     //trenger skip av did if (key === "did"){continue}
     //let key ="regnr";
     try{
         console.log(key + " update: " + updata[key]);
-        let sql = `UPDATE dyr SET ${key} = $1 WHERE did = $2 returning *`;
+        let sql = `UPDATE dyr SET ${key} = $1 WHERE regnr = $2 returning *`;
         
         
-       // console.log(key);
-        let values = [ updata[key], updata.did];
+       
+        let values = [ updata[key], updata.regnr];
         let result= await pool.query(sql, values);
-        
+       // let result = syncPool(sql,values);
+       // console.log(result +" HVA SKJER SYNK RETURN");
         if(result.rows.length > 0){
             res.status(200).json({msg : "Updated to database"}).end();
         }
@@ -110,6 +116,7 @@ router.put("/dyr", async function(req, res, next)  {
         throw "Kould not ad to the database.";
         }
     }catch(err){
+        console.log("den kom hit på error Key: " + key)
         res.status(500).json({error: err}).end();
     }
 }

@@ -63,6 +63,29 @@ async function deleteAnimal(dyrID) {
         console.log(error);
     }
 } 
+async function updateAnimal(updata) {
+    let url = "/dyr";
+
+   
+    let cfg = {
+        method: "PUT",
+        headers: {"content-type":"application/json"},
+        body: JSON.stringify(updata)
+    }
+    
+    try {
+        let response = await fetch(url, cfg);
+        let data = await response.json();
+
+        if (response.status != 200) {
+           throw data.error;
+        }
+    }
+    catch(error) {
+        console.log(error);
+        txtResult.innerHTML = "Noe gikk galt - sjekk konsollvinduet"
+    }
+}
 
 async function listAnimals() {
     let data = await getAllAnimals();
@@ -135,7 +158,9 @@ async function listAnimals() {
         let editbtn = document.createElement("button");
         editbtn.classList.add("rediger");
         editbtn.innerText ="✏️";
-
+        editbtn.addEventListener('click', function(){
+            location.href ="reddyr.html";
+        })
         let genStam = document.createElement("button");
         genStam.classList.add("genstam");
         genStam.innerText ="Generer stamtavle";
