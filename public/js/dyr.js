@@ -14,7 +14,43 @@ async function getAllAnimals() {
             console.log(error);
         }
 }
+async function getSingleAnimal(id) {
 
+    let url = `/dyr/${id}`;
+
+    let blankFamily = {
+        aidfk: null,
+        bidfk: null,
+        did: null,
+        far: null,
+        farge: null,
+        fdato: null,
+        innavlsgrad: null,
+        kjønn: null,
+        kullnr: null,
+        mor: null,
+        poeng: null,
+        regnr: null,
+        vø: null,
+        bilde: null
+    }
+
+    try {
+        if (id !== null) {
+            let response = await fetch(url);
+            let data = await response.json();
+            if (response.status != 200) {
+                throw data.error;
+            }
+            
+            return data[0];
+        }
+        return blankFamily;
+    }
+    catch(error) {
+        console.log(error);
+    }
+};
 async function addAnimal(updata) {
     let url = "/dyr";
 
@@ -28,6 +64,30 @@ async function addAnimal(updata) {
     try {
         let response = await fetch(url, cfg);
         let data = await response.json();
+
+        if (response.status != 200) {
+            throw data.error;
+        }
+    }
+    catch(error) {
+        console.log(error);
+        txtResult.innerHTML = "Noe gikk galt - sjekk konsollvinduet"
+    }
+}
+async function updateAnimal(updata) {
+    let url = "/dyr";
+
+   
+    let cfg = {
+        method: "PUT",
+        headers: {"content-type":"application/json"},
+        body: JSON.stringify(updata)
+        
+    }
+    
+    try {
+        let response = await fetch(url, cfg);
+        listAnimals();
 
         if (response.status != 200) {
             throw data.error;
@@ -71,7 +131,7 @@ async function listAnimals() {
 
     for (let value of data) {
         let testBilde = "bilder/kanin_standardbilde.jpeg";
-        console.log(value);
+        //console.log(value);
         if (value.bilde === null) {
             value.bilde = testBilde
         }
@@ -133,10 +193,12 @@ async function listAnimals() {
         div.appendChild(delbtn);
         /* div.insertBefore(delbtn, div.lastElementChild); */
             
-        let editbtn = document.createElement("button");
+        let editbtn = `<button class="rediger" onclick="loadHTMLElements(${value.did});" data-bs-toggle="modal" data-bs-target="#exampleModal">✏️</button>`
+        
+        /*document.createElement("button");
         editbtn.classList.add("rediger");
-        editbtn.innerText ="✏️";
-
+        editbtn.innerText ="✏️";*/
+        //div.appendChild(editbtn);
         let genStam = document.createElement("button");
         genStam.classList.add("genstam");
         genStam.innerText ="Generer stamtavle";
@@ -144,7 +206,8 @@ async function listAnimals() {
             generatePDF(value.did);
         })
 
-        div.appendChild(editbtn);
+        
+        div.innerHTML += editbtn
         div.appendChild(genStam);
     }
 }
