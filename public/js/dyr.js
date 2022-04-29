@@ -1,3 +1,5 @@
+
+
 async function getAllAnimals() {
     let url = "/dyr";
         try {
@@ -82,6 +84,7 @@ async function listAnimals() {
             let d = new Date(fdato)
             dateFormatert = `${d.getDate()}/${d.getMonth()}/${d.getFullYear()}`
         }
+        
         let morID = null;
         let farID = null;
         if (value.mor !== null) {
@@ -112,7 +115,7 @@ async function listAnimals() {
             <p class="item9">Poeng: ${value.poeng} </p>
             <p class="item10">Farge: ${value.farge}</p>
             <p class="item11">Far: ${value.far} </p>
-            <p class="item12">Mor: ${value.mor} </p><br><hr>
+            <p class="item12">Mor: ${value.mor} </p><br>
         `
             
 
@@ -123,6 +126,7 @@ async function listAnimals() {
 
         let delbtn = document.createElement("button");
         delbtn.classList.add("slett");
+        delbtn.classList.add('btn');
         delbtn.innerHTML = "✕";
 
         delbtn.addEventListener('click', function(){
