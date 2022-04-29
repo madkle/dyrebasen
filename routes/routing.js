@@ -91,14 +91,16 @@ router.put("/dyr", async function(req, res, next)  {
     let updata = req.body; 
     //loop på updata key
     for (const key in updata) {
-        
-   
+        if(key === "did"){continue}
     //trenger skip av did if (key === "did"){continue}
+    //let key ="regnr";
     try{
-        console.log(updata);
-        let sql = "UPDATE dyr SET $1 = $3 WHERE did = $2 returning *";
+        console.log(key + " update: " + updata[key]);
+        let sql = `UPDATE dyr SET ${key} = $1 WHERE did = $2 returning *`;
         
-        let values = [ key, updata.did, updata[key]];
+        
+       // console.log(key);
+        let values = [ updata[key], updata.did];
         let result= await pool.query(sql, values);
         
         if(result.rows.length > 0){
