@@ -1,3 +1,5 @@
+
+
 async function getAllAnimals() {
     let url = "/dyr";
         try {
@@ -184,6 +186,7 @@ async function listAnimals() {
 
         let delbtn = document.createElement("button");
         delbtn.classList.add("slett");
+        delbtn.classList.add('btn');
         delbtn.innerHTML = "✕";
 
         delbtn.addEventListener('click', function(){
