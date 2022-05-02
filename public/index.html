@@ -20,51 +20,53 @@
         </div>
     </nav>
 
-    <div class="index">
-        <h1 class="text-center velkommen">Velkommen til Dyrebasen!</h1>
-            <div class="container-fluid justify-self-center logregcard">
+<div class="index">
+    <h1 class="text-center velkommen">Velkommen til Dyrebasen!</h1>
+    <div class="container-fluid justify-self-center logregcard">
+        
+        <!-- CARD / INNLOGGING -->
+        <div class="container align-self-end" id="cardSignup">
+            <div class="card bg-" style="border: none;">
+                <div class="card-body shadow">
+                    <div class="container" >
+                        <h2 class="text-center">Registrer ny bruker</h2><br>
+                        <form ><!-- action="login.js" for å kjøre innloggingsfilen med inputen fra skjemaet -->
 
+                            <div class="row">
+                                <div class="col">
+                                    <label for="username" class="form-label">Brukernavn:</label>
+                                    <input type="text" class="form-control rounded-pill" id="username" placeholder="Skriv inn brukernavn" name="brukernavn">
+                                </div>
+                            
+                            
+                    
                                 <div class="col">
                                     <label for="pwd" class="form-label">Passord:</label>
-                                    <input type="password" class="form-control" id="pwd" placeholder="Skriv inn passord" name="pswd">
+                                    <input type="password" class="form-control rounded-pill" id="pwd" placeholder="Skriv inn passord" name="pswd">
                                 </div>
-                    
-                                <div class="text-center mt-2">
-                                    <button formaction="mineDyr.html" type="submit" class="btn btn-secondary " id="btnLogin">Logg inn</button>
-                                </div>
-                        
-                                <div class="form-check mt-2">
-                                    <label class="form-check-label">
-                                        <input class="form-check-input text-body" type="checkbox" name="remember"> Husk meg
-                                    </label>
-                                </div>
-
-                                        <div class="col">
-                                            <label for="pwd" class="form-label">Passord:</label>
-                                            <input type="password" class="form-control rounded-pill" id="pwd" placeholder="Skriv inn passord" name="pswd">
-                                        </div>
-                                    </div><br>
+                               
+                            </div><br>
                                 
-                                        <div class="text-center mt-2">
-                                            <button formaction="testMineDyr.html" type="submit" class="btn btn-secondary rounded-pill" id="btnLogin">Logg inn</button>
-                                        </div>
-                                
-                                        <div class="form-check mt-2">
-                                            <label class="form-check-label">
-                                                <input class="form-check-input text-body" type="checkbox" name="remember"> Husk meg
-                                            </label>
-                                        </div>
-
-                                        <a href="regbruker.html" class="card-link text-body text-center" id="regBrukerLink">Registrer ny bruker</a>
-
-                                    
-                                </form>
+                            <div class="text-center mt-2">
+                                <button formaction="minedyr.html" type="submit" class="btn btn-secondary rounded-pill" id="btnLogin">Logg inn</button>
                             </div>
-                        </div>
-                    </div> 
+                        
+                            <div class="form-check mt-2">
+                                <label class="form-check-label">
+                                    <input class="form-check-input text-body" type="checkbox" name="remember"> Husk meg
+                                </label>
+                            </div>
+
+                                <a href="regbruker.html" class="card-link text-body text-center" id="loginLink">Opprett ny bruker</a>
+
+                            
+                        </form>
+                    </div>
                 </div>
-            </div>
+            </div> 
+        </div>
     </div>
+</div>
       
 
 
