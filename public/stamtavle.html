@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stamtavle</title>
+    
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <script src="js/stamtavle.js"></script>
+    <title>Dyrebasen - Stamtavle</title>
 </head>
 <body class="bg-2">
 
@@ -28,7 +29,7 @@
                 <a class="nav-link active" href="stamtavle.html">Stamtavle</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Min bruker</a>
+                <a class="nav-link" href="minbruker.html">Min bruker</a>
             </li>
             </ul>
         </div>
@@ -93,8 +94,8 @@
     }
 
     .female2:hover {
-        width: 520px;
-        transform: translateX(-270px);
+        /* width: 520px; */
+        transform: scale(2,2);
         transition: none;
         z-index: 1;
     }
@@ -131,7 +132,7 @@
         grid-area: farmor;
         border: 1px solid red;
         background-color: red;
-        transition:all var(--time2);}
+        transition: var(--time2); }
     .valgtMorFar {
         grid-area: morfar;
         border: 1px solid blue;
@@ -160,7 +161,7 @@
     }
 
     .stamtavleStart.female2 {
-        transform: translateX(-130px) scale(0);
+        transform: translateX(-130px) scale(0)
     }
 
     .container {
