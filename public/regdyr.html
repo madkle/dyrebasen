@@ -18,7 +18,7 @@
     <!-- NAVBAR -->
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top mb-5">
         <div class="container-fluid">
-          <a class="navbar-brand" href="testMineDyr.html">DYREBASEN</a>
+          <a class="navbar-brand" href="mineDyr.html">DYREBASEN</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -56,18 +56,12 @@
         <label for="inpKullNr" class="form-label">Kullnummer</label>
         <input id="inpKullNr" type="number" class="form-control" /><br>
 
-        <label for="inpKjønn" class="form-label">Kjønn:</label>
-        <div class="form-check" id="inpKjønn">
-          <div>
-            <input type="radio" id="male"  class="form-check-input"/>
-            <label for="male" class="form-check-label">Gutt</label>
-          </div>
-          <div>
-            <input type="radio" id="female" class="form-check-input" >
-            <label for="female" class="form-check-label">Jente</label>
-          </div>
-        </div>
-        <br>
+        <label for="dropKjønn" class="form-label">Kjønn:</label><br>
+        <select id="dropKjønn">
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select>
+        <br><br>
 
         <label for="inpInnavlsgrad" class="form-label">Innavlsgrad:</label>
         <input id="inpInnavlsgrad" type="number" class="form-control" /><br>
@@ -113,50 +107,15 @@
 
     <!------------- JavaScript --------------->
     <script>
-        
-        let btnAddAnimal = document.getElementById('btnAddAnimal');
-        let inpRegNr = document.getElementById('inpRegNr');
-        let inpVø = document.getElementById('inpVø');
-        let inpFdato = document.getElementById('inpFdato');
-        let inpKullNr = document.getElementById('inpKullNr');
-        let inpKjønn = document.getElementById('inpKjønn');
-        let inpInnavlsgrad = document.getElementById('inpInnavlsgrad');
-        let inpPoeng = document.getElementById('inpPoeng');
-        let inpFarge = document.getElementById('inpFarge');
-        let fargeValg = document.getElementById('fargeValg')
-        //let inpAltFarge = document.getElementById('inpAltFarge');
-        let inpFar = document.getElementById('inpFar');
-        let valgFar = document.getElementById('valgFar');
-        let inpMor = document.getElementById('inpMor');
-        let valgMor = document.getElementById('valgMor');
-        let inpBilde = document.getElementById('inpBilde');
-        let bildeData = null;
-        loadFormElements()      
-
-        inpBilde.addEventListener("change", function (evt) {
-            let fr = new FileReader();
-            fr.addEventListener("load", function (evt) {
-                bildeData = fr.result;
-            });
-            fr.readAsDataURL(inpBilde.files[0]);
-        })
-
-        btnAddAnimal.addEventListener('click', async function (evt) {
+      let btnAddAnimal = document.getElementById('btnAddAnimal');
+      btnAddAnimal.addEventListener('click', async function (evt) {
             evt.preventDefault();
-            /*
-            -----------------Konsept for å legge til alternative farger---------------
-            let fargeVerdi = inpFarge.value;
-            console.log(inpAltFarge.value);
-            if (inpAltFarge.value !== '') {
-                fargeVerdi = inpAltFarge.value;
-            }
-            */
             let updata = {
                 regnr: inpRegNr.value,
                 vø: inpVø.value,
                 fdato: inpFdato.value,
                 kullnr: inpKullNr.value,
-                kjønn: inpKjønn.value,
+                kjønn: dropKjønn.value,
                 innavlsgrad: inpInnavlsgrad.value,
                 poeng: inpPoeng.value,
                 farge: inpFarge.value,
@@ -170,9 +129,7 @@
             await addAnimal(updata);
 
         })
-
-        
-    </script>
+        </script>
 
     <!---------------- CSS ------------------->
     <style>     
@@ -195,6 +152,7 @@
     </style>
  <script src="js/popper.min.js"></script>
  <script src="js/bootstrap.min.js"></script>
+ <script src="js/form.js"></script>  <!-- Håndterer alt av forms/inputs-->
 </body>
 
 </html>

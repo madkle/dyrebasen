@@ -24,19 +24,20 @@
         <h1 class="text-center velkommen">Velkommen til Dyrebasen!</h1>
             <div class="container-fluid justify-self-center logregcard">
 
-                <!-- CARD / INNLOGGING -->
-                <div class="container align-self-end" id="cardLogin">
-                    <div class="card bg-" style="border: none;">
-                        <div class="card-body shadow">
-                            <div class="container" >
-                                <h2 class="text-center">Logg inn</h2><br>
-                                <form ><!-- action="login.js" for å kjøre innloggingsfilen med inputen fra skjemaet -->
-                                
-                                    <div class="row">
-                                        <div class="col">
-                                            <label for="email" class="form-label">Brukernavn:</label>
-                                            <input type="email" class="form-control rounded-pill" id="usr" placeholder="Skriv inn brukernavn" name="email" autofocus>
-                                        </div>
+                                <div class="col">
+                                    <label for="pwd" class="form-label">Passord:</label>
+                                    <input type="password" class="form-control" id="pwd" placeholder="Skriv inn passord" name="pswd">
+                                </div>
+                    
+                                <div class="text-center mt-2">
+                                    <button formaction="mineDyr.html" type="submit" class="btn btn-secondary " id="btnLogin">Logg inn</button>
+                                </div>
+                        
+                                <div class="form-check mt-2">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input text-body" type="checkbox" name="remember"> Husk meg
+                                    </label>
+                                </div>
 
                                         <div class="col">
                                             <label for="pwd" class="form-label">Passord:</label>
