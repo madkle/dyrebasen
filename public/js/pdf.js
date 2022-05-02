@@ -55,7 +55,14 @@ async function getSingleAnimal(id) {
         console.log(error);
     }
 };
-
+function removeNull(object) {
+    for (const key in object) {
+        if (object[key] === null) {
+            object[key] = "N/A"
+        }
+    }
+    return object
+}
 async function getParents(child) {
         
     let findParents = [await getSingleAnimal(child.far), await getSingleAnimal(child.mor)];
@@ -64,16 +71,20 @@ async function getParents(child) {
         fathersParents: [await getSingleAnimal(findParents[0].far), await getSingleAnimal(findParents[0].mor)],
         mothersParents:[await getSingleAnimal(findParents[1].far),await getSingleAnimal(findParents[1].mor)]
     }
-    
+    for (const key in family) {
+        family[key].forEach(element => {
+            removeNull(element);
+        });
+    }
     return family;
 };
 
 async function generatePDF(clickedAnimal){
     let doc = new jsPDF();
 
-    const mainAnimal = await getSingleAnimal(clickedAnimal); 
+    let mainAnimal = await getSingleAnimal(clickedAnimal); 
     let family = await getParents(mainAnimal);
-    
+    mainAnimal = removeNull(mainAnimal);
     const styling = {margin_x:10, margin_y:5};
     
     const generations = 3;
@@ -94,12 +105,19 @@ async function generatePDF(clickedAnimal){
         const imgHeight = 50;
 
         let fdate = mainAnimal.fdato ;
-        let fdateFormated = null;
-        
-        if (fdate !== null) {
-            //console.log(fdato);
-            let d = new Date(fdate)
-            fdateFormated = `${d.getDate()}/${d.getMonth()}/${d.getFullYear()}`
+        let fdateFormated = "N/A";
+        function makeDate(date) {
+            let d = ""
+            if (date === undefined) {
+                d = new Date()
+            }else{
+                d = new Date(date)
+            }
+            
+            return `${d.getDate()}/${d.getMonth()}/${d.getFullYear()}`
+        }
+        if (fdate !== "N/A") {
+            fdateFormated = makeDate(fdate)
         }
 
         doc.setFontSize(20);
@@ -108,11 +126,11 @@ async function generatePDF(clickedAnimal){
         doc.setFont("helvetica", "normal");
         doc.setFontSize(11);
 
-        doc.text("Reg. Dato* Reg av*", headAlignRight, y + cellPadding);
+        doc.text(`Reg. Dato: ${makeDate()}`, headAlignRight, y + cellPadding);
 
         doc.line(x + PADDING, y + cellPadding + 2, r, y + cellPadding + 2);
-
-        if (mainAnimal.bilde !== null) {
+        
+        if (mainAnimal.bilde !== "N/A") {
             let imgFormat = mainAnimal.bilde.slice(11).split(";")[0];
             doc.addImage(mainAnimal.bilde,imgFormat, (A4.width/2)-(imgWidth/2) , y + cellPadding,imgWidth,imgHeight)
         }
@@ -128,7 +146,7 @@ async function generatePDF(clickedAnimal){
 
         }
         startTextLine = contentRightText.length + 1;
-        if (mainAnimal.farge !== null) {
+        if (mainAnimal.farge !== "N/A") {
             let colourInformation = lookupColour(mainAnimal.farge)
             let rectW = 15;
             let rectH = 10;
@@ -173,7 +191,7 @@ async function generatePDF(clickedAnimal){
         startTextLine = contentRightText.length + 1;
 
         
-        if (currentAnimal.farge !== null) {
+        if (currentAnimal.farge !== "N/A") {
             let colourInformation = lookupColour(currentAnimal.farge)
             let rectW = 15;
             let rectH = 10;
