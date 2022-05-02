@@ -1,0 +1,53 @@
+.index {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 20vh 1fr 1fr;
+    grid-template-areas: 
+        ". velkommen ."
+        ". card ."
+        ". . .";
+}
+
+.logregcard {
+    grid-area: card;
+    align-self: center;
+    justify-self: center;
+}
+
+.velkommen {
+    grid-area: velkommen;
+    align-self: center;
+    justify-self: center;
+}
+
+.form-label {
+    font-weight: bold;
+}
+
+#regBrukerLink {
+    font-size: small;
+}
+
+#loginLink {
+    font-size: small;
+}
+
+#cardLogin {
+    width: 500px;
+}
+
+#cardSignup {
+    width: 500px;
+}
+
+#btnLogin {
+    width: 250px;
+}
+
+#btnRegUser {
+    width: 250px;
+}
+
+.bg-2 {
+    background-color: antiquewhite;
+}
