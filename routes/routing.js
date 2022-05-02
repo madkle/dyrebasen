@@ -87,8 +87,60 @@ router.post("/dyr", normalize, async function(req, res, next)  {
     }
     
 });
+
+router.put("/dyr", normalize, async function(req, res, next)  {
+    let updata = req.body; 
+    try{
+        let count = 2;
+        let sql = `UPDATE dyr SET`;
+        let values = [updata.did];
+        for (const key in updata) { 
+            if (key=== "did") {continue}
+            if(count === 2){
+                sql += ` ${key} = $${count}`;
+            }else{
+                sql += `, ${key} = $${count}`;
+            }
+            values.push(updata[key]);
+            count++;
+        }
+        sql += ` WHERE did = $1 returning *`;
+        let result= await pool.query(sql, values);
+        if(result.rows.length > 0){
+            res.status(200).json({msg : "Updated to database"}).end();
+        }
+        else{
+            throw "could not add to the database.";
+        }
+        
+    }catch(err){
+        res.status(500).json({error: err}).end();
+    }
+
+    
+});
+
+
 // bruker ------------------------------------------
 //hent alle brukere
+/*
+router.put("/bruker/:id", async function(req, res, next)  {
+    let updata = req.body;
+    try{
+        let sql = "UPDATE bruker SET fornavn = $1 WHERE aid = $2 returning *";
+        let values = [updata.navn, updata.aid];
+        let result= await pool.query(sql, values);
+        if(result.rows.length > 0){
+            res.status(200).json({msg : "Updated to database"}).end();
+        }
+        else{
+        throw "Kould not ad to the database.";
+        }
+    }catch(err){
+        res.status(500).json({error: err}).end();
+    }
+});
+*/
 router.get("/bruker", async function(req, res, next){
     let sql = `
     SELECT * 
@@ -152,6 +204,7 @@ router.post("/bruker",normalize, async function(req, res, next)  {
         res.status(500).json({error: err}).end();
     }
 });
+
 // dyreart
 // hent alt dyreart
 router.get("/dyreart", async function(req, res, next){
@@ -216,6 +269,23 @@ router.post("/dyreart", async function(req, res, next)  {
         res.status(500).json({error: err}).end();
     }
 });
+router.put("/dyreart", normalize, async function(req, res, next)  {
+    let updata = req.body;
+    try{
+        let sql = "UPDATE dyreart SET navn = $1 WHERE aid = $2 returning *";
+        let values = [updata.navn, updata.aid];
+        let result= await pool.query(sql, values);
+        if(result.rows.length > 0){
+            res.status(200).json({msg : "Updated to database"}).end();
+        }
+        else{
+        throw "Kould not ad to the database.";
+        }
+    }catch(err){
+        res.status(500).json({error: err}).end();
+    }
+});
+
 
 
 module.exports = router;
