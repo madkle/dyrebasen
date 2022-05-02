@@ -40,8 +40,7 @@
         <a class="nav-link" href="#"></a>
         
       </nav> -->
-      <label for="container" class="form-label mt-5">Velg en kanin:</label>
-      <nav id="container" class="sidebar bg-1 shadow rounded">Velg</nav>
+      <nav id="container" class="sidebar bg-1 shadow rounded text-center pt-5 bold"></nav>
 
       <div id="stamtavle" class="container">
           <div class="item shadow rounded valgtDyr stamtavleStart" id="valgtDyr">Velg en kanin</div>
@@ -51,6 +50,23 @@
           <div class="item shadow rounded valgtFarMor stamtavleStart female female2">Farmor</div>
           <div class="item shadow rounded valgtMorFar stamtavleStart male male2">Morfar</div>
           <div class="item shadow rounded valgtMorMor stamtavleStart female female2">Mormor</div>
+          <div class="itemLine lbb"></div>
+          <div class="itemLine lbb2"></div>
+          <div class="itemLine lbr"></div>
+          <div class="itemLine lbr2"></div>
+          <div class="itemLine lbr3"></div>
+          <div class="itemLine lbt"></div>
+          <div class="itemLine lbl"></div>
+
+          <div class="itemLine rbb"></div>
+          <div class="itemLine rbb2"></div>
+          <div class="itemLine rbr"></div>
+          <div class="itemLine rbl"></div>
+          <div class="itemLine rbl2"></div>
+          <div class="itemLine rbr3"></div>
+          <div class="itemLine rbt"></div>
+          
+          
       </div>
 
 <script>
@@ -71,9 +87,9 @@
 
 <style>
 
-    /* .item {
-        
-    } */
+    .bold {
+        font-weight: bold;
+    }
 
     :root {
         --time: 0.75s ease-out;
@@ -166,17 +182,98 @@
 
     .container {
         display: grid;
-        grid-template-columns: 120px 250px 20px 250px 50px 250px 20px 250px 120px;
-        grid-template-rows: 150px 150px 150px 150px 150px 150px;
+        grid-template-columns: 120px 125px 125px 10px 10px 125px 125px 25px 25px 125px 125px 10px 10px 125px 125px 120px;
+        grid-template-rows: 75px 75px 75px 75px 75px 75px 75px 75px 75px 75px 75px 75px;
         grid-template-areas: 
-        ". . . . . . . . ."
-        ". farfar . farmor . morfar . mormor ."
-        ". . . . . . . . ."
-        ". . . far . mor . . ."
-        ". . . . . . . . ."
-        ". . . dyr dyr dyr . . .";
+        ". . . . . . . . . . . . . . . ."
+        ". . . . . . . . . . . . . . . ."
+        ". farfar farfar lbb lbb farmor farmor . . morfar morfar rbb rbb mormor mormor ."
+        ". farfar farfar lbr . farmor farmor . . morfar morfar . rbl mormor mormor ."
+        ". . . lbr . . . . . . . . rbl . . ."
+        ". . . . lbt lbt lbl . . rbr rbt rbt . . . ."
+        ". . . . . far far . . mor mor . . . . ."
+        ". . . . . far far . . mor mor . . . . ."
+        ". . . . . lbr2 lbb2 lbb2 lbb2 lbb2 rbl2 . . . . ."
+        ". . . . . . . rbr3 . . . . . . . ."
+        ". . . . . dyr dyr dyr dyr dyr dyr . . . . ."
+        ". . . . . dyr dyr dyr dyr dyr dyr . . . . .";
 
     }
+
+    .lbb {
+        grid-area: lbb;
+        border-bottom: 1px solid black;
+    }
+
+    .lbb2 {
+        grid-area: lbb2;
+        border-bottom: 1px solid black;
+    }
+
+    .lbr {
+        grid-area: lbr;
+        border-right: 1px solid black;
+    }
+    .lbr2 {
+        grid-area: lbr2;
+        border-right: 1px solid black;
+    }
+    .lbr3 {
+        grid-area: lbr2;
+        border-right: 1px solid black;
+    }
+
+    .lbt {
+        grid-area: lbt;
+        border-top: 1px solid black;
+    }
+
+    .lbl {
+        grid-area: lbl;
+        border-left: 1px solid black;
+    }
+
+    .rbb {
+        grid-area: rbb;
+        border-bottom: 1px solid black;
+    }
+
+    .rbb2 {
+        grid-area: rbb2;
+        border-bottom: 1px solid black;
+    }
+
+    .rbr {
+        grid-area: rbr;
+        border-right: 1px solid black;
+    }
+    .rbr2 {
+        grid-area: rbr2;
+        border-right: 1px solid black;
+    }
+    .rbr3 {
+        grid-area: rbr3;
+        border-right: 1px solid black;
+    }
+
+    .rbt {
+        grid-area: rbt;
+        border-top: 1px solid black;
+    }
+
+    .rbl {
+        grid-area: rbl;
+        border-left: 1px solid black;
+    }
+    .rbl2 {
+        grid-area: rbl2;
+        border-left: 1px solid black;
+    }
+
+
+
+
+
 
     body{
         margin-top: 30px;
