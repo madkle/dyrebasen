@@ -83,6 +83,7 @@
         </div>
 
         <script>
+            
             let regfirstname = document.getElementById("regfirstname")
             let regsurname = document.getElementById("regsurname")
             let regemail = document.getElementById("regemail")
@@ -91,21 +92,21 @@
             let confirmpwd = document.getElementById("confirmpwd")
             let btnRegUser = document.getElementById("btnRegUser")
             let chkRemember = document.getElementById("chkRemember")
-
+            
             btnRegUser.addEventListener("click", async function(evt){   
                 if (regpwd.value !== confirmpwd.value) {
                     throw "not the same password"
                 }
                 
                 let url = "/bruker"
-                let credString = createCredentialString(regsurname.value, regpwd.value)
+                let credString = createCredentialString(regusername.value, regpwd.value)
                 
                 let updata = {
                     fornavn: regfirstname.value, 
                     etternavn: regsurname.value,
                     epost: regemail.value
                 }
-
+ 
                 let cfg = {
                     method: "POST",
                     headers: {

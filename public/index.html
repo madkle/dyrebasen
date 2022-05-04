@@ -30,7 +30,7 @@
                 <div class="card-body shadow">
                     <div class="container" >
                         <h2 class="text-center">Registrer ny bruker</h2><br>
-                        <form ><!-- action="login.js" for å kjøre innloggingsfilen med inputen fra skjemaet -->
+                            <!--<form>--><!-- action="login.js" for å kjøre innloggingsfilen med inputen fra skjemaet -->
 
                             <div class="row">
                                 <div class="col">
@@ -38,29 +38,26 @@
                                     <input type="text" class="form-control rounded-pill" id="username" placeholder="Skriv inn brukernavn" name="brukernavn">
                                 </div>
                             
-                            
-                    
                                 <div class="col">
                                     <label for="pwd" class="form-label">Passord:</label>
                                     <input type="password" class="form-control rounded-pill" id="pwd" placeholder="Skriv inn passord" name="pswd">
                                 </div>
-                               
                             </div><br>
                                 
                             <div class="text-center mt-2">
-                                <button formaction="minedyr.html" type="submit" class="btn btn-secondary rounded-pill" id="btnLogin">Logg inn</button>
+                                <button type="submit" class="btn btn-secondary rounded-pill" id="btnLogin">Logg inn</button><!--  formaction="minedyr.html" -->
                             </div>
                         
                             <div class="form-check mt-2">
                                 <label class="form-check-label">
-                                    <input class="form-check-input text-body" type="checkbox" name="remember"> Husk meg
+                                    <input class="form-check-input text-body" id="chkRemember" type="checkbox" name="remember"> Husk meg
                                 </label>
                             </div>
 
                                 <a href="regbruker.html" class="card-link text-body text-center" id="loginLink">Opprett ny bruker</a>
 
                             
-                        </form>
+                        <!--</form>-->
                     </div>
                 </div>
             </div> 
@@ -68,15 +65,68 @@
     </div>
 </div>
       
+    <script type="module">
+        let inpUsername = document.getElementById("username");
+        let inpPwd = document.getElementById("pwd");
+        let chkRemember = document.getElementById("chkRemember");
+        let btnLogin = document.getElementById("btnLogin");
+        function createCredentialString(username, password) {
+            let combinedStr = username + ":" + password;
+            let b64Str = btoa(combinedStr);
 
+            return "basic " + b64Str;
+        }
+        async function test() {
+            let url = "/auth"
+            let storedToken = localStorage.getItem("token")
+            let cfg = {
+                headers: {
+                    "token": storedToken
+                }
+            };
+            try {
+                let response = await fetch(url, cfg);
+                let data = await response.json();
+                if (response.status != 200) {
+                    throw data.error;
+                }
+                console.log(data);
+            }
+            catch(error) {
+                console.log(error);
+                txtResult.innerHTML = "Noe gikk galt - sjekk konsollvinduet"
+            }
 
-    <!-- <ol>
-        <li><a href="generatepdf.html">generatepdf</a></li>
-        <li><a href="minedyr.html">minedyr</a></li>
-        <li><a href="regdyr.html">regdyr</a></li>
-        <li><a href="loadImg.html">test</a></li>
-    </ol> -->
-
+            
+        }
+        test()
+        btnLogin.addEventListener("click", async function (evt) {
+            let url = "/bruker/login";
+            let credString = createCredentialString(inpUsername.value, inpPwd.value)
+                
+            let cfg = {
+                method: "POST",
+                headers: {
+                    "authorization": credString
+                }
+            };
+                
+            try {
+                let response = await fetch(url, cfg);
+                let data = await response.json();
+                if (response.status != 200) {
+                    throw data.error;
+                }
+                
+                console.log(data.token);
+                localStorage.setItem("token",data.token)
+            }
+            catch(error) {
+                console.log(error);
+                txtResult.innerHTML = "Noe gikk galt - sjekk konsollvinduet"
+            }
+        })
+    </script>
     <script src="js/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
 

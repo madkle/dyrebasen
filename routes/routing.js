@@ -7,7 +7,7 @@ const connstring = process.env.DATABASE_URL || dbURI;
 const pool = new pg.Pool({
     connectionString: connstring,
     ssl:{rejectUnauthorized: false}
-});
+}); 
 
 const normalize = require("../modules/normalize.js");
 
@@ -135,7 +135,7 @@ router.put("/bruker/:id", async function(req, res, next)  {
             res.status(200).json({msg : "Updated to database"}).end();
         }
         else{
-        throw "Kould not ad to the database.";
+        throw "Could not add to the database.";
         }
     }catch(err){
         res.status(500).json({error: err}).end();
@@ -188,19 +188,26 @@ router.delete("/bruker/:id", async function(req, res, next){
 });
 // publiserer ny bruker
 router.post("/bruker", normalize, async function(req, res, next)  {
+
     let updata = req.body;
     let credstring = req.headers.authorization;
     let cred = auth.decodeCred(credstring);
     
+    if (cred.username === "" || cred.password === "") {
+        res.status(401).json({error: "No username or password"}).end();
+        return
+    }
+
+    let hash = auth.createHash(cred.password)
     try{
         let sql = "INSERT INTO bruker (bid, fornavn, etternavn, epost, brukernavn, passord, salt) VALUES (DEFAULT, $1, $2, $3, $4, $5, $6) returning *";
-        let values = [updata.fornavn, updata.etternavn, updata.epost, cred.brukernavn, cred.passord, updata.salt];
+        let values = [updata.fornavn, updata.etternavn, updata.epost, cred.username, hash.value, hash.salt];
         let result= await pool.query(sql, values);
         if(result.rows.length > 0){
             res.status(200).json({msg : "added to database"}).end();
         }
         else{
-            throw "Kould not ad to the database.";
+            throw "Could not add to the database.";
         }
     }catch(err){
         res.status(500).json({error: err}).end();
@@ -208,6 +215,65 @@ router.post("/bruker", normalize, async function(req, res, next)  {
     
 });
 
+// login bruker
+router.post("/bruker/login", async function(req, res, next)  {
+    let credstring = req.headers.authorization;
+    let cred = auth.decodeCred(credstring);
+    
+    if (cred.username === "" || cred.password === "") {
+        res.status(401).json({error: "No username or password"}).end();
+        return
+    }
+
+    try{
+        let sql = `
+        SELECT * 
+        FROM bruker
+        WHERE brukernavn = $1
+        `;
+        let values = [cred.username];
+        let result= await pool.query(sql, values);
+        if(result.rows.length > 0){
+            let userID = result.rows[0].bid;
+            let username = result.rows[0].brukernavn;
+            let hashPassword = result.rows[0].passord; 
+            let salt = result.rows[0].salt;
+
+            if (auth.verifyPassword(cred.password, hashPassword, salt)) {
+                let newToken = auth.createToken(username,userID);
+                
+                res.status(200).json({
+                    msg : "Successful Login",
+                    token: newToken,
+                    userid: userID
+                }).end();
+            }else{
+                res.status(401).json({error: "Wrong username or password"}).end();
+                return;
+            }
+            
+        }
+        else{
+            res.status(401).json({error: "Wrong username and/or password"}).end();
+            return;
+        }
+        
+    }catch(err){
+        res.status(500).json({error: err}).end();
+    }
+    
+});
+
+router.get("/auth", async function(req, res, next){
+    let token = req.headers.token;
+    try {
+        let payload = auth.verifyToken(token)
+        res.status(200).json(payload).end();
+    } catch (err) {
+        res.status(500).json({error:err}).end();
+    }
+    
+});
 // dyreart
 // hent alt dyreart
 router.get("/dyreart", async function(req, res, next){
@@ -266,7 +332,7 @@ router.post("/dyreart", async function(req, res, next)  {
             res.status(200).json({msg : "added to database"}).end();
         }
         else{
-        throw "Kould not ad to the database.";
+        throw "Could not add to the database.";
         }
     }catch(err){
         res.status(500).json({error: err}).end();
@@ -282,7 +348,7 @@ router.put("/dyreart", normalize, async function(req, res, next)  {
             res.status(200).json({msg : "Updated to database"}).end();
         }
         else{
-        throw "Kould not ad to the database.";
+        throw "Could not add to the database.";
         }
     }catch(err){
         res.status(500).json({error: err}).end();

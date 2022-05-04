@@ -9,7 +9,7 @@ utils.decodeCred = function(credstring){
     let asciiString = Buffer.from(b64String, "base64").toString("ascii");
     cred.username = asciiString.replace(/:.*/,"");
     cred.password = asciiString.replace(cred.username + ":", "")
-    return cred;
+    return cred; 
 }
 
 utils.createHash = function(password){
@@ -56,4 +56,13 @@ utils.verifyToken = function(token){
     return payload;
 }
 
+utils.verifyPassword = function (pswFromUser, hashFromDB, saltFromDB) {
+    hash = crypto.scryptSync(pswFromUser,saltFromDB,64).toString("hex");
+
+    if (hash === hashFromDB) {
+        return true;
+    }
+
+    return false;
+}
 module.exports = utils;
