@@ -13,14 +13,14 @@
 
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top mb-5">
       <div class="container-fluid">
-        <a class="navbar-brand" href="testMineDyr.html">DYREBASEN</a>
+        <a class="navbar-brand" href="minedyr.html">DYREBASEN</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse justify-content-end" id="collapsibleNavbar">
             <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" href="testMineDyr.html">Mine kaniner</a>
+                <a class="nav-link" href="minedyr.html">Mine kaniner</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="regdyr.html">Registrer ny kanin</a>
@@ -96,7 +96,12 @@
         --time2: 1s ease-out;
     }
 
-    .female1:hover {
+    .item:hover {
+        transform: scale(2,2);
+        z-index: 1;
+    }
+
+    /* .female1:hover {
         width: 550px;
         transform: translateX(-300px);
         transition: none;
@@ -110,7 +115,7 @@
     }
 
     .female2:hover {
-        /* width: 520px; */
+        width: 520px;
         transform: scale(2,2);
         transition: none;
         z-index: 1;
@@ -120,7 +125,7 @@
         width: 520px;
         transition: none;
         z-index: 1;
-    }
+    } */
 
     .stamtavlebilde {grid-area: img;
         width: 80px;
@@ -133,29 +138,29 @@
         transition:all var(--time);}
     .valgtFar {
         grid-area: far;
-        border: 1px solid blue;
+        border: 2px solid blue;
         transition:all var(--time2);}
     .valgtMor {
         grid-area: mor;
-        border: 1px solid red;
+        border: 2px solid red;
         transition:all var(--time2);}
     .valgtFarFar {
         grid-area: farfar;
-        border: 1px solid blue;
+        border: 2px solid blue;
         background-color: blue;
         transition:all var(--time2);}      
     .valgtFarMor {
         grid-area: farmor;
-        border: 1px solid red;
+        border: 2px solid red;
         background-color: red;
         transition: var(--time2); }
     .valgtMorFar {
         grid-area: morfar;
-        border: 1px solid blue;
+        border: 2px solid blue;
         transition:all var(--time2);}
     .valgtMorMor {
         grid-area: mormor;
-        border: 1px solid red;
+        border: 2px solid red;
         transition:all var(--time2);}
 
     .stamtavleStart {
@@ -183,7 +188,7 @@
     .container {
         display: grid;
         grid-template-columns: 120px 125px 125px 10px 10px 125px 125px 25px 25px 125px 125px 10px 10px 125px 125px 120px;
-        grid-template-rows: 75px 75px 75px 75px 75px 75px 75px 75px 75px 75px 75px 75px;
+        grid-template-rows: 40px 40px 50px 50px 50px 50px 50px 50px 50px 50px 75px 75px;
         grid-template-areas: 
         ". . . . . . . . . . . . . . . ."
         ". . . . . . . . . . . . . . . ."
@@ -195,8 +200,8 @@
         ". . . . . far far . . mor mor . . . . ."
         ". . . . . lbr2 lbb2 lbb2 lbb2 lbb2 rbl2 . . . . ."
         ". . . . . . . rbr3 . . . . . . . ."
-        ". . . . . dyr dyr dyr dyr dyr dyr . . . . ."
-        ". . . . . dyr dyr dyr dyr dyr dyr . . . . .";
+        ". . . . . . dyr dyr dyr dyr . . . . . ."
+        ". . . . . . dyr dyr dyr dyr . . . . . .";
 
     }
 
@@ -273,6 +278,10 @@
 
 
 
+    .item {
+        background-color: antiquewhite;
+    }
+
 
 
     body{
@@ -280,7 +289,7 @@
     }
 .valgtDyr {
         display: grid;
-        grid-template-columns: 150px 250px 250px;
+        grid-template-columns: 70px 135px 135px;
         grid-template-rows: 25px 25px 25px 25px 25px 25px;
         grid-template-areas: 
             "img regNr innavlsgrad "
@@ -292,9 +301,27 @@
         border: 1px solid gray;
         cursor: pointer;
         padding-top: 10px;
-        background-color: bisque;
+        background-color: antiquewhite;
         font-size: small;
     }
+
+   /*  .valgtDyr {
+        display: grid;
+        grid-template-columns: 70px 135px 135px;
+        grid-template-rows: 25px 25px 25px 25px 25px 25px;
+        grid-template-areas: 
+            "img regNr innavlsgrad "
+            "img vø poeng "
+            "img fDato farge"
+            "img kullNr far"
+            "did kjønn mor"
+            "did genstam genstam";
+        border: 1px solid gray;
+        cursor: pointer;
+        padding-top: 10px;
+        background-color: antiquewhite;
+        font-size: small;
+    } */
 
     /* #valgtDyr {
         width: 300px;
