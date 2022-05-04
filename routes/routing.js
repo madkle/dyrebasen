@@ -1,6 +1,7 @@
 const express = require("express")
 let router = express.Router();
 const pg = require("pg")
+const auth = require("../modules/auth.js");
 const dbURI = "postgres://ljupupvyxeapow:df73019adda4ad7057438ca69f2cbc43913e80da17134bb9d0dc24f96f4fd5ad@ec2-52-208-145-55.eu-west-1.compute.amazonaws.com:5432/d1lljguu066joa";
 const connstring = process.env.DATABASE_URL || dbURI;
 const pool = new pg.Pool({
@@ -186,23 +187,25 @@ router.delete("/bruker/:id", async function(req, res, next){
     }
 });
 // publiserer ny bruker
-router.post("/bruker",normalize, async function(req, res, next)  {
-
+router.post("/bruker", normalize, async function(req, res, next)  {
     let updata = req.body;
+    let credstring = req.headers.authorization;
+    let cred = auth.decodeCred(credstring);
+    
     try{
-        let sql = "INSERT INTO bruker (bid, fornavn, etternavn) VALUES (DEFAULT, $1, $2) returning *";
-        let values = [ updata.fornavn, updata.etternavn];
+        let sql = "INSERT INTO bruker (bid, fornavn, etternavn, epost, brukernavn, passord, salt) VALUES (DEFAULT, $1, $2, $3, $4, $5, $6) returning *";
+        let values = [updata.fornavn, updata.etternavn, updata.epost, cred.brukernavn, cred.passord, updata.salt];
         let result= await pool.query(sql, values);
         if(result.rows.length > 0){
             res.status(200).json({msg : "added to database"}).end();
-        
         }
         else{
-        throw "Kould not ad to the database.";
+            throw "Kould not ad to the database.";
         }
     }catch(err){
         res.status(500).json({error: err}).end();
     }
+    
 });
 
 // dyreart

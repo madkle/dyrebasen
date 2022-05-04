@@ -1,6 +1,3 @@
-const { all, set } = require("express/lib/application");
-const { get } = require("express/lib/response");
-
 async function getAllAnimals() {
     let url = "/dyr";
         try {
@@ -133,12 +130,6 @@ async function listAnimals() {
 async function chooseAnimal(incomingID) {
     let data = await getAllAnimals();
     
-
-
-
-    
-
-
     for (let value of data) {
         console.log(value);
         if (value.did !== incomingID) {

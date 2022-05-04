@@ -273,5 +273,5 @@ async function generatePDF(clickedAnimal){
     }
 
 
-    doc.save("output.pdf");
+    doc.save(`stamtavle-${mainAnimal.regnr}.pdf`);
 }

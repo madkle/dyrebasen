@@ -1,173 +1,172 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> --> <!-- HVA ER DETTE? -->
-    
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/logregbruker.css">
-
-    <title>Dyrebasen - Opprett bruker</title>
-</head>
-
-<body class="bg-2">
-
-    <!-- NAVBAR -->
-    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-        <div class="container-fluid">
-          <a class="navbar-brand">DYREBASEN</a>
-        </div>
-    </nav>
-
-<div class="index">
-    <h1 class="text-center velkommen">Velkommen til Dyrebasen!</h1>
-    <div class="container-fluid justify-self-center logregcard">
+    <head>
+        <meta charset="UTF-8">
+        <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> --> <!-- HVA ER DETTE? -->
         
-        <!-- CARD / INNLOGGING -->
-        <div class="container align-self-end" id="cardSignup">
-            <div class="card bg-" style="border: none;">
-                <div class="card-body shadow">
-                    <div class="container" >
-                        <h2 class="text-center">Registrer ny bruker</h2><br>
-                        <form ><!-- action="login.js" for å kjøre innloggingsfilen med inputen fra skjemaet -->
-                        
-                            <div class="row">
-                                <div class="col">
-                                    <label for="regfirstname" class="form-label">Navn:</label>
-                                    <input type="text" class="form-control rounded-pill" id="regfirstname" placeholder="Fornavn" name="Fornavn" autofocus>
-                                </div>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/logregbruker.css">
 
-                                <div class="col">
-                                    <label for="regsurname" class="form-label">&nbsp;</label>
-                                    <input type="text" class="form-control rounded-pill" id="regsurname" placeholder="Etternavn" name="Etternavn">
-                                </div>
-                            </div><br>
+        <title>Dyrebasen - Opprett bruker</title>
+    </head>
 
-                            <div class="row">
-                                <div class="col">
-                                    <label for="regemail" class="form-label">E-post</label>
-                                    <input type="email" class="form-control rounded-pill" id="regemail" placeholder="Skriv inn e-post" name="email">
-                                </div>
-                            
-                                <div class="col">
-                                    <label for="regusername" class="form-label">Brukernavn:</label>
-                                    <input type="text" class="form-control rounded-pill" id="regusername" placeholder="Skriv inn brukernavn" name="brukernavn">
-                                </div>
-                            </div><br>
-                            
-                            <div class="row">
-                                <div class="col">
-                                    <label for="regpwd" class="form-label">Passord:</label>
-                                    <input type="password" class="form-control rounded-pill" id="regpwd" placeholder="Skriv inn passord" name="pswd">
-                                </div>
-                                <div class="col">
-                                    <label for="confirmpwd" class="form-label">Bekreft passord:</label>
-                                    <input type="password" class="form-control rounded-pill" id="confirmpwd" placeholder="Bekreft passord" name="pswd">
-                                </div>
-                            </div><br>
+    <body class="bg-2">
+        <!-- NAVBAR -->
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+            <div class="container-fluid">
+            <a class="navbar-brand">DYREBASEN</a>
+            </div>
+        </nav>
+
+        <div class="index">
+            <h1 class="text-center velkommen">Velkommen til Dyrebasen!</h1>
+            <div class="container-fluid justify-self-center logregcard">    
+                <!-- CARD / INNLOGGING -->
+                <div class="container align-self-end" id="cardSignup">
+                    <div class="card bg-" style="border: none;">
+                        <div class="card-body shadow">
+                            <div class="container" >
+                                <h2 class="text-center">Registrer ny bruker</h2><br>
+                                <!--<form>--><!-- action="login.js" for å kjøre innloggingsfilen med inputen fra skjemaet -->
+                                    <div class="row">
+                                        <div class="col">
+                                            <label for="regfirstname" class="form-label">Navn:</label>
+                                            <input type="text" class="form-control rounded-pill" id="regfirstname" placeholder="Fornavn" name="Fornavn" autofocus>
+                                        </div>
+
+                                        <div class="col">
+                                            <label for="regsurname" class="form-label">&nbsp;</label>
+                                            <input type="text" class="form-control rounded-pill" id="regsurname" placeholder="Etternavn" name="Etternavn">
+                                        </div>
+                                    </div><br>
+
+                                    <div class="row">
+                                        <div class="col">
+                                            <label for="regemail" class="form-label">E-post</label>
+                                            <input type="email" class="form-control rounded-pill" id="regemail" placeholder="Skriv inn e-post" name="email">
+                                        </div>
+                                    
+                                        <div class="col">
+                                            <label for="regusername" class="form-label">Brukernavn:</label>
+                                            <input type="text" class="form-control rounded-pill" id="regusername" placeholder="Skriv inn brukernavn" name="brukernavn">
+                                        </div>
+                                    </div><br>
+                                    
+                                    <div class="row">
+                                        <div class="col">
+                                            <label for="regpwd" class="form-label">Passord:</label>
+                                            <input type="password" class="form-control rounded-pill" id="regpwd" placeholder="Skriv inn passord" name="pswd">
+                                        </div>
+                                        <div class="col">
+                                            <label for="confirmpwd" class="form-label">Bekreft passord:</label>
+                                            <input type="password" class="form-control rounded-pill" id="confirmpwd" placeholder="Bekreft passord" name="pswd">
+                                        </div>
+                                    </div><br>
+                                        
+                                    <div class="text-center mt-2">
+                                        <button type="submit" class="btn btn-secondary rounded-pill" id="btnRegUser">Registrer</button>
+                                    </div>
                                 
-                            <div class="text-center mt-2">
-                                <button formaction="testMineDyr.html" type="submit" class="btn btn-secondary rounded-pill" id="btnRegUser">Registrer</button>
+                                    <div class="form-check mt-2">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input text-body" type="checkbox" name="remember" id="chkRemember"> Husk meg
+                                        </label>
+                                    </div>
+                                    <a href="index.html" class="card-link text-body text-center" id="loginLink">Tilbake til innlogging</a>
+                                <!--</form>-->
                             </div>
-                        
-                            <div class="form-check mt-2">
-                                <label class="form-check-label">
-                                    <input class="form-check-input text-body" type="checkbox" name="remember"> Husk meg
-                                </label>
-                            </div>
-
-                                <a href="index.html" class="card-link text-body text-center" id="loginLink">Tilbake til innlogging</a>
-
-                            
-                        </form>
-                    </div>
+                        </div>
+                    </div> 
                 </div>
-            </div> 
+            </div>
         </div>
-    </div>
-</div>
 
-    <script>
+        <script>
+            let regfirstname = document.getElementById("regfirstname")
+            let regsurname = document.getElementById("regsurname")
+            let regemail = document.getElementById("regemail")
+            let regusername = document.getElementById("regusername")
+            let regpwd = document.getElementById("regpwd")
+            let confirmpwd = document.getElementById("confirmpwd")
+            let btnRegUser = document.getElementById("btnRegUser")
+            let chkRemember = document.getElementById("chkRemember")
 
+            btnRegUser.addEventListener("click", async function(evt){   
+                if (regpwd.value !== confirmpwd.value) {
+                    throw "not the same password"
+                }
+                
+                let url = "/bruker"
+                let credString = createCredentialString(regsurname.value, regpwd.value)
+                
+                let updata = {
+                    fornavn: regfirstname.value, 
+                    etternavn: regsurname.value,
+                    epost: regemail.value
+                }
 
-        function createCredentialString(username, password) {
+                let cfg = {
+                    method: "POST",
+                    headers: {
+                        "content-type":"application/json",
+                        "authorization": credString
+                    },
+                    body: JSON.stringify(updata)
+                };
+                
+                try {
+                    let response = await fetch(url, cfg);
+                    let data = await response.json();
 
-            let combinedStr = username + ":" + password;
-            let b64Str = btoa(combinedStr);
+                    if (response.status != 200) {
+                        throw data.error;
+                    }
+                }
+                catch(error) {
+                    console.log(error);
+                    txtResult.innerHTML = "Noe gikk galt - sjekk konsollvinduet"
+                }
+            });
+            function createCredentialString(username, password) {
+                let combinedStr = username + ":" + password;
+                let b64Str = btoa(combinedStr);
 
-            return "basic" + b64Str;
-        }
-
-        let cred = createCredentialString("dorthe", "vintervollen");
-        console.log(cred);
-
-        let cfg = {
-            method: "POST",
-            headers: {
-                "authorization": createCredentialString("dorthe", "vintervollen")
+                return "basic " + b64Str;
             }
-        }
+        </script>
 
-        function decodeCred(credString) {
-            let cred = {};
+        <style>
+            /* .index {
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr;
+                grid-template-rows: 25% 1fr 1fr;
+                grid-template-areas: 
+                    ". velkommen ."
+                    ". card ."
+                    ". . .";
+            }
 
-            let b64Str = credString.replace("basic ", "");
-            let asciiString = Buffer.from(b64Str, "baset64").toString("ascii");
+            .logregcard {
+                grid-area: card;
+                align-self: center;
+                justify-self: center;
+            }
 
-            cred.username = asciiString.replace(/:.*/, "");
+            .velkommen {
+                grid-area: velkommen;
+                align-self: center;
+                justify-self: center;
+            }
 
-            return cred;
-        }
+            .form-label {
+                font-weight: bold;
+            } */
 
-        server.post("/users/login", function(req, res, next) {
+            
+        </style>
 
-            credString = req.headers.authorization;
-            let cred = decodeCred(credString);
-
-            console.log(cred.username);
-            console.log(cred.password);
-
-
-            res.status(200).send("Hello from POST").end();
-        })
-
-    </script>
-
-    <style>
-        /* .index {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            grid-template-rows: 25% 1fr 1fr;
-            grid-template-areas: 
-                ". velkommen ."
-                ". card ."
-                ". . .";
-        }
-
-        .logregcard {
-            grid-area: card;
-            align-self: center;
-            justify-self: center;
-        }
-
-        .velkommen {
-            grid-area: velkommen;
-            align-self: center;
-            justify-self: center;
-        }
-
-        .form-label {
-            font-weight: bold;
-        } */
-
-        
-    </style>
-
-
-
-
-    <script src="js/popper.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-</body>
+        <script src="js/popper.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+    </body>
 </html>
