@@ -40,7 +40,7 @@
         <a class="nav-link" href="#"></a>
         
       </nav> -->
-      <nav id="container" class="sidebar bg-1 shadow rounded text-center pt-5 bold"></nav>
+      <nav id="container" class="sidebar shadow rounded text-center pt-5 bold"></nav>
 
       <div id="stamtavle" class="container">
           <div class="item shadow rounded valgtDyr stamtavleStart" id="valgtDyr">Velg en kanin</div>
@@ -128,7 +128,7 @@
     } */
 
     .stamtavlebilde {grid-area: img;
-        width: 80px;
+        width: 50px;
         border-radius: 100px;
         align-self: center;
         justify-self: center;}
@@ -287,9 +287,9 @@
     body{
         margin-top: 30px;
     }
-.valgtDyr {
+.valgtDyr:hover {
         display: grid;
-        grid-template-columns: 70px 135px 135px;
+        grid-template-columns: 70px 115px 115px;
         grid-template-rows: 25px 25px 25px 25px 25px 25px;
         grid-template-areas: 
             "img regNr innavlsgrad "
@@ -298,30 +298,25 @@
             "img kullNr far"
             "did kjønn mor"
             "did genstam genstam";
+        border: 1px solid gray;
+        cursor: pointer;
+        padding-top: 10px;
+        background-color: antiquewhite;
+        font-size: 8pt;
+    }
+
+    .valgtDyr {
+        display: grid;
+        grid-template-columns: 135px 135px;
+        grid-template-rows: auto;
+        grid-template-areas: 
+            "img regNr";
         border: 1px solid gray;
         cursor: pointer;
         padding-top: 10px;
         background-color: antiquewhite;
         font-size: small;
     }
-
-   /*  .valgtDyr {
-        display: grid;
-        grid-template-columns: 70px 135px 135px;
-        grid-template-rows: 25px 25px 25px 25px 25px 25px;
-        grid-template-areas: 
-            "img regNr innavlsgrad "
-            "img vø poeng "
-            "img fDato farge"
-            "img kullNr far"
-            "did kjønn mor"
-            "did genstam genstam";
-        border: 1px solid gray;
-        cursor: pointer;
-        padding-top: 10px;
-        background-color: antiquewhite;
-        font-size: small;
-    } */
 
     /* #valgtDyr {
         width: 300px;
@@ -346,6 +341,7 @@
 
 .sidebar {
     width: 140px;
+    background-color:antiquewhite;
 }
 
 .item1 {grid-area: img;
@@ -362,7 +358,7 @@
 .mineDyr {
         display: grid;
         /* grid-template-columns: 200px 200px 200px 35px; */
-        grid-template-rows: 35px;
+        grid-template-rows: 35px ;
         grid-template-areas: 
             "img did";
         border-bottom: 1px solid gray;
