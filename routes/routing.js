@@ -8,17 +8,27 @@ const pool = new pg.Pool({
     connectionString: connstring,
     ssl:{rejectUnauthorized: false}
 }); 
-
+const ADMINID = 30;
 const normalize = require("../modules/normalize.js");
-
 // dyr ------------------------------------------
 //hent alle dyr
 router.get("/dyr", async function(req, res, next){
+    let userId = req.headers.userid;
+    userId = parseInt(userId);
     let sql = `
-    SELECT * 
-    FROM dyr
-    ORDER BY did
+        SELECT * 
+        FROM dyr
+        WHERE dyr.bidfk = ${userId}
+        ORDER BY did
     `;
+    if (userId === ADMINID) {
+        sql = `
+        SELECT * 
+        FROM dyr
+        ORDER BY did
+        `;
+    }
+    
     try {
         let result = await pool.query(sql);
         res.status(200).json(result.rows).end();
@@ -69,6 +79,7 @@ router.delete("/dyr/:id", async function(req, res, next){
 router.post("/dyr", normalize, async function(req, res, next)  {
     
     let updata = req.body
+    console.log(updata);
     try{
         let sql = `INSERT INTO dyr (did, regnr, vø, fdato, kullnr, kjønn, innavlsgrad, poeng, farge, far, mor , bidfk, aidfk, bilde) 
         VALUES 
@@ -86,6 +97,7 @@ router.post("/dyr", normalize, async function(req, res, next)  {
     }catch(err){
         res.status(500).json({error: err}).end();
     }
+    
     
 });
 

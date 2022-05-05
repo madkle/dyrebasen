@@ -8,9 +8,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/1523d962df.js" crossorigin="anonymous"></script>
 
-    <script src="js/pdf.js"></script>
-    <script src="js/dyr.js"></script>
-    <script src="js/colour.js"></script>
+    <script type="module" src="js/pdf.js"></script>
+    <script type="module" src="js/dyr.js"></script>
+    <script type="module" src="js/colour.js"></script>
     <title>Dyrebasen - Mine dyr</title>
 </head>
 <body>
@@ -154,13 +154,18 @@
 
     
     <!------------- JavaScript --------------->
-    <script>
+    <script type="module">
+        import {getToken} from "/js/user.js";
         
+        import {listAnimals, updateAnimal} from "/js/dyr.js";
+        import {generatePDF} from "/js/pdf.js";
+        let loggedInUserId = await getToken();
         let container = document.getElementById('container');
         let btnEditAnimal = document.getElementById('btnEditAnimal');
         let testBilde = document.getElementById('testBilde'); 
         let activeID = null;
-        listAnimals(); 
+        listAnimals();
+        
         let originalInputValues = {};
         async function loadHTMLElements(selectedID) {
             
@@ -358,7 +363,7 @@
 
     <script src="js/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
-    <script src="js/form.js"></script> <!-- Håndterer alt av forms-->
+    <script type="module" src="js/form.js"></script> <!-- Håndterer alt av forms-->
 </body>
 
 </html>

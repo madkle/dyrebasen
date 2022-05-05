@@ -1,23 +1,5 @@
-function lookupColour(inpColour) {
-    inpColour = inpColour.toLowerCase();
+import {lookupColour} from "./colour.js";
 
-    let colourArr = [
-        {colour:"hvit", rgb:{red: 255, green: 255, blue: 255}},
-        {colour:"viltgul", rgb:{red: 169, green: 116, blue: 84}},
-        {colour:"brun", rgb:{red: 165, green: 42, blue: 42}},
-        {colour:"madagaskar",rgb:{red: 182, green: 143, blue: 115}},
-    ];
-
-    let foundColour = null;
-
-    colourArr.forEach(element => {
-        if (element.colour === inpColour) {
-            foundColour = element;
-        }
-    });
-
-    return foundColour;
-}
 async function getSingleAnimal(id) {
 
     let url = `/dyr/${id}`;
@@ -79,7 +61,7 @@ async function getParents(child) {
     return family;
 };
 
-async function generatePDF(clickedAnimal){
+export async function generatePDF(clickedAnimal){
     let doc = new jsPDF();
 
     let mainAnimal = await getSingleAnimal(clickedAnimal); 
@@ -140,7 +122,7 @@ async function generatePDF(clickedAnimal){
             doc.text(`${contentLeftText[i]} `, x + PADDING, y + lineSpacing*(i+startTextLine));
         }
 
-        contentRightText = [`Kjønn: ${mainAnimal.kjønn}`, `Poeng: ${mainAnimal.poeng}/100`,`Innavlsgrad: ${mainAnimal.innavlsgrad}%`, `Farge:`]
+        let contentRightText = [`Kjønn: ${mainAnimal.kjønn}`, `Poeng: ${mainAnimal.poeng}/100`,`Innavlsgrad: ${mainAnimal.innavlsgrad}%`, `Farge:`]
         for (let i = 0; i < contentRightText.length; i++){
             doc.text(`${contentRightText[i]}`,  headAlignRight, y + lineSpacing*(i+startTextLine));
 
@@ -183,7 +165,7 @@ async function generatePDF(clickedAnimal){
         for (let i = 0; i < contentLeftText.length; i++){
             doc.text(`${contentLeftText[i]} `, x + PADDING, y + lineSpacing*(i+startTextLine));
         }
-        contentRightText = [`Poeng: ${currentAnimal.poeng}/100`,`Innavlsgrad: ${currentAnimal.innavlsgrad}%`, `Farge:`]
+        let contentRightText = [`Poeng: ${currentAnimal.poeng}/100`,`Innavlsgrad: ${currentAnimal.innavlsgrad}%`, `Farge:`]
         for (let i = 0; i < contentRightText.length; i++){
             doc.text(`${contentRightText[i]}`,  headAlignRight, y + lineSpacing*(i+startTextLine));
 

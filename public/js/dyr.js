@@ -1,10 +1,18 @@
-const { del } = require("express/lib/application");
-
-
-async function getAllAnimals() {
+import {getToken} from "./user.js";
+import {colourArr} from "./colour.js";
+import {generatePDF} from "/js/pdf.js";
+//import {loadHTMLElements} from "../minedyr.html"
+let loggedInUserId = await getToken();
+export async function getAllAnimals() {
     let url = "/dyr";
+    
+    let cfg = {
+        headers:{
+            "userid":loggedInUserId
+        }
+    }
         try {
-            let response = await fetch(url);
+            let response = await fetch(url, cfg);
             let data = await response.json();
 
             if (response.status != 200) {
@@ -17,7 +25,7 @@ async function getAllAnimals() {
             console.log(error);
         }
 }
-async function getSingleAnimal(id) {
+export async function getSingleAnimal(id) {
 
     let url = `/dyr/${id}`;
 
@@ -54,16 +62,15 @@ async function getSingleAnimal(id) {
         console.log(error);
     }
 };
-async function addAnimal(updata) {
+export async function addAnimal(updata) {
     let url = "/dyr";
-
-   
+    updata.bid = loggedInUserId;
     let cfg = {
         method: "POST",
         headers: {"content-type":"application/json"},
         body: JSON.stringify(updata)
     }
-    
+    console.log(updata);
     try {
         let response = await fetch(url, cfg);
         let data = await response.json();
@@ -76,8 +83,9 @@ async function addAnimal(updata) {
         console.log(error);
         txtResult.innerHTML = "Noe gikk galt - sjekk konsollvinduet"
     }
+  
 }
-async function updateAnimal(updata) {
+export async function updateAnimal(updata) {
     let url = "/dyr";
 
    
@@ -102,7 +110,7 @@ async function updateAnimal(updata) {
     }
 }
 
-async function deleteAnimal(dyrID) {
+export async function deleteAnimal(dyrID) {
             
     let url = `/dyr/${dyrID}`;
 
@@ -127,8 +135,8 @@ async function deleteAnimal(dyrID) {
     }
 } 
 
-async function listAnimals() {
-    let data = await getAllAnimals();
+export async function listAnimals(userid) {
+    let data = await getAllAnimals(userid);
 
     container.innerHTML = " ";
 
@@ -227,7 +235,7 @@ async function listAnimals() {
     }
 }
 
-async function loadFormElements() {
+export async function loadFormElements() {
     colourArr.forEach(currColour => {
       let option = document.createElement("option");
       option.innerHTML = currColour.colour;

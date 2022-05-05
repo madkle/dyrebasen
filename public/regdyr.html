@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">    
     <title>AlleDyr</title>
 
-    <script src="./js/dyr.js"></script>
-    <script src="./js/colour.js"></script>
+    <script type="module" src="./js/dyr.js"></script>
+    <script type="module" src="./js/colour.js"></script>
     <link rel="stylesheet" href="css/bootstrap.min.css">
 
 </head>
@@ -111,7 +111,7 @@
       <label for="inpBilde" class="form-label">Last opp bilde:</label>
       <input class="form-control" type="file" id="inpBilde"><br>
     </div>
-  </div>
+  </div> 
       <button id="btnAddAnimal" class="form-control mt-4 btn btn-secondary">Legg til dyr</button>
 
 
@@ -119,25 +119,51 @@
   </div>
     </div>
     <!------------- JavaScript --------------->
-    <script>
+    <script type="module">
+      import {addAnimal} from "/js/dyr.js";
+
+      let inpRegNr = document.getElementById('inpRegNr');
+      let inpVø = document.getElementById('inpVø');
+      let inpFdato = document.getElementById('inpFdato');
+      let inpKullNr = document.getElementById('inpKullNr');
+      let dropKjønn = document.getElementById('dropKjønn');
+      let inpInnavlsgrad = document.getElementById('inpInnavlsgrad');
+      let inpPoeng = document.getElementById('inpPoeng');
+      let inpFarge = document.getElementById('inpFarge');
+      let fargeValg = document.getElementById('fargeValg')
+      let inpFar = document.getElementById('inpFar');
+      let valgFar = document.getElementById('valgFar');
+      let inpMor = document.getElementById('inpMor');
+      let valgMor = document.getElementById('valgMor');
+      let inpBilde = document.getElementById('inpBilde');
+      let bildeData = null;
+
+      inpBilde.addEventListener("change", function (evt) {
+          let fr = new FileReader();
+          fr.addEventListener("load", function (evt) {
+              bildeData = fr.result;
+          });
+          fr.readAsDataURL(inpBilde.files[0]);
+      })
+
       let btnAddAnimal = document.getElementById('btnAddAnimal');
       btnAddAnimal.addEventListener('click', async function (evt) {
             evt.preventDefault();
             let updata = {
-                regnr: inpRegNr.value,
-                vø: inpVø.value,
-                fdato: inpFdato.value,
-                kullnr: inpKullNr.value,
-                kjønn: dropKjønn.value,
-                innavlsgrad: inpInnavlsgrad.value,
-                poeng: inpPoeng.value,
-                farge: inpFarge.value,
-                far: inpFar.value,
-                mor: inpMor.value,
-                bid: null,
-                aid: null,
-                bilde: bildeData
-            }
+              regnr: inpRegNr.value,
+              vø: inpVø.value,
+              fdato: inpFdato.value,
+              kullnr: inpKullNr.value,
+              kjønn: dropKjønn.value,
+              innavlsgrad: inpInnavlsgrad.value,
+              poeng: inpPoeng.value,
+              farge: inpFarge.value,
+              far: inpFar.value,
+              mor: inpMor.value,
+              bid: null,
+              aid: null,
+              bilde: bildeData
+            };
             console.log(updata);
             await addAnimal(updata);
 
@@ -183,7 +209,7 @@
     </style>
  <script src="js/popper.min.js"></script>
  <script src="js/bootstrap.min.js"></script>
- <script src="js/form.js"></script>  <!-- Håndterer alt av forms/inputs-->
+ <!--<script  type="module"  src="js/form.js"></script>   Håndterer alt av forms/inputs-->
 </body>
 
 </html>

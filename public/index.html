@@ -70,36 +70,14 @@
         let inpPwd = document.getElementById("pwd");
         let chkRemember = document.getElementById("chkRemember");
         let btnLogin = document.getElementById("btnLogin");
+        
         function createCredentialString(username, password) {
             let combinedStr = username + ":" + password;
             let b64Str = btoa(combinedStr);
 
             return "basic " + b64Str;
         }
-        async function test() {
-            let url = "/auth"
-            let storedToken = localStorage.getItem("token")
-            let cfg = {
-                headers: {
-                    "token": storedToken
-                }
-            };
-            try {
-                let response = await fetch(url, cfg);
-                let data = await response.json();
-                if (response.status != 200) {
-                    throw data.error;
-                }
-                console.log(data);
-            }
-            catch(error) {
-                console.log(error);
-                txtResult.innerHTML = "Noe gikk galt - sjekk konsollvinduet"
-            }
-
-            
-        }
-        test()
+        
         btnLogin.addEventListener("click", async function (evt) {
             let url = "/bruker/login";
             let credString = createCredentialString(inpUsername.value, inpPwd.value)

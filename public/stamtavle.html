@@ -78,14 +78,6 @@
         listAnimals();
     </script>
 
-    <style>
-
-        /* .item {
-            
-        } */
-
-
-</script>
 
 <style>
 
@@ -380,197 +372,18 @@
         width: 200px;
         background-color: #f1f1f1;
         }
-
-        .female1:hover {
-            width: 550px;
-            transform: translateX(-300px);
-            transition: none;
-            z-index: 1;
-        }
-
-        .male1:hover {
-            width: 550px;
-            transition: none;
-            z-index: 1;
-        }
-
-        .female2:hover {
-            /* width: 520px; */
-            transform: scale(2,2);
-            transition: none;
-            z-index: 1;
-        }
-
-        .male2:hover {
-            width: 520px;
-            transition: none;
-            z-index: 1;
-        }
-
-        .stamtavlebilde {grid-area: img;
-            width: 80px;
-            border-radius: 100px;
-            align-self: center;
-            justify-self: center;}
-
-        .valgtDyr {
-            grid-area: dyr;
-            transition:all var(--time);}
-        .valgtFar {
-            grid-area: far;
-            border: 1px solid blue;
-            transition:all var(--time2);}
-        .valgtMor {
-            grid-area: mor;
-            border: 1px solid red;
-            transition:all var(--time2);}
-        .valgtFarFar {
-            grid-area: farfar;
-            border: 1px solid blue;
-            background-color: blue;
-            transition:all var(--time2);}      
-        .valgtFarMor {
-            grid-area: farmor;
-            border: 1px solid red;
-            background-color: red;
-            transition: var(--time2); }
-        .valgtMorFar {
-            grid-area: morfar;
-            border: 1px solid blue;
-            transition:all var(--time2);}
-        .valgtMorMor {
-            grid-area: mormor;
-            border: 1px solid red;
-            transition:all var(--time2);}
-
-        .stamtavleStart {
-            transform: scale(0) /* translateY(300px) */;
-            z-index: -1;
-            opacity: 0;
-        }
-
-        .stamtavleStart.male1 {
-            transform: translateX(150px) scale(0);
-        }
-
-        .stamtavleStart.female1 {
-            transform: translateX(-150px) scale(0);
-        }
-
-        .stamtavleStart.male2 {
-            transform: translateX(130px) scale(0);
-        }
-
-        .stamtavleStart.female2 {
-            transform: translateX(-130px) scale(0)
-        }
-
-        .container {
-            display: grid;
-            grid-template-columns: 120px 250px 20px 250px 50px 250px 20px 250px 120px;
-            grid-template-rows: 150px 150px 150px 150px 150px 150px;
-            grid-template-areas: 
-            ". . . . . . . . ."
-            ". farfar . farmor . morfar . mormor ."
-            ". . . . . . . . ."
-            ". . . far . mor . . ."
-            ". . . . . . . . ."
-            ". . . dyr dyr dyr . . .";
-
-        }
-
-        body{
-            margin-top: 30px;
-        }
-    .valgtDyr {
-            display: grid;
-            grid-template-columns: 150px 250px 250px;
-            grid-template-rows: 25px 25px 25px 25px 25px 25px;
-            grid-template-areas: 
-                "img regNr innavlsgrad "
-                "img vø poeng "
-                "img fDato farge"
-                "img kullNr far"
-                "did kjønn mor"
-                "did genstam genstam";
-            border: 1px solid gray;
-            cursor: pointer;
-            padding-top: 10px;
-            background-color: bisque;
-            font-size: small;
-        }
-
-        /* #valgtDyr {
-            width: 300px;
-            height: 150px;
-            margin: auto;
-            
-        } */
-
-        .bg-1 {
-            background-color: bisque;
-        }
-
-        .bg-2 {
-            background-color: whitesmoke;
-        }
-
-    #container {
-        height: 100%;
-        overflow: auto;
-        position: fixed;
+    .sidebar a {
+        display: block;
+        color: #000;
+        padding: 8px 16px;
+        text-decoration: none;
     }
 
-    .sidebar {
-        width: 140px;
-    }
-
-    .item1 {grid-area: img;
-            width: 35px;
-            border-radius: 100px;
-            align-self: center;
-            justify-self: center;}
-
-    .item2 {grid-area: did;
-            align-self: center;
-            justify-self: center;
-            font-weight: bold;}
-
-    .mineDyr {
-            display: grid;
-            /* grid-template-columns: 200px 200px 200px 35px; */
-            grid-template-rows: 35px;
-            grid-template-areas: 
-                "img did";
-            border-bottom: 1px solid gray;
-            cursor: pointer;
-            padding-bottom: 5px;
-            padding-top: 5px;
-        }
-
-        .mineDyr:hover {
-            background-color: grey;
-        }
-
-        /* .sidebar {
-            list-style-type: none;
-            margin-top: 0;
-            padding-top: 30;
-            width: 200px;
-            background-color: #f1f1f1;
-            }
-        .sidebar a {
-            display: block;
-            color: #000;
-            padding: 8px 16px;
-            text-decoration: none;
-        }
-
-        .sidebar a:hover {
-            background-color: #555;
-            color: white;
-        } */
-    </style>
+    .sidebar a:hover {
+        background-color: #555;
+        color: white;
+    } */
+</style>
     
     <script src="js/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
