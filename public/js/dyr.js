@@ -1,3 +1,4 @@
+const { del } = require("express/lib/application");
 
 
 async function getAllAnimals() {
@@ -165,8 +166,8 @@ async function listAnimals() {
         }
         let html = `
             <img class="item1" src="${value.bilde}" width="100px" alt="bilde av kanin"/>
-            <h2 class="item2">ID: ${value.did} </h2>
-            <p class="item3">Reg.nr: ${value.regnr}</p>
+            <p class="item2">ID: ${value.did} </p>
+            <p class="item3" style="font-weight: bold;">Reg.nr: ${value.regnr}</p>
             <p class="item4">V.Ø.: ${value.vø}</p>
             <p class="item5">Fødselsdato: ${dateFormatert} </p>
             <p class="item6">Kullnummer: ${value.kullnr} </p>
@@ -175,7 +176,7 @@ async function listAnimals() {
             <p class="item9">Poeng: ${value.poeng} </p>
             <p class="item10">Farge: ${value.farge}</p>
             <p class="item11">Far: ${farID} </p>
-            <p class="item12">Mor: ${morID} </p><br><hr>
+            <p class="item12">Mor: ${morID} </p><br>
         `
             
 
@@ -183,20 +184,29 @@ async function listAnimals() {
         div.innerHTML = html;
         container.appendChild(div);
         div.classList.add("mineDyr"); 
+        div.classList.add("rounded");
+        div.classList.add("shadow");
 
         let delbtn = document.createElement("button");
         delbtn.classList.add("slett");
-        delbtn.classList.add('btn');
-        delbtn.innerHTML = "✕";
+        delbtn.classList.add("btn");
+        delbtn.classList.add("btn-outline-secondary");
+        delbtn.classList.add("fa-solid");
+        delbtn.classList.add("fa-trash-can");
+        div.appendChild(delbtn);
+        /* let span = document.createElement("span");
+        span.classList.add("glyphicon");
+        span.classList.add("glyphicon-trash");
+                delbtn.appendChild(span); */
 
         delbtn.addEventListener('click', function(){
             deleteAnimal(value.did);
         });
 
-        div.appendChild(delbtn);
+        
         /* div.insertBefore(delbtn, div.lastElementChild); */
             
-        let editbtn = `<button class="rediger" onclick="loadHTMLElements(${value.did});" data-bs-toggle="modal" data-bs-target="#exampleModal">✏️</button>`
+        let editbtn = `<button class="rediger btn btn-outline-secondary fa-solid fa-pen" onclick="loadHTMLElements(${value.did});" data-bs-toggle="modal" data-bs-target="#exampleModal"></button>`
         
         /*document.createElement("button");
         editbtn.classList.add("rediger");
@@ -204,6 +214,8 @@ async function listAnimals() {
         //div.appendChild(editbtn);
         let genStam = document.createElement("button");
         genStam.classList.add("genstam");
+        genStam.classList.add("btn");
+        genStam.classList.add("btn-secondary")
         genStam.innerText ="Generer stamtavle";
         genStam.addEventListener('click', function(){
             generatePDF(value.did);

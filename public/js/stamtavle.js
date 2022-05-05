@@ -19,6 +19,7 @@ async function listAnimals() {
     let data = await getAllAnimals();
     let valgtFarFar = document.getElementById('valgtFarFar');
     let allAnimals = document.querySelectorAll(".item");
+    /* let stamLinjer = document.querySelectorAll(".itemLine"); */
 
     container.innerHTML = "Velg dyr:<hr>";
 

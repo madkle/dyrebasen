@@ -18,14 +18,14 @@
     <!-- NAVBAR -->
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top mb-5">
         <div class="container-fluid">
-          <a class="navbar-brand" href="mineDyr.html">DYREBASEN</a>
+          <a class="navbar-brand" href="minedyr.html">DYREBASEN</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse justify-content-end" id="collapsibleNavbar">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link" href="testMineDyr.html">Mine kaniner</a>
+                <a class="nav-link" href="minedyr.html">Mine kaniner</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link active" href="regdyr.html">Registrer ny kanin</a>
@@ -41,70 +41,81 @@
         </div>
       </nav>
 
-    <h1 class="m-5">Registrer nytt dyr</h1>
+    
 
+    <div class="container-fluid justify-self-center regdyr">
+
+    <div class="card card-body shadow">
     <form class="m-5">
-        <label for="inpRegNr" class="form-label">Reg.nr:</label><br>
-        <input id="inpRegNr" type="number" class="form-control" /><br>
+      <h2 class="text-center pb-5">Registrer ny kanin</h2>
+      <div class="row">
 
-        <label for="inpVø" class="form-label">V.Ø:</label>
-        <input id="inpVø" type="text" class="form-control" /><br>
+        <div class="col">
 
-        <label for="inpFdato" class="form-label">Fødselsdato:</label>
-        <input id="inpFdato" type="date"  class="form-control"/><br>
+          <label for="inpRegNr" class="form-label">Reg.nr:</label><br>
+          <input id="inpRegNr" type="number" class="form-control" /><br>
 
-        <label for="inpKullNr" class="form-label">Kullnummer</label>
-        <input id="inpKullNr" type="number" class="form-control" /><br>
-
-        <label for="dropKjønn" class="form-label">Kjønn:</label><br>
-        <select id="dropKjønn">
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-        </select>
-        <br><br>
-
-        <label for="inpInnavlsgrad" class="form-label">Innavlsgrad:</label>
-        <input id="inpInnavlsgrad" type="number" class="form-control" /><br>
-
-        <label for="inpPoeng" class="form-label">Poeng:</label>
-        <input id="inpPoeng" type="number" max="100" class="form-control" /><br>
-
-        <!-- <label for="inpFarge" class="form-label">Farge:</label><br>
-        <select id="inpFarge" class="form-control" >
-          <option>Velg farge</option>
-          <option value="">Viltgul</option>
-          <option value="">Madagaskar</option>
-        </select> -->
+          <label for="inpFarge" class="form-label">Farge:</label>
+          <input class="form-control" list="fargeValg" id="inpFarge" placeholder="Skriv inn en farge...">
+          <datalist id="fargeValg">
+          </datalist><br>
           
-        <label for="inpFarge" class="form-label">Farge:</label>
-        <input class="form-control" list="fargeValg" id="inpFarge" placeholder="Skriv inn en farge...">
-        <datalist id="fargeValg">
-        </datalist>
-        <br>
+          <label for="inpFdato" class="form-label">Fødselsdato:</label>
+          <input id="inpFdato" type="date"  class="form-control"/><br>
 
+          <label for="inpKullNr" class="form-label">Kullnummer</label>
+          <input id="inpKullNr" type="number" class="form-control" /><br>
+    
+          
 
-        <label for="inpFar" class="form-label">Far:</label>
-        <input class="form-control" list="valgFar" id="inpFar" placeholder="finn foreldre (regnr)...">
-        <datalist id="valgFar">
-        </datalist>
-        <br>
+          <label for="inpFar" class="form-label">Far:</label>
+          <input class="form-control" list="valgFar" id="inpFar" placeholder="Finn foreldre (regnr)...">
+          <datalist id="valgFar">
+          </datalist>
+        
+        </div>
 
-        <label for="inpMor" class="form-label">Mor:</label>
-        <input class="form-control" list="valgMor" id="inpMor" placeholder="finn foreldre (regnr)...">
-        <datalist id="valgMor">
-        </datalist>
-        <br>
+        <div class="col">
+          <label for="inpVø" class="form-label">V.Ø:</label>
+          <input id="inpVø" type="text" class="form-control" /><br>
 
-        <label for="inpBilde" class="form-label">Last opp bilde:</label>
-        <input class="form-control" type="file" id="inpBilde"><br>
+          <label for="inpInnavlsgrad" class="form-label">Innavlsgrad:</label>
+          <input id="inpInnavlsgrad" type="number" class="form-control" /><br>
 
-        <button id="btnAddAnimal" class="form-control mt-4">Legg til dyr</button><br>
-        <h6 id="txtResult">Resultat...</h6><br>
+          <label for="dropKjønn" class="form-label">Kjønn:</label><br>
+          <select id="dropKjønn" class="form-control">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select><br>
+          
+          
+          <label for="inpPoeng" class="form-label">Poeng:</label>
+          <input id="inpPoeng" type="number" max="100" class="form-control" /><br>
+
+          <!-- <label for="inpFarge" class="form-label">Farge:</label><br>
+          <select id="inpFarge" class="form-control" >
+            <option>Velg farge</option>
+            <option value="">Viltgul</option>
+            <option value="">Madagaskar</option>
+          </select> -->
+
+          <label for="inpMor" class="form-label">Mor:</label>
+          <input class="form-control" list="valgMor" id="inpMor" placeholder="Finn foreldre (regnr)...">
+          <datalist id="valgMor">
+          </datalist>
+          <br>
+        </div>
+      </div>
+
+      <label for="inpBilde" class="form-label">Last opp bilde:</label>
+      <input class="form-control" type="file" id="inpBilde"><br>
+
+      <button id="btnAddAnimal" class="form-control mt-4">Legg til dyr</button>
 
 
     </form>
-
-
+  </div>
+    </div>
     <!------------- JavaScript --------------->
     <script>
       let btnAddAnimal = document.getElementById('btnAddAnimal');
@@ -138,7 +149,7 @@
       }   
 
       #inpFarge {
-        width: 20em;
+        width: auto;
       }
 
       .form-control {
@@ -148,6 +159,24 @@
       body {
         background-color: antiquewhite;
       }
+
+      .regdyr {
+        
+        margin: auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 20vh 1fr 1fr;
+        grid-template-areas: 
+            ". . ."
+            ". card ."
+            ". . .";
+      }
+      .card {
+        grid-area: card;
+        width: 600px;
+      }
+
+      
 
     </style>
  <script src="js/popper.min.js"></script>
