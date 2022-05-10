@@ -123,24 +123,44 @@ router.put("/dyr", normalize, async function(req, res, next)  {
 
 // bruker ------------------------------------------
 //hent alle brukere
-/*
-router.put("/bruker/:id", async function(req, res, next)  {
+// /:id
+router.put("/bruker", async function(req, res, next)  {
     let updata = req.body;
+    // bytte passord vet jeg ikke hvordan man skal gå fram.
     try{
-        let sql = "UPDATE bruker SET fornavn = $1 WHERE aid = $2 returning *";
-        let values = [updata.navn, updata.aid];
+        let count = 2;
+        let sql = `UPDATE bruker SET`;
+        let values = [updata.bid];
+        console.log("Values");
+        console.log(values);
+        for (const key in updata) { 
+            console.log("Key");
+            console.log(key);
+            console.log("updata[key]");
+            console.log(updata[key]);
+            if (key=== "bid" || key ==="passord" || key === "salt") {continue} // her satt jeg skipp på passord og salt
+            if(count === 2){
+                sql += ` ${key} = $${count}`;
+            }else{
+                sql += `, ${key} = $${count}`;
+            }
+            values.push(updata[key]);
+            count++;
+        }
+        sql += ` WHERE bid = $1 returning *`;
         let result= await pool.query(sql, values);
         if(result.rows.length > 0){
             res.status(200).json({msg : "Updated to database"}).end();
         }
         else{
-        throw "Kould not ad to the database.";
+            throw "could not add to the database.";
         }
+        
     }catch(err){
         res.status(500).json({error: err}).end();
     }
 });
-*/
+
 router.get("/bruker", async function(req, res, next){
     let sql = `
     SELECT * 
