@@ -29,8 +29,8 @@
             <div class="card" style="border: none;">
                 <div class="card-body shadow">
                     <div class="container" >
-                        <h2 class="text-center">Registrer ny bruker</h2><br>
-                            <!--<form>--><!-- action="login.js" for å kjøre innloggingsfilen med inputen fra skjemaet -->
+                        <h2 class="text-center">Login</h2><br>
+                            <form><!-- action="login.js" for å kjøre innloggingsfilen med inputen fra skjemaet -->
 
                             <div class="row">
                                 <div class="col">
@@ -47,6 +47,10 @@
                             <div class="text-center mt-2">
                                 <button type="submit" class="btn btn-secondary rounded-pill" id="btnLogin">Logg inn</button><!--  formaction="minedyr.html" -->
                             </div>
+
+                            <div class="text-center mt-2">
+                                <p id="txtResult" class="text-danger"></p>
+                            </div>
                         
                             <div class="form-check mt-2">
                                 <label class="form-check-label">
@@ -57,7 +61,7 @@
                                 <a href="regbruker.html" class="card-link text-body text-center" id="loginLink">Opprett ny bruker</a>
 
                             
-                        <!--</form>-->
+                        </form>
                     </div>
                 </div>
             </div> 
@@ -66,19 +70,21 @@
 </div>
       
     <script type="module">
+        import {createCredentialString} from "/js/user.js"
         let inpUsername = document.getElementById("username");
         let inpPwd = document.getElementById("pwd");
         let chkRemember = document.getElementById("chkRemember");
         let btnLogin = document.getElementById("btnLogin");
-        
-        function createCredentialString(username, password) {
-            let combinedStr = username + ":" + password;
-            let b64Str = btoa(combinedStr);
+        let txtResult = document.getElementById("txtResult");
 
-            return "basic " + b64Str;
+        if (localStorage.token){
+            window.location.href = "/minedyr.html";
         }
+
+        
         
         btnLogin.addEventListener("click", async function (evt) {
+            evt.preventDefault()
             let url = "/bruker/login";
             let credString = createCredentialString(inpUsername.value, inpPwd.value)
                 
@@ -96,12 +102,12 @@
                     throw data.error;
                 }
                 
-                console.log(data.token);
                 localStorage.setItem("token",data.token)
+                location.href = "minedyr.html"
             }
             catch(error) {
                 console.log(error);
-                txtResult.innerHTML = "Noe gikk galt - sjekk konsollvinduet"
+                txtResult.innerHTML = error
             }
         })
     </script>

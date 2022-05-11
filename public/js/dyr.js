@@ -2,13 +2,13 @@ import {getToken} from "./user.js";
 import {colourArr} from "./colour.js";
 import {generatePDF} from "/js/pdf.js";
 //import {loadHTMLElements} from "../minedyr.html"
-let loggedInUserId = await getToken();
+let loggedInToken = await getToken();
 export async function getAllAnimals() {
     let url = "/dyr";
     
     let cfg = {
         headers:{
-            "userid":loggedInUserId
+            "userid":loggedInToken.userid
         }
     }
         try {
@@ -64,7 +64,7 @@ export async function getSingleAnimal(id) {
 };
 export async function addAnimal(updata) {
     let url = "/dyr";
-    updata.bid = loggedInUserId;
+    updata.bid = loggedInToken;
     let cfg = {
         method: "POST",
         headers: {"content-type":"application/json"},
@@ -110,8 +110,8 @@ export async function updateAnimal(updata) {
     }
 }
 
-export async function deleteAnimal(dyrID) {
-            
+async function deleteAnimal(dyrID) {
+    
     let url = `/dyr/${dyrID}`;
 
     
@@ -134,6 +134,44 @@ export async function deleteAnimal(dyrID) {
         console.log(error);
     }
 } 
+
+        export let activeID = null;
+        export let originalInputValues = {};
+        async function loadHTMLElements(selectedID) {
+            
+
+            let clickedAnimal = "";
+            clickedAnimal = await getSingleAnimal(selectedID)
+            
+            inpRegNr.value = clickedAnimal.regnr;
+            inpVø.value = clickedAnimal.vø;
+            inpFdato.value = clickedAnimal.fdato;
+            inpKullNr.value = clickedAnimal.kullnr;
+            dropKjønn.value = clickedAnimal.kjønn;
+            inpInnavlsgrad.value = clickedAnimal.innavlsgrad;
+            inpPoeng.value = clickedAnimal.poeng;
+            inpFarge.value = clickedAnimal.farge;
+            inpFar.value = clickedAnimal.far;
+            inpMor.value = clickedAnimal.mor;
+            //inpBilde.value = clickedAnimal.bilde;
+
+            originalInputValues = {
+                regnr: inpRegNr.value,
+                vø: inpVø.value,
+                fdato: inpFdato.value,
+                kullnr: inpKullNr.value,
+                kjønn: dropKjønn.value,
+                innavlsgrad: inpInnavlsgrad.value,
+                poeng: inpPoeng.value,
+                farge: inpFarge.value,
+                far: inpFar.value,
+                mor: inpMor.value,
+                bilde: inpBilde.value
+            }
+            activeID = selectedID;
+            //console.log(originalInputValues);
+        }
+
 
 export async function listAnimals(userid) {
     let data = await getAllAnimals(userid);
@@ -186,14 +224,31 @@ export async function listAnimals(userid) {
             <p class="item11">Far: ${farID} </p>
             <p class="item12">Mor: ${morID} </p><br>
         `
-            
 
         let div = document.createElement("div");
         div.innerHTML = html;
-        container.appendChild(div);
+        
         div.classList.add("mineDyr"); 
         div.classList.add("rounded");
         div.classList.add("shadow");
+        
+        let editbtn = document.createElement("button");
+        editbtn.classList.add("rediger");
+        editbtn.classList.add("btn");
+        editbtn.classList.add("btn-outline-secondary");
+        editbtn.classList.add("fa-solid");
+        editbtn.classList.add("fa-pen");
+        editbtn.setAttribute("data-bs-toggle", "modal");
+        editbtn.setAttribute("data-bs-target", "#editDyrModal");
+        editbtn.addEventListener('click', function(){
+            loadHTMLElements(value.did);
+        })
+        div.appendChild(editbtn);
+
+
+        //div.innerHTML += editbtn;
+
+        container.appendChild(div);
 
         let delbtn = document.createElement("button");
         delbtn.classList.add("slett");
@@ -201,25 +256,11 @@ export async function listAnimals(userid) {
         delbtn.classList.add("btn-outline-secondary");
         delbtn.classList.add("fa-solid");
         delbtn.classList.add("fa-trash-can");
-        div.appendChild(delbtn);
-        /* let span = document.createElement("span");
-        span.classList.add("glyphicon");
-        span.classList.add("glyphicon-trash");
-                delbtn.appendChild(span); */
-
         delbtn.addEventListener('click', function(){
             deleteAnimal(value.did);
-        });
+        })
+        div.appendChild(delbtn);
 
-        
-        /* div.insertBefore(delbtn, div.lastElementChild); */
-            
-        let editbtn = `<button class="rediger btn btn-outline-secondary fa-solid fa-pen" onclick="loadHTMLElements(${value.did});" data-bs-toggle="modal" data-bs-target="#exampleModal"></button>`
-        
-        /*document.createElement("button");
-        editbtn.classList.add("rediger");
-        editbtn.innerText ="✏️";*/
-        //div.appendChild(editbtn);
         let genStam = document.createElement("button");
         genStam.classList.add("genstam");
         genStam.classList.add("btn");
@@ -228,9 +269,6 @@ export async function listAnimals(userid) {
         genStam.addEventListener('click', function(){
             generatePDF(value.did);
         })
-
-        
-        div.innerHTML += editbtn
         div.appendChild(genStam);
     }
 }

@@ -36,8 +36,8 @@
                                         </div>
 
                                         <div class="col">
-                                            <label for="regsurname" class="form-label">&nbsp;</label>
-                                            <input type="text" class="form-control rounded-pill" id="regsurname" placeholder="Etternavn" name="Etternavn">
+                                            <label for="reglastname" class="form-label">&nbsp;</label>
+                                            <input type="text" class="form-control rounded-pill" id="reglastname" placeholder="Etternavn" name="Etternavn">
                                         </div>
                                     </div><br>
 
@@ -63,7 +63,9 @@
                                             <input type="password" class="form-control rounded-pill" id="confirmpwd" placeholder="Bekreft passord" name="pswd">
                                         </div>
                                     </div><br>
-                                        
+                                    <div class="row text-danger">
+                                        <p id="txtResult"></p>
+                                    </div>
                                     <div class="text-center mt-2">
                                         <button type="submit" class="btn btn-secondary rounded-pill" id="btnRegUser">Registrer</button>
                                     </div>
@@ -82,90 +84,26 @@
             </div>
         </div>
 
-        <script>
+        <script type="module">
+            import {addUser} from "/js/user.js"
             
             let regfirstname = document.getElementById("regfirstname")
-            let regsurname = document.getElementById("regsurname")
+            let reglastname = document.getElementById("reglastname")
             let regemail = document.getElementById("regemail")
             let regusername = document.getElementById("regusername")
             let regpwd = document.getElementById("regpwd")
             let confirmpwd = document.getElementById("confirmpwd")
             let btnRegUser = document.getElementById("btnRegUser")
             let chkRemember = document.getElementById("chkRemember")
-            
+            let txtResult = document.getElementById("txtResult");
             btnRegUser.addEventListener("click", async function(evt){   
                 if (regpwd.value !== confirmpwd.value) {
-                    throw "not the same password"
+                    txtResult.innerHTML = "ikke samme password";
                 }
+                addUser(regfirstname,reglastname,regemail,regusername,regpwd,confirmpwd)
                 
-                let url = "/bruker"
-                let credString = createCredentialString(regusername.value, regpwd.value)
-                
-                let updata = {
-                    fornavn: regfirstname.value, 
-                    etternavn: regsurname.value,
-                    epost: regemail.value
-                }
- 
-                let cfg = {
-                    method: "POST",
-                    headers: {
-                        "content-type":"application/json",
-                        "authorization": credString
-                    },
-                    body: JSON.stringify(updata)
-                };
-                
-                try {
-                    let response = await fetch(url, cfg);
-                    let data = await response.json();
-
-                    if (response.status != 200) {
-                        throw data.error;
-                    }
-                }
-                catch(error) {
-                    console.log(error);
-                    txtResult.innerHTML = "Noe gikk galt - sjekk konsollvinduet"
-                }
             });
-            function createCredentialString(username, password) {
-                let combinedStr = username + ":" + password;
-                let b64Str = btoa(combinedStr);
-
-                return "basic " + b64Str;
-            }
         </script>
-
-        <style>
-            /* .index {
-                display: grid;
-                grid-template-columns: 1fr 1fr 1fr;
-                grid-template-rows: 25% 1fr 1fr;
-                grid-template-areas: 
-                    ". velkommen ."
-                    ". card ."
-                    ". . .";
-            }
-
-            .logregcard {
-                grid-area: card;
-                align-self: center;
-                justify-self: center;
-            }
-
-            .velkommen {
-                grid-area: velkommen;
-                align-self: center;
-                justify-self: center;
-            }
-
-            .form-label {
-                font-weight: bold;
-            } */
-
-            
-        </style>
 
         <script src="js/popper.min.js"></script>
         <script src="js/bootstrap.min.js"></script>

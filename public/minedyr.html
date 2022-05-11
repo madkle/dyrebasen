@@ -41,11 +41,11 @@
       </nav>
     
     <!-- Edit Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="editDyrModal" tabindex="-1" aria-labelledby="editDyrModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Rediger kanin</h5>
+                    <h5 class="modal-title" id="editDyrModalLabel">Rediger kanin</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -147,61 +147,57 @@
         </div>
     </div>    
     <!----------- HTML-elements -------------->
-
-    <h1 class="text-center m-5" >MINE DYR</h1>
-
-    <div id="container" class="container"></div>
+    <div class="container-fluid">
+        <h1 class="text-center m-5" >MINE DYR</h1>
+        <div class="col text-center">
+            <a class="regKanin btn btn-secondary shadow justify-self-center text-light" href="regdyr.html">Registrer ny kani</a>
+        </div>
+        <br><br>
+        <div id="container" class="container"></div>
+    </div>
+    
 
     
     <!------------- JavaScript --------------->
     <script type="module">
         import {getToken} from "/js/user.js";
         
-        import {listAnimals, updateAnimal} from "/js/dyr.js";
+        import {activeID, originalInputValues, listAnimals, updateAnimal} from "/js/dyr.js";
         import {generatePDF} from "/js/pdf.js";
-        let loggedInUserId = await getToken();
+        let loggedInToken = await getToken();
         let container = document.getElementById('container');
         let btnEditAnimal = document.getElementById('btnEditAnimal');
         let testBilde = document.getElementById('testBilde'); 
-        let activeID = null;
-        listAnimals();
         
-        let originalInputValues = {};
-        async function loadHTMLElements(selectedID) {
-            
+        let inpRegNr = document.getElementById('inpRegNr');
+        let inpVø = document.getElementById('inpVø');
+        let inpFdato = document.getElementById('inpFdato');
+        let inpKullNr = document.getElementById('inpKullNr');
+        let dropKjønn = document.getElementById('dropKjønn');
+        let inpInnavlsgrad = document.getElementById('inpInnavlsgrad');
+        let inpPoeng = document.getElementById('inpPoeng');
+        let inpFarge = document.getElementById('inpFarge');
+        let fargeValg = document.getElementById('fargeValg')
+        let inpFar = document.getElementById('inpFar');
+        let valgFar = document.getElementById('valgFar');
+        let inpMor = document.getElementById('inpMor');
+        let valgMor = document.getElementById('valgMor');
+        let inpBilde = document.getElementById('inpBilde');
+        let bildeData = null;
 
-            let clickedAnimal = "";
-            clickedAnimal = await getSingleAnimal(selectedID)
-            
-            inpRegNr.value = clickedAnimal.regnr;
-            inpVø.value = clickedAnimal.vø;
-            inpFdato.value = clickedAnimal.fdato;
-            inpKullNr.value = clickedAnimal.kullnr;
-            dropKjønn.value = clickedAnimal.kjønn;
-            inpInnavlsgrad.value = clickedAnimal.innavlsgrad;
-            inpPoeng.value = clickedAnimal.poeng;
-            inpFarge.value = clickedAnimal.farge;
-            inpFar.value = clickedAnimal.far;
-            inpMor.value = clickedAnimal.mor;
-            //inpBilde.value = clickedAnimal.bilde;
+        inpBilde.addEventListener("change", function (evt) {
+            let fr = new FileReader();
+            fr.addEventListener("load", function (evt) {
+                bildeData = fr.result;
+            });
+            fr.readAsDataURL(inpBilde.files[0]);
+        })
 
-            originalInputValues = {
-                regnr: inpRegNr.value,
-                vø: inpVø.value,
-                fdato: inpFdato.value,
-                kullnr: inpKullNr.value,
-                kjønn: dropKjønn.value,
-                innavlsgrad: inpInnavlsgrad.value,
-                poeng: inpPoeng.value,
-                farge: inpFarge.value,
-                far: inpFar.value,
-                mor: inpMor.value,
-                bilde: inpBilde.value
-            }
-            activeID = selectedID;
-            //console.log(originalInputValues);
-        }
-        function filterUpdata(params) {
+
+
+        listAnimals();
+
+        function filterUpdata() {
             let updata = {
                 did: activeID,
                 regnr: inpRegNr.value,
@@ -217,7 +213,7 @@
                 bilde: bildeData
             }
             for (const key in updata) {
-                if (updata[key] === originalInputValues[key] || key === "bilde") {
+                if (updata[key] === originalInputValues[key] || updata[key] === null) {
                     delete updata[key]
                 }
             }
@@ -239,7 +235,11 @@
 
     <!---------------- CSS ------------------->
     <style>    
-
+    .regKanin{
+        width: 50%;
+        height: 50px;
+        font-size: larger;
+    }
 .container {
     display: grid;
   grid-template-columns: 1fr 1fr;
