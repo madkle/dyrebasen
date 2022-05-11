@@ -1,6 +1,7 @@
+/*
 const { all, set } = require("express/lib/application");
 const { get } = require("express/lib/response");
-
+*/
 async function getAllAnimals() {
     let url = "/dyr";
         try {
@@ -22,9 +23,9 @@ async function listAnimals() {
     let data = await getAllAnimals();
     let valgtFarFar = document.getElementById('valgtFarFar');
     let allAnimals = document.querySelectorAll(".item");
-    /* let stamLinjer = document.querySelectorAll(".itemLine"); */
+    let stamLinjer = document.querySelectorAll(".itemLine");
 
-    container.innerHTML = "Velg dyr:<hr>";
+    container.innerHTML = "<h3 class='text-center'>Velg dyr:</h3><hr class='m-1'>";
 
     for (let value of data) {
         let testBilde = "bilder/kanin_standardbilde.jpeg";
@@ -59,7 +60,7 @@ async function listAnimals() {
 
         let html1 = 
             `<img class="item1" src="${value.bilde}" alt="bilde av kanin"/>
-            <p class="item2">ID: ${value.did} </p>`
+            <p class="item2" style="padding-top: 5px;">Reg.nr: ${value.regnr} </p>`
 
 
             
@@ -73,7 +74,7 @@ async function listAnimals() {
         let valgtDID = value.did;
         div.addEventListener('click',  function(evt) {
             //valgtFarFar.classList.remove("valgtFarFarStart");
-            console.log(allAnimals);
+            //console.log(allAnimals);
 
             //let allAnimals = document.querySelectorAll(".item");
             if (!allAnimals[0].classList.contains("stamtavleStart")) {
@@ -89,6 +90,24 @@ async function listAnimals() {
                         allAnimals[6].classList.add("stamtavleStart");
                     
             };
+
+            if (!stamLinjer[0].classList.contains("lineStart")) {
+                        stamLinjer[0].classList.add("lineStart");
+                        stamLinjer[1].classList.add("lineStart");
+                        stamLinjer[2].classList.add("lineStart");
+                        stamLinjer[3].classList.add("lineStart");
+                        stamLinjer[4].classList.add("lineStart");
+                        stamLinjer[5].classList.add("lineStart");
+                        stamLinjer[6].classList.add("lineStart");
+                        stamLinjer[7].classList.add("lineStart");
+                        stamLinjer[8].classList.add("lineStart");
+                        stamLinjer[9].classList.add("lineStart");
+                        stamLinjer[10].classList.add("lineStart");
+                        stamLinjer[11].classList.add("lineStart");
+                        stamLinjer[12].classList.add("lineStart");
+                        stamLinjer[13].classList.add("lineStart");
+            }
+            
 
             setTimeout (function() {
                 allAnimals[0].classList.remove("stamtavleStart");
@@ -110,6 +129,23 @@ async function listAnimals() {
             setTimeout (function() {
             chooseAnimal(valgtDID);
             }, 1000);
+
+            setTimeout (function() {
+                stamLinjer[0].classList.remove("lineStart");
+                stamLinjer[1].classList.remove("lineStart");
+                stamLinjer[2].classList.remove("lineStart");
+                stamLinjer[3].classList.remove("lineStart");
+                stamLinjer[4].classList.remove("lineStart");
+                stamLinjer[5].classList.remove("lineStart");
+                stamLinjer[6].classList.remove("lineStart");
+                stamLinjer[7].classList.remove("lineStart");
+                stamLinjer[8].classList.remove("lineStart");
+                stamLinjer[9].classList.remove("lineStart");
+                stamLinjer[10].classList.remove("lineStart");
+                stamLinjer[11].classList.remove("lineStart");
+                stamLinjer[12].classList.remove("lineStart");
+                stamLinjer[13].classList.remove("lineStart");
+            }, 2700)
 
             /* for (const animal of allAnimals) {
                 
@@ -141,7 +177,7 @@ async function chooseAnimal(incomingID) {
 
 
     for (let value of data) {
-        console.log(value);
+        //console.log(value);
         if (value.did !== incomingID) {
             continue;
         } 
@@ -172,21 +208,45 @@ async function chooseAnimal(incomingID) {
             
         let html = `
             <img class="stamtavlebilde" src="${value.bilde}" width="100px" alt="bilde av kanin"/>
-            <p class="item2">ID: ${incomingID} </p>
+            <p class="item2 text-center">ID: ${incomingID} </p>
             <p class="item3">Reg.nr: ${value.regnr}</p>
             <p class="item4">V.Ø.: ${value.vø}</p>
-            <p class="item5">Fødselsdato: ${dateFormatert} </p>
-            <p class="item6">Kullnummer: ${value.kullnr} </p>
+            <p class="item5">Født: ${dateFormatert} </p>
+            <p class="item6">Kull.nr: ${value.kullnr} </p>
             <p class="item7">Kjønn: ${value.kjønn} </p>
             <p class="item8">Innavlsgrad: ${value.innavlsgrad}</p>
             <p class="item9">Poeng: ${value.poeng} </p>
             <p class="item10">Farge: ${value.farge}</p>
-            <p class="item11">Far: ${value.far} </p>
-            <p class="item12">Mor: ${value.mor} </p>
+        
         `
 
-    
-        valgtDyr.innerHTML = html;
+        let html2 = `
+            <img class="stamtavlebilde" src="${value.bilde}" width="100px" alt="bilde av kanin"/>
+            <p class="item20">ID: ${incomingID} </p>
+            <p class="item3">Reg.nr: ${value.regnr}</p>
+            <p class="item4">V.Ø.: ${value.vø}</p>
+        `
+
+        valgtDyr.innerHTML = html2;
+        const item =  document.querySelectorAll(".item")[0];
+        //console.log(item);
+        item.addEventListener("mouseenter", mouseOver);
+        item.addEventListener("mouseleave", mouseOut);
+
+        function mouseOver(e) {
+            e.preventDefault();
+            console.log(e.currentTarget);
+            console.log("????");
+            item.innerHTML = " ";
+            item.innerHTML = html;
+        }
+       
+        function mouseOut(e) {
+            console.log("!!!!")
+            item.innerHTML = " ";
+            item.innerHTML = html2;
+        }
+
     
         valgtDyr.classList.add("valgtDyr"); 
 

@@ -35,11 +35,44 @@
         </div>
       </nav>
 
-
     <script>
 
 
     </script>
+
+    <style>
+      label{
+        font-weight: bold;
+      }   
+
+      #inpFarge {
+        width: auto;
+      }
+
+      /* .form-control {
+        width: auto;
+      } */
+
+      body {
+        background-color: antiquewhite;
+      }
+
+      .regdyr {
+        
+        margin: auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 20vh 1fr 1fr;
+        grid-template-areas: 
+            ". . ."
+            ". card ."
+            ". . .";
+      }
+      .card {
+        grid-area: card;
+        width: 600px;
+      }
+    </style>
     
     <script src="js/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
