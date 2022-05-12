@@ -43,7 +43,9 @@ async function getSingleAnimal(id) {
         if (id !== null) {
             let response = await fetch(url);
             let data = await response.json();
-            if (response.status != 200) {
+            if (response.status === 404) {
+                return blankFamily;
+            }else if (response.status != 200) {
                 throw data.error;
             }
             
@@ -85,6 +87,7 @@ async function generatePDF(clickedAnimal){
     let mainAnimal = await getSingleAnimal(clickedAnimal); 
     let family = await getParents(mainAnimal);
     mainAnimal = removeNull(mainAnimal);
+    console.log(family);
     const styling = {margin_x:10, margin_y:5};
     
     const generations = 3;

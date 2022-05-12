@@ -4,9 +4,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script>
     
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <script src="js/stamtavle.js"></script>
+    <script src="js/pdf.js"></script>
     <title>Dyrebasen - Stamtavle</title>
 </head>
 <body class="bg-2">
@@ -44,12 +46,12 @@
 
       <div id="stamtavle" class="container">
           <div class="item shadow rounded valgtDyr stamtavleStart" id="valgtDyr">Velg en kanin</div>
-          <div class="item shadow rounded valgtFar stamtavleStart male male1">Far</div>
-          <div class="item shadow rounded valgtMor stamtavleStart female female1">Mor</div>
-          <div class="item shadow rounded valgtFarFar stamtavleStart male male2" id="valgtFarFar">Farfar</div>
-          <div class="item shadow rounded valgtFarMor stamtavleStart female female2">Farmor</div>
-          <div class="item shadow rounded valgtMorFar stamtavleStart male male2">Morfar</div>
-          <div class="item shadow rounded valgtMorMor stamtavleStart female female2">Mormor</div>
+          <div class="item shadow rounded valgtDyrFamilie valgtFar stamtavleStart male male1" id="far">Far</div>
+          <div class="item shadow rounded valgtDyrFamilie valgtMor stamtavleStart female female1" id="mor">Mor</div>
+          <div class="item shadow rounded valgtDyrFamilie valgtFarFar stamtavleStart male male2" id="farfar">Farfar</div>
+          <div class="item shadow rounded valgtDyrFamilie valgtFarMor stamtavleStart female female2" id="farmor">Farmor</div>
+          <div class="item shadow rounded valgtDyrFamilie valgtMorFar stamtavleStart male male2" id="morfar">Morfar</div>
+          <div class="item shadow rounded valgtDyrFamilie valgtMorMor stamtavleStart female female2" id="mormor">Mormor</div>
           <div class="itemLine fadeIn lineStart lbb2"></div>
           <div class="itemLine fadeIn lineStart lbb"></div>
           <div class="itemLine fadeIn lineStart lbr"></div>
@@ -64,8 +66,6 @@
           <div class="itemLine fadeIn lineStart rbl2"></div>
           <div class="itemLine fadeIn lineStart rbr3"></div>
           <div class="itemLine fadeIn lineStart rbt"></div>
-          
-          
       </div>
 
 <script>
@@ -75,6 +75,14 @@
     let testBilde = document.getElementById('testBilde'); 
     let valgtDyr = document.getElementById('valgtDyr');
     let stamtavle = document.getElementById('stamtavle');
+    let far = document.getElementById('far');
+    let mor = document.getElementById('mor');
+    let farfar = document.getElementById('farfar');
+    let farmor = document.getElementById('farmor');
+    let morfar = document.getElementById('morfar');
+    let mormor = document.getElementById('mormor');
+
+
 
     listAnimals();
     
@@ -143,29 +151,29 @@
     .valgtFar {
         grid-area: far;
         border: 2px solid blue;
-        transition:all var(--time2);}
+        transition:all var(--time2), font-size 0s, padding-top 0s;;}
     .valgtMor {
         grid-area: mor;
         border: 2px solid red;
-        transition:all var(--time2);}
+        transition:all var(--time2), font-size 0s, padding-top 0s;;}
     .valgtFarFar {
         grid-area: farfar;
         border: 2px solid blue;
         background-color: blue;
-        transition:all var(--time2);}      
+        transition:all var(--time2), font-size 0s, padding-top 0s;;}      
     .valgtFarMor {
         grid-area: farmor;
         border: 2px solid red;
         background-color: red;
-        transition: var(--time2); }
+        transition: var(--time2), font-size 0s, padding-top 0s;; }
     .valgtMorFar {
         grid-area: morfar;
         border: 2px solid blue;
-        transition:all var(--time2);}
+        transition:all var(--time2), font-size 0s, padding-top 0s;;}
     .valgtMorMor {
         grid-area: mormor;
         border: 2px solid red;
-        transition:all var(--time2);}
+        transition:all var(--time2), font-size 0s, padding-top 0s;;}
 
     .stamtavleStart {
         transform: scale(0) /* translateY(300px) */;
@@ -306,7 +314,7 @@
 
 
     .item {
-        background-color: rgb(240, 199, 155);
+        background-color: rgb(220, 220, 220);
     }
 
 
@@ -316,24 +324,25 @@
     }
     .valgtDyr:hover {
         display: grid;
-        grid-template-columns: 70px 115px 115px;
-        grid-template-rows: 37.5px 37.5px 37.5px 37.5px;
+        grid-template-columns: 80px 110px 110px;
+        grid-template-rows: 10px 26px 26px 26px 26px 26px 10px;
         grid-template-areas: 
+            ". . ."
             "img regNr vø "
             "img poeng innavlsgrad "
             "img kullNr farge"
-            "did fDato kjønn";
+            "did fDato kjønn"
+            "did genstam genstam"
+            ". . .";
     
 
-        border: 1px solid gray;
-        cursor: pointer;
-        padding-top: 10px;
+        /* border: 1px solid gray; */
         font-size: x-small;
     }
 
     .valgtDyr {
         display: grid;
-        grid-template-columns: 150px 150px;
+        grid-template-columns: 125px 175px;
         grid-template-rows: 30px 30px 30px 30px 30px;
         grid-template-areas: 
             "img ."
@@ -341,10 +350,41 @@
             "img regNr"
             "img vø"
             "img .";
-        border: 1px solid gray;
+        /* border: 1px solid gray; */
         cursor: pointer;
-        background-color: rgb(240, 199, 155);
         font-size: medium;
+    }
+
+    .valgtDyrFamilie {
+        display: grid;
+        grid-template-columns: 100px 150px;
+        grid-template-rows: 12.5px 25px 25px 25px 12.5px;
+        grid-template-areas: 
+            "img ."
+            "img did2"
+            "img regNr"
+            "img vø"
+            "img .";
+        /* border: 1px solid gray; */
+        cursor: pointer;
+        font-size: small;
+    }
+
+    .valgtDyrFamilie:hover {
+        display: grid;
+        grid-template-columns: 70px 90px 90px;
+        grid-template-rows: 25px 25px 25px 25px;
+        grid-template-areas: 
+            "img regNr vø "
+            "img poeng innavlsgrad "
+            "img kullNr farge"
+            "did fDato kjønn";
+    
+
+        /* border: 1px solid gray; */
+        cursor: pointer;
+        padding-top: 5px;
+        font-size: xx-small;
     }
 
     /* #valgtDyr {
@@ -369,9 +409,10 @@
 }
 
 .sidebar {
-    width: 200px;
-    background-color: rgb(240, 199, 155);
-    border-right: 1px solid grey;
+    width: 180px;
+    background-color: rgb(220, 220, 220);
+    /* border-right: 1px solid grey; */
+    
 }
 
 .item1 {grid-area: img;
@@ -383,11 +424,11 @@
 .item2 {grid-area: did;
         /* align-self: center;
         justify-self: center; */
-        font-weight: bold;}
+        /* font-weight: bold; */}
 
-.item20 {grid-area: did2;
+.item2hover {grid-area: did2;
     align-self: center;
-        font-weight: bold;}
+        /* font-weight: bold; */}
 
 .item3 {grid-area: regNr;}
 .item4 {grid-area: vø;}
@@ -403,7 +444,10 @@
     margin: auto;}
 .rediger {grid-area: rediger;
     margin: auto;}
-.genstam {grid-area: genstam;} 
+.genstam {grid-area: genstam;
+    font-size: xx-small;
+    width: 200px;
+    } 
 
 .mineDyr {
     display: grid;
