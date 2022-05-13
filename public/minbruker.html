@@ -103,7 +103,7 @@
       </div>
     </div> 
 
-    <div class="index">
+    <div class="index mt-2">
       <h1 class="text-center velkommen">Velkommen til Dyrebasen!</h1>
       <div class="container-fluid justify-self-center logregcard">    
         <!-- CARD -->
@@ -123,6 +123,8 @@
                   <button type="submit" class="btn btn-secondary rounded-pill" id="btnOpenEditUser" data-bs-toggle="modal" data-bs-target="#editBrukerModal" >Rediger</button>
                   <button type="submit" class="btn btn-secondary rounded-pill" id="btnLogout">Log ut</button>
                 </div>
+
+                <p id="checksamePwdResponseTxt" class="text-center text-danger mt-2"></p>
                 <!--</form>-->
               </div>
             </div>
@@ -149,20 +151,20 @@
       let btnEditAnimal = document.getElementById("btnEditAnimal")
 
       let originalInputValues = {}
-      /*
-        if (checkNewPwd.value !== inpNewPwd.value) {
-            checkResponseTxt.innerHTML = "not the same password";
-            return
-          }
-          updateUser(inpFornavn,inpEtternavn,inpEpost,inpBrukernavn,inpNewPwd,checkNewPwd)
-        
-      */
+      
+      loadHTML();
+      
       btnCheckPwd.addEventListener("click", async function(evt){
         evt.preventDefault()
-        if (checkOldPassword()) {
+        
+        if (await checkOldPassword()) {
           checkResponseTxt.hidden = true;
           changePwd.hidden = !changePwd.hidden;
-          }
+        }else{    
+          checkResponseTxt.hidden = false;
+          changePwd.hidden = true;
+        }
+        
       })
       async function checkOldPassword() {
         let url = "/bruker/login";
@@ -181,19 +183,19 @@
                 if (response.status !== 200) {
                     throw data.error;
                 }
-                return true 
+                return true; 
                 
             }
             catch(error) {
-                console.log(error);
-                
                 checkResponseTxt.innerHTML = error
+                return false;
+                
             }
       }
-      loadHTML();
+      
       async function loadHTML() {
         let data = await getUserInfo(loggedInToken.userid);
-        
+        changePwd.hidden = true;
         let html = `
           <h3><b>Navn: </b> ${data.fornavn} ${data.etternavn}</h2>
           <p><b>Brukernavn: </b>${data.brukernavn}</p>
@@ -201,7 +203,6 @@
         `
         divCardBody.innerHTML = html;
       }
-      
       
       btnOpenEditUser.addEventListener("click", async function(evt){
         evt.preventDefault();
@@ -216,30 +217,49 @@
           fornavn: inpFornavn.value,
           etternavn: inpEtternavn.value,
           epost: inpEpost.value,
-          brukernavn: inpBrukernavn.value
+          brukernavn: inpBrukernavn.value,
+          
         };
         
       });
+      
       btnEditUser.addEventListener("click", async function(evt){
         evt.preventDefault();
+        if(inpNewPwd.value !== checkNewPwd.value){
+          checksamePwdResponseTxt.hidden = false;
+          checksamePwdResponseTxt.innerHTML = "Ikke samme passord! Prøv igjen"
+          return
+        }else{
+          checkResponseTxt.hidden = true;
+          checkResponseTxt.innerHTML = ""
+        }
         let updata = filterUpdata();
         if (Object.keys(updata).length > 1) {
           await updateUser(updata);
+          
+          loadHTML();
         }else{
           throw "nothing changed"
         }
-      })
+      });
+
       function filterUpdata() {
             let updata = {
+              bid: loggedInToken.userid,
               fornavn: inpFornavn.value,
               etternavn: inpEtternavn.value,
               epost: inpEpost.value,
-              brukernavn: inpBrukernavn.value
+              brukernavn: inpBrukernavn.value,
+              passord: inpNewPwd.value
             }
+            console.log(updata);
             for (const key in updata) {
-                if (updata[key] === originalInputValues[key] || updata[key] === null) {
-                    delete updata[key]
+                if (updata[key] === originalInputValues[key] || updata[key] === null || updata[key] === "") {
+                  delete updata[key]
                 }
+            }
+            if (updata.passord) {
+              updata.brukernavn = inpBrukernavn.value;
             }
             return updata;
         }

@@ -1,6 +1,7 @@
 const express = require("express")
 let router = express.Router();
-const pg = require("pg")
+const pg = require("pg");
+const { createHash } = require("../modules/auth.js");
 const auth = require("../modules/auth.js");
 const dbURI = "postgres://ljupupvyxeapow:df73019adda4ad7057438ca69f2cbc43913e80da17134bb9d0dc24f96f4fd5ad@ec2-52-208-145-55.eu-west-1.compute.amazonaws.com:5432/d1lljguu066joa";
 const connstring = process.env.DATABASE_URL || dbURI;
@@ -78,8 +79,8 @@ router.delete("/dyr/:id", async function(req, res, next){
 
 router.post("/dyr", normalize, async function(req, res, next)  {
     
-    let updata = req.body
-    console.log(updata);
+    let updata = req.body;
+    
     try{
         let sql = `INSERT INTO dyr (did, regnr, vø, fdato, kullnr, kjønn, innavlsgrad, poeng, farge, far, mor , bidfk, aidfk, bilde) 
         VALUES 
@@ -120,7 +121,7 @@ router.put("/dyr", normalize, async function(req, res, next)  {
         sql += ` WHERE did = $1 returning *`;
         let result= await pool.query(sql, values);
         if(result.rows.length > 0){
-            res.status(200).json({msg : "Updated to database"}).end();
+            res.status(200).json({msg : "Updated the database"}).end();
         }
         else{
             throw "could not add to the database.";
@@ -136,24 +137,46 @@ router.put("/dyr", normalize, async function(req, res, next)  {
 
 // bruker ------------------------------------------
 //hent alle brukere
-/*
-router.put("/bruker/:id", async function(req, res, next)  {
+
+router.put("/bruker", normalize, async function(req, res, next)  {
     let updata = req.body;
+    let credstring = req.headers.authorization;
+    let cred = "";
+    if (credstring !== "") {
+        cred = auth.decodeCred(credstring);
+        updata.brukernavn = cred.username;
+        let hash = createHash(cred.password);
+        updata.passord = hash.value;
+        updata.salt = hash.salt;
+    }
     try{
-        let sql = "UPDATE bruker SET fornavn = $1 WHERE aid = $2 returning *";
-        let values = [updata.navn, updata.aid];
+        let count = 2;
+        let sql = `UPDATE bruker SET`;
+        let values = [updata.bid];
+        for (const key in updata) { 
+            if (key=== "bid") {continue}
+            if(count === 2){
+                sql += ` ${key} = $${count}`;
+            }else{
+                sql += `, ${key} = $${count}`;
+            }
+            values.push(updata[key]);
+            count++;
+        }
+        sql += ` WHERE bid = $1 returning *`;
         let result= await pool.query(sql, values);
         if(result.rows.length > 0){
-            res.status(200).json({msg : "Updated to database"}).end();
+            res.status(200).json({msg : "Updated the database"}).end();
         }
         else{
-        throw "Could not add to the database.";
+            throw "could not add to the database.";
         }
+        
     }catch(err){
         res.status(500).json({error: err}).end();
     }
 });
-*/
+
 router.get("/bruker", async function(req, res, next){
     let sql = `
     SELECT * 

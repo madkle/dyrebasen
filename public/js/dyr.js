@@ -2,8 +2,9 @@ import {getToken} from "./user.js";
 import {colourArr} from "./colour.js";
 import {generatePDF} from "/js/pdf.js";
 //import {loadHTMLElements} from "../minedyr.html"
-let loggedInToken = await getToken();
+
 export async function getAllAnimals() {
+    let loggedInToken = await getToken();
     let url = "/dyr";
     
     let cfg = {
@@ -63,14 +64,14 @@ export async function getSingleAnimal(id) {
     }
 };
 export async function addAnimal(updata) {
+    let loggedInToken = await getToken();
     let url = "/dyr";
-    updata.bid = loggedInToken;
+    updata.bid = loggedInToken.userid;
     let cfg = {
         method: "POST",
         headers: {"content-type":"application/json"},
         body: JSON.stringify(updata)
     }
-    console.log(updata);
     try {
         let response = await fetch(url, cfg);
         let data = await response.json();
@@ -78,10 +79,12 @@ export async function addAnimal(updata) {
         if (response.status != 200) {
             throw data.error;
         }
+
+        return {status: 200, msg: "added to database"}
     }
     catch(error) {
         console.log(error);
-        txtResult.innerHTML = "Noe gikk galt - sjekk konsollvinduet"
+        return {status: 500, msg: "something went wrong! Could not add to database"}
     }
   
 }

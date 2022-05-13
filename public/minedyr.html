@@ -144,13 +144,13 @@
                 <button type="button" id="btnEditAnimal" class="btn btn-primary" data-bs-dismiss="modal">Lagre endringer</button>
                 </div>
             </div>
-        </div>
+        </div> 
     </div>    
     <!----------- HTML-elements -------------->
     <div class="container-fluid">
         <h1 class="text-center m-5" >MINE DYR</h1>
         <div class="col text-center">
-            <a class="regKanin btn btn-secondary shadow justify-self-center text-light" href="regdyr.html">Registrer ny kani</a>
+            <a class="regKanin btn btn-secondary shadow justify-self-center text-light" href="regdyr.html">Registrer ny kanin</a>
         </div>
         <br><br>
         <div id="container" class="container"></div>
@@ -222,7 +222,9 @@
         btnEditAnimal.addEventListener('click', async function (evt) {
             evt.preventDefault();
             let updata = filterUpdata();
+            console.log(updata);
             if (Object.keys(updata).length > 1) {
+                
                 await updateAnimal(updata);
             }else{
                 throw "nothing changed"
