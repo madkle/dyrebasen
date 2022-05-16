@@ -132,7 +132,7 @@ async function animation(ID) {
     setTimeout (function() {
         fam = {};
         chooseAnimal(ID);
-    }, 900);
+    }, 700);
 
     setTimeout (function() {
         stamLinjer[0].classList.remove("lineStart");
@@ -174,18 +174,18 @@ async function chooseAnimal(incomingID) {
 }
 function generateBoxes() {
     let divListArr = []
-    let familyArr = ["Far","Mor","FarFar","FarMor","MorFar","MorMor"]
+    let familyArr = ["far","mor","farfar","farmor","morfar","mormor"]
     for (let i = 0; i < 7; i++) {
         let div = document.createElement("div");
         div.classList.add("item");
         div.classList.add("shadow");
         div.classList.add("rounded");
         
-        let valgDyrXTxt = "valgDyrFamilie"
+        let valgtDyrXTxt = "valgtDyrFamilie"
         if (i === 0) {
-            valgDyrXTxt = "valgtDyr"
+            valgtDyrXTxt = "valgtDyr"
         }
-        div.classList.add(valgDyrXTxt);
+        div.classList.add(valgtDyrXTxt);
         let valgtXTxt = "valgt"
         let genderTxt = "male";
         let genderGenerationTxt = ""
@@ -194,7 +194,7 @@ function generateBoxes() {
             div.classList.add(valgtXTxt);
 
             let lastThreeCharacters = valgtXTxt.substring(valgtXTxt.length-3);
-            if(lastThreeCharacters === "Mor"){
+            if(lastThreeCharacters === "mor"){
                 genderTxt = "female"
             }
             div.classList.add(genderTxt);
