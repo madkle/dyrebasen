@@ -49,7 +49,6 @@ router.get("/search", async function(req, res, next){
         WHERE ${inSql} AND dyr.bidfk = ${userId}
         ORDER BY did
     `; 
-    console.log(sql);
     try {
         let result = await pool.query(sql);
         
