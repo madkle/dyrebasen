@@ -46,12 +46,19 @@
 
       <div id="stamtavle" class="container">
           <div class="item shadow rounded valgtDyr stamtavleStart" id="valgtDyr">Velg en kanin</div>
+
           <div class="item shadow rounded valgtDyrFamilie valgtFar stamtavleStart male male1" id="far">Far</div>
-          <div class="item shadow rounded valgtDyrFamilie valgtMor stamtavleStart female female1" id="mor">Mor</div>
+
           <div class="item shadow rounded valgtDyrFamilie valgtFarFar stamtavleStart male male2" id="farfar">Farfar</div>
+
           <div class="item shadow rounded valgtDyrFamilie valgtFarMor stamtavleStart female female2" id="farmor">Farmor</div>
+
+          <div class="item shadow rounded valgtDyrFamilie valgtMor stamtavleStart female female1" id="mor">Mor</div>
+
           <div class="item shadow rounded valgtDyrFamilie valgtMorFar stamtavleStart male male2" id="morfar">Morfar</div>
+
           <div class="item shadow rounded valgtDyrFamilie valgtMorMor stamtavleStart female female2" id="mormor">Mormor</div>
+
           <div class="itemLine fadeIn lineStart lbb2"></div>
           <div class="itemLine fadeIn lineStart lbb"></div>
           <div class="itemLine fadeIn lineStart lbr"></div>
@@ -81,19 +88,10 @@
     let farmor = document.getElementById('farmor');
     let morfar = document.getElementById('morfar');
     let mormor = document.getElementById('mormor');
-
-
+    
+   
 
     listAnimals();
-    
-
-    
-    
-
-    
-
-    
-
 
 </script>
 
@@ -216,9 +214,6 @@
         ". . . . . . dyr dyr dyr dyr . . . . . .";
         
     }
-    /* .container:hover {
-        transform: scale(0.5,0.5);
-    } */
 
     .lineStart {
         opacity: 0;
@@ -252,7 +247,6 @@
         border-right: 1px solid black;
         transition: 1s;
     }
-
     .lbt {
         grid-area: lbt;
         border-top: 1px solid black;

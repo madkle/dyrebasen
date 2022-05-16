@@ -23,7 +23,6 @@ async function getAllAnimals() {
 
 async function listAnimals() {
     let data = await getAllAnimals();
-    let valgtFarFar = document.getElementById('valgtFarFar');
 
     container.innerHTML = "<h3 class='text-center'>Velg dyr:</h3><hr class='m-1'>";
 
@@ -72,19 +71,16 @@ async function listAnimals() {
         let valgtDID = value.did;
         div.addEventListener('click',  function(evt) {
             animation(valgtDID);
-            //valgtFarFar.classList.remove("valgtFarFarStart");
-            //console.log(allAnimals);
-
-            //let allAnimals = document.querySelectorAll(".item");
-           
         });
     }
 }
 
-function animation(ID) {
+async function animation(ID) {
+    await resetStamtavle()
+
     let allAnimals = document.querySelectorAll(".item");
     let stamLinjer = document.querySelectorAll(".itemLine");
-
+    
 
     if (!allAnimals[0].classList.contains("stamtavleStart")) {
                     
@@ -154,40 +150,20 @@ function animation(ID) {
         stamLinjer[12].classList.remove("lineStart");
         stamLinjer[13].classList.remove("lineStart");
     }, 2700)
-
-    /* for (const animal of allAnimals) {
-        
-        
-        if (animal.classList.contains("valgtFar")||animal.classList.contains("valgtMor")) {
-            setTimeout(function() {
-                animal.classList.remove("stamtavleStart");
-            },500);
-        } else if (animal.classList.contains("valgtFarFar")||animal.classList.contains("valgtFarMor") || animal.classList.contains("valgtMorFar")||animal.classList.contains("valgtMorMor")) {
-            setTimeout(function() {
-                animal.classList.remove("stamtavleStart");
-            },1000);
-        } else {
-            animal.classList.remove("stamtavleStart");
-        }
-        
-    } */
 }
-
-
 
 async function chooseAnimal(incomingID) {
     let data = await getAllAnimals();
     fam = genFam(incomingID,data);
-
     let boxIndex = 0;
     for (const key in fam) {
         let animal = fam[key];
+        
         if (key === "child") {
             drawAnmial(animal,boxIndex);
             boxIndex++
             continue;
         }
-
         for (const value of animal) {
             drawAnmial(value,boxIndex);
             boxIndex++
@@ -196,12 +172,68 @@ async function chooseAnimal(incomingID) {
     }
     
 }
+function generateBoxes() {
+    let divListArr = []
+    let familyArr = ["Far","Mor","FarFar","FarMor","MorFar","MorMor"]
+    for (let i = 0; i < 7; i++) {
+        let div = document.createElement("div");
+        div.classList.add("item");
+        div.classList.add("shadow");
+        div.classList.add("rounded");
+        
+        let valgDyrXTxt = "valgDyrFamilie"
+        if (i === 0) {
+            valgDyrXTxt = "valgtDyr"
+        }
+        div.classList.add(valgDyrXTxt);
+        let valgtXTxt = "valgt"
+        let genderTxt = "male";
+        let genderGenerationTxt = ""
+        if (i !== 0) {
+            valgtXTxt+=familyArr[i-1];
+            div.classList.add(valgtXTxt);
+
+            let lastThreeCharacters = valgtXTxt.substring(valgtXTxt.length-3);
+            if(lastThreeCharacters === "Mor"){
+                genderTxt = "female"
+            }
+            div.classList.add(genderTxt);
+
+            if (valgtXTxt.length === 8) {
+                genderGenerationTxt = genderTxt + "1"
+            }else{
+                genderGenerationTxt = genderTxt + "2"
+            }
+            div.classList.add(genderGenerationTxt);
+            div.id = familyArr[i-1].toLowerCase();
+            div.innerHTML = familyArr[i-1]
+        }else{
+            div.id = "valgtDyr"
+        }
+        div.classList.add("stamtavleStart");
+        divListArr.push(div);
+    }
+    return divListArr
+}
+
+function resetStamtavle() {
+    const items =  document.querySelectorAll(".item");
+    const stamtavle =  document.getElementById("stamtavle");
+    items.forEach(item =>{
+        item.remove()
+    })
+    let itemArr = generateBoxes();
+    itemArr.forEach(item =>{
+        stamtavle.appendChild(item)
+    });
+}
 
 function drawAnmial(value,box) {
-    //console.log(value);
+    
     let html = "";
     let html2 = "";
-    const item =  document.querySelectorAll(".item")[box];
+    const item = document.querySelectorAll(".item")[box];
+
     if (value !== undefined) {
         let testBilde = "bilder/kanin_standardbilde.jpeg";
         if (value.bilde === null) {
