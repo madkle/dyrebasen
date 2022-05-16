@@ -9,7 +9,6 @@ export function lookupColour(inpColour) {
     //inpColour = storForbokstav(inpColour);
 
     let foundColour = null;
-    console.log(colourArr);
     colourArr.forEach(element => {
         if (element.colour === inpColour) {
             foundColour = element;

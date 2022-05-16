@@ -1,7 +1,24 @@
 import {getToken} from "./user.js";
 import {colourArr} from "./colour.js";
 import {generatePDF} from "/js/pdf.js";
+import {storForbokstav} from "/js/form.js";
 //import {loadHTMLElements} from "../minedyr.html"
+
+export let activeID = null;
+export let originalInputValues = {
+    regnr: null,
+    vø: null,
+    fdato: null,
+    kullnr: null,
+    kjønn: null,
+    innavlsgrad: null,
+    poeng: null,
+    farge: null,
+    far: null,
+    mor: null,
+    bilde: null
+};
+
 
 export async function getAllAnimals() {
     let loggedInToken = await getToken();
@@ -112,7 +129,6 @@ export async function updateAnimal(updata) {
         txtResult.innerHTML = "Noe gikk galt - sjekk konsollvinduet"
     }
 }
-
 async function deleteAnimal(dyrID) {
     
     let url = `/dyr/${dyrID}`;
@@ -137,74 +153,70 @@ async function deleteAnimal(dyrID) {
         console.log(error);
     }
 } 
-
-        export let activeID = null;
-        export let originalInputValues = {
-            regnr: null,
-            vø: null,
-            fdato: null,
-            kullnr: null,
-            kjønn: null,
-            innavlsgrad: null,
-            poeng: null,
-            farge: null,
-            far: null,
-            mor: null,
-            bilde: null
-        };
-        async function loadHTMLElements(selectedID) {
+async function loadHTMLElements(selectedID) {      
+    let clickedAnimal = "";
+    clickedAnimal = await getSingleAnimal(selectedID)
             
+    inpRegNr.value = clickedAnimal.regnr;
+    inpVø.value = clickedAnimal.vø;
+    inpFdato.value = clickedAnimal.fdato;
+    inpKullNr.value = clickedAnimal.kullnr;
+    dropKjønn.value = clickedAnimal.kjønn;
+    inpInnavlsgrad.value = clickedAnimal.innavlsgrad;
+    inpPoeng.value = clickedAnimal.poeng;
+    inpFarge.value = clickedAnimal.farge;
+    inpFar.value = clickedAnimal.far;
+    inpMor.value = clickedAnimal.mor;
+    //inpBilde.value = clickedAnimal.bilde;
 
-            let clickedAnimal = "";
-            clickedAnimal = await getSingleAnimal(selectedID)
-            
-            inpRegNr.value = clickedAnimal.regnr;
-            inpVø.value = clickedAnimal.vø;
-            inpFdato.value = clickedAnimal.fdato;
-            inpKullNr.value = clickedAnimal.kullnr;
-            dropKjønn.value = clickedAnimal.kjønn;
-            inpInnavlsgrad.value = clickedAnimal.innavlsgrad;
-            inpPoeng.value = clickedAnimal.poeng;
-            inpFarge.value = clickedAnimal.farge;
-            inpFar.value = clickedAnimal.far;
-            inpMor.value = clickedAnimal.mor;
-            //inpBilde.value = clickedAnimal.bilde;
-
-            originalInputValues = {
-                regnr: inpRegNr.value,
-                vø: inpVø.value,
-                fdato: inpFdato.value,
-                kullnr: inpKullNr.value,
-                kjønn: dropKjønn.value,
-                innavlsgrad: inpInnavlsgrad.value,
-                poeng: inpPoeng.value,
-                farge: inpFarge.value,
-                far: inpFar.value,
-                mor: inpMor.value,
-                bilde: inpBilde.value
-            }
-            activeID = selectedID;
-            //console.log(originalInputValues);
-        }
-
-
+    originalInputValues = {
+        regnr: inpRegNr.value,
+        vø: inpVø.value,
+        fdato: inpFdato.value,
+        kullnr: inpKullNr.value,
+        kjønn: dropKjønn.value,
+        innavlsgrad: inpInnavlsgrad.value,
+        poeng: inpPoeng.value,
+        farge: inpFarge.value,
+        far: inpFar.value,
+        mor: inpMor.value,
+        bilde: inpBilde.value
+    }
+    activeID = selectedID;
+    //console.log(originalInputValues);
+}
 export async function listAnimals(filteredList) {
+    let allAnimals =  await getAllAnimals()
     
     let data = {}
+    let parentList = null;
+    let morID = "";
+    let farID = "";
     if (filteredList) {
         data = filteredList;
+        parentList = allAnimals;
     }else{
-        data = await getAllAnimals();
+        data = allAnimals;
+        parentList = data;
     }
+    
     container.innerHTML = " ";
-
     for (let value of data) {
         let testBilde = "bilder/kanin_standardbilde.jpeg";
         //console.log(value);
         if (value.bilde === null) {
             value.bilde = testBilde
         }
-        
+
+        for (const parent of parentList) {
+            if(value.mor !== null && value.mor === parent.did){        
+                morID = parent.did;
+            }
+            if(value.far !== null && value.far === parent.did){
+                farID = parent.did;
+            }
+        } 
+
         let fdato = value.fdato ;
         let dateFormatert = "";
         
@@ -213,18 +225,6 @@ export async function listAnimals(filteredList) {
             dateFormatert = `${d.getDate()}/${d.getMonth()}/${d.getFullYear()}`
         }
         
-        let morID = "";
-        let farID = "";
-        
-        for (const parent of data) {
-            if(value.mor !== null && value.mor === parent.did){
-                morID = parent.regnr;
-            }
-            if(value.far !== null && value.far === parent.did){
-                farID = parent.regnr;
-            }
-        }
-
         for (const item in value) {
             if (value[item] === null) {
                 value[item] = "";
@@ -241,8 +241,8 @@ export async function listAnimals(filteredList) {
             <p class="item8">Innavlsgrad: ${value.innavlsgrad}</p>
             <p class="item9">Poeng: ${value.poeng} </p>
             <p class="item10">Farge: ${value.farge}</p>
-            <p class="item11">Far: ${farID} </p>
-            <p class="item12">Mor: ${morID} </p><br>
+            <p class="item11">Far (ID): ${farID} </p>
+            <p class="item12">Mor (ID): ${morID} </p><br>
         `
 
         let div = document.createElement("div");
@@ -261,6 +261,7 @@ export async function listAnimals(filteredList) {
         editbtn.setAttribute("data-bs-toggle", "modal");
         editbtn.setAttribute("data-bs-target", "#editDyrModal");
         editbtn.addEventListener('click', function(){
+            loadFormElements()
             loadHTMLElements(value.did);
         })
         div.appendChild(editbtn);
@@ -292,38 +293,34 @@ export async function listAnimals(filteredList) {
         div.appendChild(genStam);
     }
 }
-export async function dbSearch(key,input) {
+export async function dbSearch(key,input,operator) {
     let loggedInToken = await getToken();
     let url = "/search";
-    
     let sql = ""
     switch (key) {
         case "far":
-            sql = `${key} = ${input}`;
+            sql = `${key} ${operator} ${input}`;
+            break
+        case "mor":
+            sql = `${key} ${operator} ${input}`;
             break
         case "farge":
             sql = `${key} LIKE '${input}%'`;
             break
-        case "fdato":
-            sql = ``;
-            break
-        case "innavlsgrad":
-            sql = ``;
-            break
-        case "kullnr":
-            sql = ``;
-            break
-        case "mor":
-            sql = ``;
-            break
-        case "poeng":
-            sql = ``;
-            break
         case "regnr":
-            sql = ``;
+            sql = `${key} ${operator} ${input}`;
             break
         case "vø":
-            sql = ``;
+            sql = `${key} LIKE '${input}%'`;
+            break
+        case "innavlsgrad":
+            sql = `${key} ${operator} ${input}`;
+            break
+        case "kullnr":
+            sql = `${key} ${operator} ${input}`;
+            break
+        case "poeng":
+            sql = `${key} ${operator} ${input}`;
             break
     }
 
@@ -346,7 +343,7 @@ export async function dbSearch(key,input) {
             return data;
         }
         catch(error) {
-            console.log(error);
+            return {msg: "failed to get", error:error};
         }
 }
 export async function loadFormElements() {
@@ -369,4 +366,4 @@ export async function loadFormElements() {
         valgMor.appendChild(option);
       }
     });
-  }
+}

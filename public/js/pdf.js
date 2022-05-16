@@ -1,5 +1,6 @@
 import {lookupColour} from "./colour.js";
-
+import {getUserInfo} from "./user.js";
+    
 async function getSingleAnimal(id) {
     let url = `/dyr/${id}`;
 
@@ -64,11 +65,12 @@ async function getParents(child) {
     }
     return family;
 };
-
 export async function generatePDF(clickedAnimal){
     let doc = new jsPDF();
-
+    
     let mainAnimal = await getSingleAnimal(clickedAnimal); 
+    
+    let user = await getUserInfo(mainAnimal.bidfk);
     let family = await getParents(mainAnimal);
     mainAnimal = removeNull(mainAnimal);
     const styling = {margin_x:10, margin_y:5};
@@ -121,7 +123,7 @@ export async function generatePDF(clickedAnimal){
             doc.addImage(mainAnimal.bilde,imgFormat, (A4.width/2)-(imgWidth/2) , y + cellPadding*startTextLine,imgWidth,imgHeight)
         }
 
-        let contentLeftText = [`Reg Nr: ${mainAnimal.regnr}`,`V.Ø: ${mainAnimal.vø}`,`Oppdretter: ${mainAnimal.aidfk}`,`Fødselsdato: ${fdateFormated}`]
+        let contentLeftText = [`Reg Nr: ${mainAnimal.regnr}`,`V.Ø: ${mainAnimal.vø}`,`Oppdretter: ${user.fornavn } ${user.etternavn}`,`Fødselsdato: ${fdateFormated}`]
         for (let i = 0; i < contentLeftText.length; i++){
             doc.text(`${contentLeftText[i]} `, x + PADDING, y + lineSpacing*(i+startTextLine));
         }
@@ -150,7 +152,14 @@ export async function generatePDF(clickedAnimal){
     async function rowTwo(x,y,r,h,it,row) {
         
         let currentAnimal = family.parents[it%2]
-
+        let user = null;
+        if (currentAnimal.bidfk !== "N/A") {
+            user = await getUserInfo(currentAnimal.bidfk);
+        }
+        let navn = currentAnimal.bidfk;
+        if (user) {
+            navn = `${user.fornavn} ${user.etternavn}`;
+        }
 
         let startTextLine = 1;
         let headAlignRight = r - 40;
@@ -166,7 +175,7 @@ export async function generatePDF(clickedAnimal){
         
         startTextLine++
 
-        let contentLeftText = [`Reg Nr: ${currentAnimal.regnr}`,`V.Ø: ${currentAnimal.vø}`,`Oppdretter: ${currentAnimal.aidfk}`];
+        let contentLeftText = [`Reg Nr: ${currentAnimal.regnr}`,`V.Ø: ${currentAnimal.vø}`,`Oppdretter:`,`${navn}`];
         
         for (let i = 0; i < contentLeftText.length; i++){
             doc.text(`${contentLeftText[i]} `, x + PADDING, y + lineSpacing*(i+startTextLine));
@@ -176,9 +185,9 @@ export async function generatePDF(clickedAnimal){
             doc.text(`${contentRightText[i]}`,  headAlignRight, y + lineSpacing*(i+startTextLine));
 
         }
+
         startTextLine = contentRightText.length + 1;
 
-        
         if (currentAnimal.farge !== "N/A") {
             let colourInformation = lookupColour(currentAnimal.farge)
             let rectW = 15;
@@ -199,6 +208,7 @@ export async function generatePDF(clickedAnimal){
         let antCol = 4
         let parentArr = ["Far","Mor"];
         let parentText = "";
+        let user = null;
         
 
         if (it < antCol/2) {
@@ -209,17 +219,23 @@ export async function generatePDF(clickedAnimal){
             parentText = `M ${parentArr[it%2]}`
         }
 
+        if (currentAnimal.bidfk !== "N/A") {
+            user = await getUserInfo(currentAnimal.bidfk);
+        }
+        let navn = currentAnimal.bidfk;
+        if (user) {
+            navn = `${user.fornavn} ${user.etternavn}`;
+        }
         
 
         let startTextLine = 2;
-        let headAlignRight = r - 40;
 
         doc.setFont("helvetica", "bold");
         doc.text(parentText, x + PADDING, y + lineSpacing*startTextLine);
         doc.setFont("helvetica", "normal");
         startTextLine++
 
-        let contentLeftText = [`Reg Nr: ${currentAnimal.regnr}`,`V.Ø: ${currentAnimal.vø}`,`Oppdretter: ${currentAnimal.aidfk}`];
+        let contentLeftText = [`Reg Nr: ${currentAnimal.regnr}`,`V.Ø: ${currentAnimal.vø}`,`Oppdretter:`,`${navn}`];
         
         for (let i = 0; i < contentLeftText.length; i++){
             doc.text(`${contentLeftText[i]} `, x + PADDING, y + lineSpacing*(i+startTextLine));

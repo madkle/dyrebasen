@@ -152,15 +152,38 @@
         <div class="row justify-content-center text-center mt-3">
             <div class="col-2">
                 <select id="dropKey" class="form-control ">
+                    <option value="regnr">Regnr</option>
+                    <option value="vø">V.Ø.</option>
+                    <option value="kullnr">Kullnummer</option>
+                    <option value="innavlsgrad">Innavlsgrad</option>
+                    <option value="poeng">Poeng</option>
+                    <option value="farge">Farge</option>
+                    <option value="far">Far (id)</option>
+                    <option value="mor">Mor (id)</option>
+                </select>
+            </div>
+            <div class="col-1">
+                <select id="dropOperator" class="form-control ">
+                    <option value="=">=</option>
+                    <option value=">">></option>
+                    <option value="<"><</option>
+                    <option value=">=">>=</option>
+                    <option value="<="><=</option>
                 </select>
             </div>
             <div class="col-5">
                 <input id="inpSearch" type="text" class="form-control" placeholder="Søk..."/>
             </div>
-            <div class="col-1">
-                <button id="btnSearch" class="btn btn-secondary shadow justify-self-start text-light">Søk</button>
-            </div>
             
+            <div class="col-3">
+                <button id="btnSearch" class="btn btn-secondary shadow justify-self-start text-light">Søk</button>
+                <button id="btnClear" class="btn btn-secondary shadow justify-self-start text-light">Clear</button>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p id="searchRes">Test</p>
+                </div>
+            </div>
         </div>
         <div id="container" class="container mt-3"></div>
         <div class="col text-center pb-4 mt-4">
@@ -200,6 +223,9 @@
         let dropKey = document.getElementById('dropKey');
         let inpSearch = document.getElementById('inpSearch');
         let btnSearch = document.getElementById('btnSearch');
+        let dropOperator = document.getElementById('dropOperator');
+        let searchRes = document.getElementById('searchRes');
+        let btnClear = document.getElementById('btnClear');
 
         inpBilde.addEventListener("change", function (evt) {
             let fr = new FileReader();
@@ -208,27 +234,50 @@
             });
             fr.readAsDataURL(inpBilde.files[0]);
         })
-
+        /* 
         function loadDropdown() {
             let animalObject = originalInputValues;
             delete(animalObject.bilde);
             delete(animalObject.kjønn);
+            delete(animalObject.fdato)
             for (const key in animalObject) {
                 let option = document.createElement("option");
                 option.value = key;
                 option.innerHTML = key; 
                 dropKey.appendChild(option)
             }
-        }
+        } 
+        */
         
-        loadDropdown();
         listAnimals();
 
+        btnClear.addEventListener('click', async function(){
+            inpSearch.value = ""
+            await listAnimals();
+        });
+        dropKey.addEventListener('change', function(evt) {
+            let selectedOption = evt.currentTarget.value
+            if (selectedOption === "vø" || selectedOption === "farge") {
+                dropOperator.hidden = true             
+            }else{
+                dropOperator.hidden = false  
+            }
+        })
         btnSearch.addEventListener('click', async function(){
             let key = dropKey.value;
             let searchbar = inpSearch.value;
-            let test = await dbSearch(key,searchbar);
-            console.log(test);
+            let operator = dropOperator.value;
+            if (key === "farge") {
+                searchbar = storForbokstav(searchbar);
+            }
+            let filteredList = await dbSearch(key,searchbar,operator);
+            if (!filteredList.error) {
+                searchRes.hidden = true
+                await listAnimals(filteredList);
+            }else{
+                searchRes.hidden = false
+                searchRes.innerHTML = "noe gikk galt, kunne ikke finne det du søkte på"
+            }
         });
 
         function filterUpdata() {

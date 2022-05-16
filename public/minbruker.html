@@ -196,7 +196,6 @@
       
       async function loadHTML() {
         let data = await getUserInfo(loggedInToken.userid);
-        changePwd.hidden = true;
         let html = `
           <h3><b>Navn: </b> ${data.fornavn} ${data.etternavn}</h2>
           <p><b>Brukernavn: </b>${data.brukernavn}</p>
@@ -208,7 +207,7 @@
       btnOpenEditUser.addEventListener("click", async function(evt){
         evt.preventDefault();
         let user = await getUserInfo(loggedInToken.userid);
-
+        changePwd.hidden = true;
         inpFornavn.value = user.fornavn;
         inpEtternavn.value = user.etternavn;
         inpEpost.value = user.epost;
