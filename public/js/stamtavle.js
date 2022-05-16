@@ -1,6 +1,6 @@
 
 let fam = {};
-
+let animationInOut = false; 
 async function getAllAnimals() {
     let url = "/dyr";
         try {
@@ -73,14 +73,16 @@ async function listAnimals() {
 }
 
 function animation(ID) {
-   
-
     let allAnimals = document.querySelectorAll(".item");
     let stamLinjer = document.querySelectorAll(".itemLine");
+    /* allAnimals.forEach(item =>{
+        item.classList.add("stamtavleStart");
+    })  */
+    let timer = 0;
     
-
+    
     if (!allAnimals[0].classList.contains("stamtavleStart")) {
-                    
+        console.log("start");
         allAnimals[0].classList.add("stamtavleStart");
         allAnimals[1].classList.add("stamtavleStart");
         allAnimals[2].classList.add("stamtavleStart");
@@ -88,8 +90,15 @@ function animation(ID) {
         allAnimals[4].classList.add("stamtavleStart");
         allAnimals[5].classList.add("stamtavleStart");
         allAnimals[6].classList.add("stamtavleStart");
+        timer = 1000;
+        animationInOut = true;
+        setTimeout(function() {
+            allAnimals.forEach(item =>{
+                item.remove();
+            });
             
-    };
+        },timer);
+    }
 
     if (!stamLinjer[0].classList.contains("lineStart")) {
         stamLinjer[0].classList.add("lineStart");
@@ -106,41 +115,47 @@ function animation(ID) {
         stamLinjer[11].classList.add("lineStart");
         stamLinjer[12].classList.add("lineStart");
         stamLinjer[13].classList.add("lineStart");
+        
+    }
+
+    if (animationInOut) {
+        setTimeout(function() {
+            let itemArr = generateBoxes();
+            const stamtavle =  document.getElementById("stamtavle");
+
+            itemArr.forEach(item =>{
+                stamtavle.appendChild(item)
+                console.log("box added");
+            });
+        },timer)
     }
     
+    setTimeout (function() {
+        fam = {};
+        chooseAnimal(ID);
+        showBoxAnimation(timer)
+    }, timer);
+    
+}
+function showBoxAnimation(timer) {
+    let allAnimals = document.querySelectorAll(".item");
+    let stamLinjer = document.querySelectorAll(".itemLine");
 
     setTimeout (function() {
         allAnimals[0].classList.remove("stamtavleStart");
-    }, 1000)
-    
-
+    }, timer)
+        
     setTimeout(function(){
         allAnimals[1].classList.remove("stamtavleStart");
         allAnimals[2].classList.remove("stamtavleStart");
-    }, 1300);
+    }, timer + 300);
 
     setTimeout(function(){
         allAnimals[3].classList.remove("stamtavleStart");
         allAnimals[4].classList.remove("stamtavleStart");
         allAnimals[5].classList.remove("stamtavleStart");
         allAnimals[6].classList.remove("stamtavleStart");
-    }, 1850);
-    
-    allAnimals.forEach(item =>{
-        item.remove();
-    });
-
-    setTimeout (function() {
-        fam = {};
-        let itemArr = generateBoxes();
-        const stamtavle =  document.getElementById("stamtavle");
-
-        itemArr.forEach(item =>{
-            stamtavle.appendChild(item)
-            console.log("box added");
-        });
-        chooseAnimal(ID);
-    }, 700);
+    }, timer + 500);
 
     setTimeout (function() {
         stamLinjer[0].classList.remove("lineStart");
@@ -157,9 +172,8 @@ function animation(ID) {
         stamLinjer[11].classList.remove("lineStart");
         stamLinjer[12].classList.remove("lineStart");
         stamLinjer[13].classList.remove("lineStart");
-    }, 2700)
+    }, timer + 1000)
 }
-
 async function chooseAnimal(incomingID) {
     let data = await getAllAnimals();
     fam = genFam(incomingID,data);
@@ -220,7 +234,7 @@ function generateBoxes() {
         }else{
             div.id = "valgtDyr"
         }
-        //div.classList.add("stamtavleStart");
+        div.classList.add("stamtavleStart");
         divListArr.push(div);
     }
     return divListArr
@@ -231,19 +245,7 @@ function resetStamtavle() {
     const items =  document.querySelectorAll(".item");
     items.forEach(item =>{
         item.classList.add("stamtavleStart");
-    })
-
-    
-    
-    
-    setTimeout(function() {
-        console.log("hei");
-        
-        
-    }, 5000);
-    
-    
-    
+    }) 
 }
 
 function drawAnmial(value,box) {
@@ -265,17 +267,6 @@ function drawAnmial(value,box) {
             let d = new Date(fdato)
             dateFormatert = `${d.getDate()}/${d.getMonth()}/${d.getFullYear()}`
         }
-        /* let morID = "";
-        let farID = "";
-        
-        for (const parent of data) {
-            if(value.mor !== null && value.mor === parent.did){
-                morID = parent.regnr;
-            }
-            if(value.far !== null && value.far === parent.did){
-                farID = parent.regnr;
-            }
-        } */
             
         html = `
             <img class="stamtavlebilde" src="${value.bilde}" width="100px" alt="bilde av kanin"/>
