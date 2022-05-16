@@ -298,7 +298,7 @@ function drawAnmial(value,box) {
         function mouseOver(evt) {
             evt.preventDefault();
             item.innerHTML = " ";
-            if (evt.currentTarget === valgtDyr) {
+            if (evt.currentTarget.id === "valgtDyr") {
                 item.innerHTML = html
                 item.appendChild(genStam);
             } else {
@@ -312,31 +312,16 @@ function drawAnmial(value,box) {
         }
 
         item.addEventListener('click', function(evt) {
-            
-            far.innerHTML = "Far";
-            mor.innerHTML = "Mor";
-            farfar.innerHTML = "Farfar";
-            farmor.innerHTML = "Farmor";
-            morfar.innerHTML = "Morfar";
-            mormor.innerHTML = "Mormor";
-            animation(value.did);
-            //animation(dyreID);
-            console.log(item);
-
+            if (evt.currentTarget.id !== "valgtDyr") {
+                far.innerHTML = "Far";
+                mor.innerHTML = "Mor";
+                farfar.innerHTML = "Farfar";
+                farmor.innerHTML = "Farmor";
+                morfar.innerHTML = "Morfar";
+                mormor.innerHTML = "Mormor";
+                animation(value.did);
+            }
         });
-        
-        /* let valgtFam = document.querySelectorAll(".valgtDyrFamilie");
-        for (const currFam of valgtFam) {
-            let dyreID = value.did;
-            currFam.addEventListener('click', function(evt) {
-
-            //animation(dyreID);
-            console.log(currFam);
-
-        });
-        } */
-        
-        return
     }
     //item.innerHTML = html;
 }
