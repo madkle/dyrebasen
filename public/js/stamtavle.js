@@ -1,7 +1,4 @@
-/*
-const { all, set } = require("express/lib/application");
-const { get } = require("express/lib/response");
-*/
+
 let fam = {};
 
 async function getAllAnimals() {
@@ -75,8 +72,8 @@ async function listAnimals() {
     }
 }
 
-async function animation(ID) {
-    await resetStamtavle()
+function animation(ID) {
+   
 
     let allAnimals = document.querySelectorAll(".item");
     let stamLinjer = document.querySelectorAll(".itemLine");
@@ -129,8 +126,19 @@ async function animation(ID) {
         allAnimals[6].classList.remove("stamtavleStart");
     }, 1850);
     
+    allAnimals.forEach(item =>{
+        item.remove();
+    });
+
     setTimeout (function() {
         fam = {};
+        let itemArr = generateBoxes();
+        const stamtavle =  document.getElementById("stamtavle");
+
+        itemArr.forEach(item =>{
+            stamtavle.appendChild(item)
+            console.log("box added");
+        });
         chooseAnimal(ID);
     }, 700);
 
@@ -172,7 +180,9 @@ async function chooseAnimal(incomingID) {
     }
     
 }
+
 function generateBoxes() {
+
     let divListArr = []
     let familyArr = ["far","mor","farfar","farmor","morfar","mormor"]
     for (let i = 0; i < 7; i++) {
@@ -210,22 +220,30 @@ function generateBoxes() {
         }else{
             div.id = "valgtDyr"
         }
-        div.classList.add("stamtavleStart");
+        //div.classList.add("stamtavleStart");
         divListArr.push(div);
     }
     return divListArr
 }
 
 function resetStamtavle() {
+
     const items =  document.querySelectorAll(".item");
-    const stamtavle =  document.getElementById("stamtavle");
     items.forEach(item =>{
-        item.remove()
+        item.classList.add("stamtavleStart");
     })
-    let itemArr = generateBoxes();
-    itemArr.forEach(item =>{
-        stamtavle.appendChild(item)
-    });
+
+    
+    
+    
+    setTimeout(function() {
+        console.log("hei");
+        
+        
+    }, 5000);
+    
+    
+    
 }
 
 function drawAnmial(value,box) {
