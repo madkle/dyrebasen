@@ -133,6 +133,7 @@
       </div>
     </div>
     <script type="module">
+      import {storForbokstav} from "/js/form.js";
       import {updateUser, createCredentialString, getToken, getUserInfo, logOutUser} from "/js/user.js";
       let loggedInToken = await getToken();
       let btnOpenEditUser = document.getElementById("btnOpenEditUser");
@@ -148,7 +149,7 @@
       let inpFornavn = document.getElementById("inpFornavn");
       let inpEtternavn = document.getElementById("inpEtternavn");
       let inpEpost = document.getElementById("inpEpost");
-      let btnEditAnimal = document.getElementById("btnEditAnimal")
+      let btnEditAnimal = document.getElementById("btnEditAnimal");
 
       let originalInputValues = {}
       
@@ -214,8 +215,9 @@
         inpBrukernavn.value = user.brukernavn;
         
         originalInputValues = {
-          fornavn: inpFornavn.value,
-          etternavn: inpEtternavn.value,
+          
+          fornavn: storForbokstav(inpFornavn.value),
+          etternavn: storForbokstav(inpEtternavn.value),
           epost: inpEpost.value,
           brukernavn: inpBrukernavn.value,
           
@@ -239,15 +241,17 @@
           
           loadHTML();
         }else{
-          throw "nothing changed"
+          checksamePwdResponseTxt.innerHTML = "Nothing changed"
+          throw "Nothing changed"
         }
       });
 
       function filterUpdata() {
+
             let updata = {
               bid: loggedInToken.userid,
-              fornavn: inpFornavn.value,
-              etternavn: inpEtternavn.value,
+              fornavn: storForbokstav(inpFornavn.value),
+              etternavn: storForbokstav(inpEtternavn.value),
               epost: inpEpost.value,
               brukernavn: inpBrukernavn.value,
               passord: inpNewPwd.value

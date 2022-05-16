@@ -85,27 +85,31 @@
         </div>
 
         <script type="module">
-            import {addUser} from "/js/user.js"
+        import {addUser} from "/js/user.js"
+        import {storForbokstav} from "/js/form.js";
+        
+        let regfirstname = document.getElementById("regfirstname")
+        let reglastname = document.getElementById("reglastname")
+        let regemail = document.getElementById("regemail")
+        let regusername = document.getElementById("regusername")
+        let regpwd = document.getElementById("regpwd")
+        let confirmpwd = document.getElementById("confirmpwd")
+        let btnRegUser = document.getElementById("btnRegUser")
+        let chkRemember = document.getElementById("chkRemember")
+        let txtResult = document.getElementById("txtResult");
+        btnRegUser.addEventListener("click", async function(evt){   
+            if (regpwd.value !== confirmpwd.value) {
+                txtResult.innerHTML = "ikke samme password";
+            }
+            let fornavn = storForbokstav(regfirstname.value)
+            let etternavn = storForbokstav(reglastname.value)
+            addUser(fornavn,etternavn,regemail,regusername,regpwd,confirmpwd)
             
-            let regfirstname = document.getElementById("regfirstname")
-            let reglastname = document.getElementById("reglastname")
-            let regemail = document.getElementById("regemail")
-            let regusername = document.getElementById("regusername")
-            let regpwd = document.getElementById("regpwd")
-            let confirmpwd = document.getElementById("confirmpwd")
-            let btnRegUser = document.getElementById("btnRegUser")
-            let chkRemember = document.getElementById("chkRemember")
-            let txtResult = document.getElementById("txtResult");
-            btnRegUser.addEventListener("click", async function(evt){   
-                if (regpwd.value !== confirmpwd.value) {
-                    txtResult.innerHTML = "ikke samme password";
-                }
-                addUser(regfirstname,reglastname,regemail,regusername,regpwd,confirmpwd)
-                
-            });
-        </script>
+        });
+    </script>
 
         <script src="js/popper.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
     </body>
+    
 </html>

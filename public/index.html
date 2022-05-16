@@ -51,16 +51,8 @@
                             <div class="text-center mt-2">
                                 <p id="txtResult" class="text-danger"></p>
                             </div>
-                        
-                            <div class="form-check mt-2">
-                                <label class="form-check-label">
-                                    <input class="form-check-input text-body" id="chkRemember" type="checkbox" name="remember"> Husk meg
-                                </label>
-                            </div>
 
-                                <a href="regbruker.html" class="card-link text-body text-center" id="loginLink">Opprett ny bruker</a>
-
-                            
+                            <a href="regbruker.html" class="card-link text-body text-center" id="loginLink">Opprett ny bruker</a>
                         </form>
                     </div>
                 </div>
@@ -70,18 +62,26 @@
 </div>
       
     <script type="module">
-        import {createCredentialString} from "/js/user.js"
+        import {createCredentialString, getToken} from "/js/user.js"
+        
         let inpUsername = document.getElementById("username");
         let inpPwd = document.getElementById("pwd");
         let chkRemember = document.getElementById("chkRemember");
         let btnLogin = document.getElementById("btnLogin");
         let txtResult = document.getElementById("txtResult");
+        checkToken()
+           
+        async function checkToken(params) {
+            let token = await getToken()
+            if (token) {
+                let expirationTime = token.iat  + 24 * 60 * 60 * 1000; //sjekker om det er over ett døgn siden token ble laget
 
-        if (localStorage.token){
-            window.location.href = "/minedyr.html";
+                if (expirationTime < Date.now() ) {
+                    return false
+                }
+                window.location.href = "/minedyr.html";
+            }
         }
-
-        
         
         btnLogin.addEventListener("click", async function (evt) {
             evt.preventDefault()

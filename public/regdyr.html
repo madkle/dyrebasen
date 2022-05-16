@@ -78,7 +78,7 @@
               <input id="inpVø" type="text" class="form-control" /><br>
 
               <label for="inpInnavlsgrad" class="form-label">Innavlsgrad:</label>
-              <input id="inpInnavlsgrad" type="number" class="form-control" /><br>
+              <input id="inpInnavlsgrad" type="number" class="form-control" min="0" max="100"/><br>
 
               <label for="dropKjønn" class="form-label">Kjønn:</label><br>
               <select id="dropKjønn" class="form-control">
@@ -88,14 +88,7 @@
               
               
               <label for="inpPoeng" class="form-label">Poeng:</label>
-              <input id="inpPoeng" type="number" max="100" class="form-control" /><br>
-
-              <!-- <label for="inpFarge" class="form-label">Farge:</label><br>
-              <select id="inpFarge" class="form-control" >
-                <option>Velg farge</option>
-                <option value="">Viltgul</option>
-                <option value="">Madagaskar</option>
-              </select> -->
+              <input id="inpPoeng" type="number" class="form-control" min="0" max="100"/><br>
 
               <label for="inpMor" class="form-label">Mor:</label>
               <input class="form-control" list="valgMor" id="inpMor" placeholder="Finn foreldre (regnr)...">
@@ -111,13 +104,14 @@
             </div>
           </div> 
           <button id="btnAddAnimal" class="form-control mt-4 btn btn-secondary">Legg til dyr</button>
-          <p class="text-center mt-2 text-danger" id="resultTxt"></p><br>
+          <p class="text-center mt-2" id="resultTxt"></p><br>
         </form>
       </div>
     </div>
     <!------------- JavaScript --------------->
     <script type="module">
       import {addAnimal, loadFormElements} from "/js/dyr.js";
+      import {storForbokstav} from "/js/form.js";
 
       let inpRegNr = document.getElementById('inpRegNr');
       let inpVø = document.getElementById('inpVø');
@@ -145,8 +139,11 @@
       })
 
       let btnAddAnimal = document.getElementById('btnAddAnimal');
+      
       btnAddAnimal.addEventListener('click', async function (evt) {
             evt.preventDefault();
+            resultTxt.innerHTML = "";
+            let fargeVerdi = storForbokstav(inpFarge.value);
             let updata = {
               regnr: inpRegNr.value,
               vø: inpVø.value,
@@ -155,7 +152,7 @@
               kjønn: dropKjønn.value,
               innavlsgrad: inpInnavlsgrad.value,
               poeng: inpPoeng.value,
-              farge: inpFarge.value,
+              farge: fargeVerdi,
               far: inpFar.value,
               mor: inpMor.value,
               bid: null,
@@ -163,6 +160,7 @@
               bilde: bildeData
             };
             //console.log(updata);
+            
             let response = await addAnimal(updata);
             resultTxt.innerHTML = response.msg;
         })

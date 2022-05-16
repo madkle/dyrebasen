@@ -139,7 +139,19 @@ async function deleteAnimal(dyrID) {
 } 
 
         export let activeID = null;
-        export let originalInputValues = {};
+        export let originalInputValues = {
+            regnr: null,
+            vø: null,
+            fdato: null,
+            kullnr: null,
+            kjønn: null,
+            innavlsgrad: null,
+            poeng: null,
+            farge: null,
+            far: null,
+            mor: null,
+            bilde: null
+        };
         async function loadHTMLElements(selectedID) {
             
 
@@ -176,9 +188,14 @@ async function deleteAnimal(dyrID) {
         }
 
 
-export async function listAnimals(userid) {
-    let data = await getAllAnimals(userid);
-
+export async function listAnimals(filteredList) {
+    
+    let data = {}
+    if (filteredList) {
+        data = filteredList;
+    }else{
+        data = await getAllAnimals();
+    }
     container.innerHTML = " ";
 
     for (let value of data) {
@@ -275,8 +292,65 @@ export async function listAnimals(userid) {
         div.appendChild(genStam);
     }
 }
+export async function dbSearch(key,input) {
+    let loggedInToken = await getToken();
+    let url = "/search";
+    
+    let sql = ""
+    switch (key) {
+        case "far":
+            sql = `${key} = ${input}`;
+            break
+        case "farge":
+            sql = `${key} LIKE '${input}%'`;
+            break
+        case "fdato":
+            sql = ``;
+            break
+        case "innavlsgrad":
+            sql = ``;
+            break
+        case "kullnr":
+            sql = ``;
+            break
+        case "mor":
+            sql = ``;
+            break
+        case "poeng":
+            sql = ``;
+            break
+        case "regnr":
+            sql = ``;
+            break
+        case "vø":
+            sql = ``;
+            break
+    }
 
+
+
+    let cfg = {
+        headers:{
+            "userid":loggedInToken.userid,
+            "sql":sql
+        }
+    }
+        try {
+            let response = await fetch(url, cfg);
+            let data = await response.json();
+
+           if (response.status != 200) {
+                throw data.error;
+            }
+
+            return data;
+        }
+        catch(error) {
+            console.log(error);
+        }
+}
 export async function loadFormElements() {
+    fargeValg.innerHTML = ""
     colourArr.forEach(currColour => {
       let option = document.createElement("option");
       option.innerHTML = currColour.colour;

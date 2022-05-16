@@ -7,7 +7,7 @@ export function createCredentialString(username, password) {
 
 export async function getToken() {
     let url = "/auth"
-    let storedToken = localStorage.getItem("token")
+    let storedToken = localStorage.getItem("token");
     let cfg = {
         headers: {
             "token": storedToken
@@ -51,8 +51,8 @@ export async function addUser(regfirstname,reglastname,regemail,regusername,regp
     let credString = createCredentialString(regusername.value, regpwd.value)
     
     let updata = {
-        fornavn: regfirstname.value, 
-        etternavn: reglastname.value,
+        fornavn: regfirstname, 
+        etternavn: reglastname,
         epost: regemail.value
     }
 

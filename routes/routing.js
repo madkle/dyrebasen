@@ -21,7 +21,7 @@ router.get("/dyr", async function(req, res, next){
         FROM dyr
         WHERE dyr.bidfk = ${userId}
         ORDER BY did
-    `;
+    `; 
     if (userId === ADMINID) {
         sql = `
         SELECT * 
@@ -38,6 +38,26 @@ router.get("/dyr", async function(req, res, next){
     }
 });
 
+//henter dyr basert på søkeresultater
+router.get("/search", async function(req, res, next){
+    let userId = req.headers.userid;
+    let inSql = req.headers.sql;
+    userId = parseInt(userId);
+    let sql = `
+        SELECT * 
+        FROM dyr
+        WHERE ${inSql} AND dyr.bidfk = ${userId}
+        ORDER BY did
+    `; 
+    console.log(sql);
+    try {
+        let result = await pool.query(sql);
+        
+        res.status(200).json(result.rows).end();
+    } catch (err) {
+        res.status(500).json({error:err}).end();
+    }
+});
 
 //hent spesifikt dyr
 router.get("/dyr/:id", async function(req, res, next){
