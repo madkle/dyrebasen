@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/bootstrap.min.css">
 
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/logregbruker.css">
     <title>Dyrebasen - Min bruker</title>
-</head>
-<body>
-    <!-- NAVBAR -->
+  </head>
+  <body class="bg-2">
+    <!-- NAVBAR --> 
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark mb-5 fixed-top">
         <div class="container-fluid">
-          <a class="navbar-brand" href="testMineDyr.html">DYREBASEN</a>
+          <a class="navbar-brand" href="minedyr.html">DYREBASEN</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -33,15 +35,247 @@
             </ul>
           </div>
         </div>
-      </nav>
+    </nav>
+    <!-- Edit Modal -->
+    <div class="modal fade" id="editBrukerModal" tabindex="-1" aria-labelledby="editBrukerModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="editBrukerModalLabel">Rediger bruker</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                  <div class="container-fluid">
+                      <form>
+                          <div class="row">
+                              <div class="col">
+                                  <label for="inpFornavn" class="form-label">Fornavn:</label><br>
+                                  <input id="inpFornavn" type="text" class="form-control"/><br>
+                              </div>
+                              <div class="col">
+                                  <label for="inpEtternavn" class="form-label">Etternavn:</label>
+                                  <input id="inpEtternavn" type="text" class="form-control" /><br>
+                              </div>
+                          </div>
 
+                          <div class="row">
+                            <div class="col">
+                                <label for="inpBrukernavn" class="form-label">Brukernavn:</label>
+                                <input id="inpBrukernavn" type="text" class="form-control" /><br>
+                            </div>
+                            <div class="col">
+                                <label for="inpEpost" class="form-label">Epost:</label><br>
+                                <input id="inpEpost" type="email" class="form-control" /><br>
+                            </div>
+                        </div>
 
-    <script>
+                        <div class="row">
+                          <div class="col">
+                              <label for="inpOldPwd" class="form-label">gammelt passord:</label>
+                              <input id="inpOldPwd" type="password" class="form-control"/><br>
+                          </div>
+                          <div class="col">
+                            <button id="btnCheckPwd" class="form-control btn btn-secondary rounded-pill">Sjekk passord</button><br>
+                          </div>
+                        </div>
 
+                        <div class="row" id="changePwd" hidden>
+                          <div class="col">
+                              <label for="inpNewPwd" class="form-label">nytt passord:</label>
+                              <input id="inpNewPwd" type="password" class="form-control"/><br>
+                          </div>
+                          <div class="col">
+                            <label for="checkNewPwd" class="form-label">bekreft passord:</label>
+                            <input id="checkNewPwd" type="password" class="form-control"/><br>
+                          </div>
+                        </div>
+                        <div class="row text-danger">
+                          <p id="checkResponseTxt"></p>
+                        </div>
+                      </form>
+                  </div>
+              </div>
+              <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Lukk</button>
+              <button type="button" id="btnEditUser" class="btn btn-primary" data-bs-dismiss="modal">Lagre endringer</button>
+              </div>
+          </div>
+      </div>
+    </div> 
+
+    <div class="index mt-2">
+      <h1 class="text-center velkommen">Velkommen til Dyrebasen!</h1>
+      <div class="container-fluid justify-self-center logregcard">    
+        <!-- CARD -->
+        <div class="container align-self-end" id="cardSignup">
+          <div class="card bg-" style="border: none;">
+            <div class="card-body rounded shadow">
+              <div class="container" >
+                <h2 class="text-center">Din bruker</h2><br>
+                <!--<form>--><!-- action="login.js" for å kjøre innloggingsfilen med inputen fra skjemaet -->
+                <div class="row">
+                  <div class="col" id="card-body">
+                    
+                  </div>
+                </div><br>
+                                        
+                <div class="text-center mt-2">
+                  <button type="submit" class="btn btn-secondary rounded-pill" id="btnOpenEditUser" data-bs-toggle="modal" data-bs-target="#editBrukerModal" >Rediger</button>
+                  <button type="submit" class="btn btn-secondary rounded-pill" id="btnLogout">Log ut</button>
+                </div>
+
+                <p id="checksamePwdResponseTxt" class="text-center text-danger mt-2"></p>
+                <!--</form>-->
+              </div>
+            </div>
+          </div> 
+        </div>
+      </div>
+    </div>
+    <script type="module">
+      import {storForbokstav} from "/js/form.js";
+      import {updateUser, createCredentialString, getToken, getUserInfo, logOutUser} from "/js/user.js";
+      let loggedInToken = await getToken();
+      let btnOpenEditUser = document.getElementById("btnOpenEditUser");
+      let btnLogout = document.getElementById("btnLogout");
+      let divCardBody = document.getElementById("card-body");
+      let btnCheckPwd = document.getElementById("btnCheckPwd");
+      let changePwd = document.getElementById("changePwd");
+      let inpOldPwd = document.getElementById("inpOldPwd");
+      let inpNewPwd = document.getElementById("inpNewPwd");
+      let checkNewPwd = document.getElementById("checkNewPwd");
+      let inpBrukernavn = document.getElementById("inpBrukernavn");
+      let checkResponseTxt = document.getElementById("checkResponseTxt");
+      let inpFornavn = document.getElementById("inpFornavn");
+      let inpEtternavn = document.getElementById("inpEtternavn");
+      let inpEpost = document.getElementById("inpEpost");
+      let btnEditAnimal = document.getElementById("btnEditAnimal");
+
+      let originalInputValues = {}
+      
+      loadHTML();
+      
+      btnCheckPwd.addEventListener("click", async function(evt){
+        evt.preventDefault()
+        
+        if (await checkOldPassword()) {
+          checkResponseTxt.hidden = true;
+          changePwd.hidden = !changePwd.hidden;
+        }else{    
+          checkResponseTxt.hidden = false;
+          changePwd.hidden = true;
+        }
+        
+      })
+      async function checkOldPassword() {
+        let url = "/bruker/login";
+            let credString = createCredentialString(inpBrukernavn.value, inpOldPwd.value)
+                
+            let cfg = {
+                method: "POST",
+                headers: {
+                    "authorization": credString
+                }
+            };
+                
+            try {
+                let response = await fetch(url, cfg);
+                let data = await response.json();
+                if (response.status !== 200) {
+                    throw data.error;
+                }
+                return true; 
+                
+            }
+            catch(error) {
+                checkResponseTxt.innerHTML = error
+                return false;
+                
+            }
+      }
+      
+      async function loadHTML() {
+        let data = await getUserInfo(loggedInToken.userid);
+        let html = `
+          <h3><b>Navn: </b> ${data.fornavn} ${data.etternavn}</h2>
+          <p><b>Brukernavn: </b>${data.brukernavn}</p>
+          <p><b>Epost: </b>${data.epost}</p>
+        `
+        divCardBody.innerHTML = html;
+      }
+      
+      btnOpenEditUser.addEventListener("click", async function(evt){
+        evt.preventDefault();
+        let user = await getUserInfo(loggedInToken.userid);
+        changePwd.hidden = true;
+        inpFornavn.value = user.fornavn;
+        inpEtternavn.value = user.etternavn;
+        inpEpost.value = user.epost;
+        inpBrukernavn.value = user.brukernavn;
+        
+        originalInputValues = {
+          
+          fornavn: storForbokstav(inpFornavn.value),
+          etternavn: storForbokstav(inpEtternavn.value),
+          epost: inpEpost.value,
+          brukernavn: inpBrukernavn.value,
+          
+        };
+        
+      });
+      
+      btnEditUser.addEventListener("click", async function(evt){
+        evt.preventDefault();
+        if(inpNewPwd.value !== checkNewPwd.value){
+          checksamePwdResponseTxt.hidden = false;
+          checksamePwdResponseTxt.innerHTML = "Ikke samme passord! Prøv igjen"
+          return
+        }else{
+          checkResponseTxt.hidden = true;
+          checkResponseTxt.innerHTML = ""
+        }
+        let updata = filterUpdata();
+        if (Object.keys(updata).length > 1) {
+          await updateUser(updata);
+          
+          loadHTML();
+        }else{
+          checksamePwdResponseTxt.innerHTML = "Nothing changed"
+          throw "Nothing changed"
+        }
+      });
+
+      function filterUpdata() {
+
+            let updata = {
+              bid: loggedInToken.userid,
+              fornavn: storForbokstav(inpFornavn.value),
+              etternavn: storForbokstav(inpEtternavn.value),
+              epost: inpEpost.value,
+              brukernavn: inpBrukernavn.value,
+              passord: inpNewPwd.value
+            }
+            console.log(updata);
+            for (const key in updata) {
+                if (updata[key] === originalInputValues[key] || updata[key] === null || updata[key] === "") {
+                  delete updata[key]
+                }
+            }
+            if (updata.passord) {
+              updata.brukernavn = inpBrukernavn.value;
+            }
+            return updata;
+        }
+      btnLogout.addEventListener("click", function(evt){
+        let result = confirm("Er du sikker?");
+        if (result === true) {
+          logOutUser();
+          location.href = "index.html";
+        }
+      });
 
     </script>
-    
     <script src="js/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
-</body>
+  </body>
 </html>

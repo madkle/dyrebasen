@@ -1,25 +1,7 @@
-function lookupColour(inpColour) {
-    inpColour = inpColour.toLowerCase();
-
-    let colourArr = [
-        {colour:"hvit", rgb:{red: 255, green: 255, blue: 255}},
-        {colour:"viltgul", rgb:{red: 169, green: 116, blue: 84}},
-        {colour:"brun", rgb:{red: 165, green: 42, blue: 42}},
-        {colour:"madagaskar",rgb:{red: 182, green: 143, blue: 115}},
-    ];
-
-    let foundColour = null;
-
-    colourArr.forEach(element => {
-        if (element.colour === inpColour) {
-            foundColour = element;
-        }
-    });
-
-    return foundColour;
-}
+import {lookupColour} from "./colour.js";
+import {getUserInfo} from "./user.js";
+    
 async function getSingleAnimal(id) {
-
     let url = `/dyr/${id}`;
 
     let blankFamily = {
@@ -40,10 +22,13 @@ async function getSingleAnimal(id) {
     }
 
     try {
+        
         if (id !== null) {
             let response = await fetch(url);
             let data = await response.json();
-            if (response.status != 200) {
+            if (response.status === 404) {
+                return blankFamily;
+            }else if (response.status != 200) {
                 throw data.error;
             }
             
@@ -64,10 +49,12 @@ function removeNull(object) {
     return object
 }
 async function getParents(child) {
-        
+   
     let findParents = [await getSingleAnimal(child.far), await getSingleAnimal(child.mor)];
+    
     let family = {
         parents: findParents,
+        
         fathersParents: [await getSingleAnimal(findParents[0].far), await getSingleAnimal(findParents[0].mor)],
         mothersParents:[await getSingleAnimal(findParents[1].far),await getSingleAnimal(findParents[1].mor)]
     }
@@ -78,11 +65,12 @@ async function getParents(child) {
     }
     return family;
 };
-
-async function generatePDF(clickedAnimal){
+export async function generatePDF(clickedAnimal){
     let doc = new jsPDF();
-
+    
     let mainAnimal = await getSingleAnimal(clickedAnimal); 
+    
+    let user = await getUserInfo(mainAnimal.bidfk);
     let family = await getParents(mainAnimal);
     mainAnimal = removeNull(mainAnimal);
     const styling = {margin_x:10, margin_y:5};
@@ -132,15 +120,15 @@ async function generatePDF(clickedAnimal){
         
         if (mainAnimal.bilde !== "N/A") {
             let imgFormat = mainAnimal.bilde.slice(11).split(";")[0];
-            doc.addImage(mainAnimal.bilde,imgFormat, (A4.width/2)-(imgWidth/2) , y + cellPadding,imgWidth,imgHeight)
+            doc.addImage(mainAnimal.bilde,imgFormat, (A4.width/2)-(imgWidth/2) , y + cellPadding*startTextLine,imgWidth,imgHeight)
         }
 
-        let contentLeftText = [`Reg Nr: ${mainAnimal.regnr}`,`V.Ø: ${mainAnimal.vø}`,`Oppdretter: ${mainAnimal.aidfk}`,`Fødselsdato: ${fdateFormated}`]
+        let contentLeftText = [`Reg Nr: ${mainAnimal.regnr}`,`V.Ø: ${mainAnimal.vø}`,`Oppdretter: ${user.fornavn } ${user.etternavn}`,`Fødselsdato: ${fdateFormated}`]
         for (let i = 0; i < contentLeftText.length; i++){
             doc.text(`${contentLeftText[i]} `, x + PADDING, y + lineSpacing*(i+startTextLine));
         }
 
-        contentRightText = [`Kjønn: ${mainAnimal.kjønn}`, `Poeng: ${mainAnimal.poeng}/100`,`Innavlsgrad: ${mainAnimal.innavlsgrad}%`, `Farge:`]
+        let contentRightText = [`Kjønn: ${mainAnimal.kjønn}`, `Poeng: ${mainAnimal.poeng}/100`,`Innavlsgrad: ${mainAnimal.innavlsgrad}%`, `Farge:`]
         for (let i = 0; i < contentRightText.length; i++){
             doc.text(`${contentRightText[i]}`,  headAlignRight, y + lineSpacing*(i+startTextLine));
 
@@ -154,7 +142,7 @@ async function generatePDF(clickedAnimal){
             let rectY =  y + PADDING/2 + lineSpacing * startTextLine;
             
             doc.setFillColor(colourInformation.rgb.red, colourInformation.rgb.green, colourInformation.rgb.blue)
-            doc.rect(rectX, rectY, rectW, rectH, "FD");
+            doc.roundedRect(rectX, rectY, rectW, rectH, 1,1, "FD");
             doc.setFont("helvetica", "bold");
             doc.text(colourInformation.colour, bodyAlignRight, y + lineSpacing * startTextLine);
             doc.setFont("helvetica", "normal");
@@ -164,7 +152,14 @@ async function generatePDF(clickedAnimal){
     async function rowTwo(x,y,r,h,it,row) {
         
         let currentAnimal = family.parents[it%2]
-
+        let user = null;
+        if (currentAnimal.bidfk !== "N/A") {
+            user = await getUserInfo(currentAnimal.bidfk);
+        }
+        let navn = currentAnimal.bidfk;
+        if (user) {
+            navn = `${user.fornavn} ${user.etternavn}`;
+        }
 
         let startTextLine = 1;
         let headAlignRight = r - 40;
@@ -174,23 +169,25 @@ async function generatePDF(clickedAnimal){
         let parentArr = ["Far","Mor"];
         let parentText = "";
         parentText = parentArr[it%2]
-        
+        doc.setFont("helvetica", "bold");
         doc.text(parentText, x + PADDING, y + lineSpacing*startTextLine)
+        doc.setFont("helvetica", "normal");
+        
         startTextLine++
 
-        let contentLeftText = [`Reg Nr: ${currentAnimal.regnr}`,`V.Ø: ${currentAnimal.vø}`,`Oppdretter: ${currentAnimal.aidfk}`];
+        let contentLeftText = [`Reg Nr: ${currentAnimal.regnr}`,`V.Ø: ${currentAnimal.vø}`,`Oppdretter:`,`${navn}`];
         
         for (let i = 0; i < contentLeftText.length; i++){
             doc.text(`${contentLeftText[i]} `, x + PADDING, y + lineSpacing*(i+startTextLine));
         }
-        contentRightText = [`Poeng: ${currentAnimal.poeng}/100`,`Innavlsgrad: ${currentAnimal.innavlsgrad}%`, `Farge:`]
+        let contentRightText = [`Poeng: ${currentAnimal.poeng}/100`,`Innavlsgrad: ${currentAnimal.innavlsgrad}%`, `Farge:`]
         for (let i = 0; i < contentRightText.length; i++){
             doc.text(`${contentRightText[i]}`,  headAlignRight, y + lineSpacing*(i+startTextLine));
 
         }
+
         startTextLine = contentRightText.length + 1;
 
-        
         if (currentAnimal.farge !== "N/A") {
             let colourInformation = lookupColour(currentAnimal.farge)
             let rectW = 15;
@@ -199,7 +196,7 @@ async function generatePDF(clickedAnimal){
             let rectY =  y + PADDING/2 + lineSpacing * startTextLine;
             
             doc.setFillColor(colourInformation.rgb.red, colourInformation.rgb.green, colourInformation.rgb.blue)
-            doc.rect(rectX, rectY, rectW, rectH, "FD");
+            doc.roundedRect(rectX, rectY, rectW, rectH,1,1, "FD");
             doc.setFont("helvetica", "bold");
             doc.text(colourInformation.colour, bodyAlignRight, y + lineSpacing * startTextLine);
             doc.setFont("helvetica", "normal");
@@ -211,6 +208,7 @@ async function generatePDF(clickedAnimal){
         let antCol = 4
         let parentArr = ["Far","Mor"];
         let parentText = "";
+        let user = null;
         
 
         if (it < antCol/2) {
@@ -221,15 +219,23 @@ async function generatePDF(clickedAnimal){
             parentText = `M ${parentArr[it%2]}`
         }
 
+        if (currentAnimal.bidfk !== "N/A") {
+            user = await getUserInfo(currentAnimal.bidfk);
+        }
+        let navn = currentAnimal.bidfk;
+        if (user) {
+            navn = `${user.fornavn} ${user.etternavn}`;
+        }
         
 
         let startTextLine = 2;
-        let headAlignRight = r - 40;
 
-        doc.text(parentText, x + PADDING, y + lineSpacing*startTextLine)
+        doc.setFont("helvetica", "bold");
+        doc.text(parentText, x + PADDING, y + lineSpacing*startTextLine);
+        doc.setFont("helvetica", "normal");
         startTextLine++
 
-        let contentLeftText = [`Reg Nr: ${currentAnimal.regnr}`,`V.Ø: ${currentAnimal.vø}`,`Oppdretter: ${currentAnimal.aidfk}`];
+        let contentLeftText = [`Reg Nr: ${currentAnimal.regnr}`,`V.Ø: ${currentAnimal.vø}`,`Oppdretter:`,`${navn}`];
         
         for (let i = 0; i < contentLeftText.length; i++){
             doc.text(`${contentLeftText[i]} `, x + PADDING, y + lineSpacing*(i+startTextLine));
@@ -273,5 +279,5 @@ async function generatePDF(clickedAnimal){
     }
 
 
-    doc.save("output.pdf");
+    doc.save(`stamtavle-${mainAnimal.regnr}.pdf`);
 }

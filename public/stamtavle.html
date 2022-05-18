@@ -1,26 +1,28 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script>
     
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <script src="js/stamtavle.js"></script>
+    <script type="module" src="js/stamtavle.js"></script>
+    <script type="module" src="js/pdf.js"></script>
     <title>Dyrebasen - Stamtavle</title>
 </head>
 <body class="bg-2">
 
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top mb-5">
       <div class="container-fluid">
-        <a class="navbar-brand" href="testMineDyr.html">DYREBASEN</a>
+        <a class="navbar-brand" href="minedyr.html">DYREBASEN</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse justify-content-end" id="collapsibleNavbar">
             <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" href="testMineDyr.html">Mine kaniner</a>
+                <a class="nav-link" href="minedyr.html">Mine kaniner</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="regdyr.html">Registrer ny kanin</a>
@@ -35,112 +37,124 @@
         </div>
       </div>
     </nav>
-
-      <!-- <nav id="container" class="nav flex-column mt-5 border-end w-25">
-        <a class="nav-link" href="#"></a>
-        
-      </nav> -->
-      <label for="container" class="form-label mt-5">Velg en kanin:</label>
-      <nav id="container" class="sidebar bg-1 shadow rounded">Velg</nav>
+      <nav id="container" class="sidebar shadow rounded pt-5 pb-5 bold"></nav>
 
       <div id="stamtavle" class="container">
           <div class="item shadow rounded valgtDyr stamtavleStart" id="valgtDyr">Velg en kanin</div>
-          <div class="item shadow rounded valgtFar stamtavleStart male male1">Far</div>
-          <div class="item shadow rounded valgtMor stamtavleStart female female1">Mor</div>
-          <div class="item shadow rounded valgtFarFar stamtavleStart male male2" id="valgtFarFar">Farfar</div>
-          <div class="item shadow rounded valgtFarMor stamtavleStart female female2">Farmor</div>
-          <div class="item shadow rounded valgtMorFar stamtavleStart male male2">Morfar</div>
-          <div class="item shadow rounded valgtMorMor stamtavleStart female female2">Mormor</div>
+          <div class="item shadow rounded valgtDyrFamilie valgtFar stamtavleStart male male1" id="far">Far</div>
+          <div class="item shadow rounded valgtDyrFamilie valgtMor stamtavleStart female female1" id="mor">Mor</div>
+          <div class="item shadow rounded valgtDyrFamilie valgtFarFar stamtavleStart male male2" id="farfar">Farfar</div>
+          <div class="item shadow rounded valgtDyrFamilie valgtFarMor stamtavleStart female female2" id="farmor">Farmor</div>
+          <div class="item shadow rounded valgtDyrFamilie valgtMorFar stamtavleStart male male2" id="morfar">Morfar</div>
+          <div class="item shadow rounded valgtDyrFamilie valgtMorMor stamtavleStart female female2" id="mormor">Mormor</div>
+          <div class="itemLine fadeIn lineStart lbb2"></div>
+          <div class="itemLine fadeIn lineStart lbb"></div>
+          <div class="itemLine fadeIn lineStart lbr"></div>
+          <div class="itemLine fadeIn lineStart lbr2"></div>
+          <div class="itemLine fadeIn lineStart lbr3"></div>
+          <div class="itemLine fadeIn lineStart lbt"></div>
+          <div class="itemLine fadeIn lineStart lbl"></div> 
+          <div class="itemLine fadeIn lineStart rbb"></div>
+          <div class="itemLine fadeIn lineStart rbb2"></div>
+          <div class="itemLine fadeIn lineStart rbr"></div>
+          <div class="itemLine fadeIn lineStart rbl"></div>
+          <div class="itemLine fadeIn lineStart rbl2"></div>
+          <div class="itemLine fadeIn lineStart rbr3"></div>
+          <div class="itemLine fadeIn lineStart rbt"></div>
       </div>
 
-<script>
-      
+<script type="module">
+    import {listAnimals} from "/js/stamtavle.js"
     let container = document.getElementById('container');
+    
     let testBilde = document.getElementById('testBilde'); 
     let valgtDyr = document.getElementById('valgtDyr');
     let stamtavle = document.getElementById('stamtavle');
+    let far = document.getElementById('far');
+    let mor = document.getElementById('mor');
+    let farfar = document.getElementById('farfar');
+    let farmor = document.getElementById('farmor');
+    let morfar = document.getElementById('morfar');
+    let mormor = document.getElementById('mormor');
+    
+   
 
     listAnimals();
-
-    
-
-    
-
 
 </script>
 
 <style>
 
-    /* .item {
-        
-    } */
+    .bold {
+        font-weight: bold;
+    }
 
     :root {
         --time: 0.75s ease-out;
         --time2: 1s ease-out;
     }
 
-    .female1:hover {
+    .item:hover {
+        transform: scale(2,2);
+        z-index: 1;
+    }
+
+    /* .female1:hover {
         width: 550px;
         transform: translateX(-300px);
         transition: none;
         z-index: 1;
     }
-
     .male1:hover {
         width: 550px;
         transition: none;
         z-index: 1;
     }
-
     .female2:hover {
-        /* width: 520px; */
+        width: 520px;
         transform: scale(2,2);
         transition: none;
         z-index: 1;
     }
-
     .male2:hover {
         width: 520px;
         transition: none;
         z-index: 1;
-    }
+    } */
 
     .stamtavlebilde {grid-area: img;
-        width: 80px;
+        width: 50px;
         border-radius: 100px;
         align-self: center;
         justify-self: center;}
 
-    .valgtDyr {
+    #valgtDyr {
         grid-area: dyr;
-        transition:all var(--time);}
-    .valgtFar {
+        transition:all var(--time), font-size 0s, padding-top 0s;}
+    #far {
         grid-area: far;
-        border: 1px solid blue;
-        transition:all var(--time2);}
-    .valgtMor {
+        border: 2px solid blue;
+        transition:all var(--time2), font-size 0s, padding-top 0s;}
+    #mor {
         grid-area: mor;
-        border: 1px solid red;
-        transition:all var(--time2);}
-    .valgtFarFar {
+        border: 2px solid red;
+        transition:all var(--time2), font-size 0s, padding-top 0s;}
+    #farfar {
         grid-area: farfar;
-        border: 1px solid blue;
-        background-color: blue;
-        transition:all var(--time2);}      
-    .valgtFarMor {
+        border: 2px solid blue;
+        transition:all var(--time2), font-size 0s, padding-top 0s;}      
+    #farmor {
         grid-area: farmor;
-        border: 1px solid red;
-        background-color: red;
-        transition: var(--time2); }
-    .valgtMorFar {
+        border: 2px solid red;
+        transition: var(--time2), font-size 0s, padding-top 0s;}
+    #morfar {
         grid-area: morfar;
-        border: 1px solid blue;
-        transition:all var(--time2);}
-    .valgtMorMor {
+        border: 2px solid blue;
+        transition:all var(--time2), font-size 0s, padding-top 0s;}
+    #mormor{
         grid-area: mormor;
-        border: 1px solid red;
-        transition:all var(--time2);}
+        border: 2px solid red;
+        transition:all var(--time2), font-size 0s, padding-top 0s;}
 
     .stamtavleStart {
         transform: scale(0) /* translateY(300px) */;
@@ -166,37 +180,188 @@
 
     .container {
         display: grid;
-        grid-template-columns: 120px 250px 20px 250px 50px 250px 20px 250px 120px;
-        grid-template-rows: 150px 150px 150px 150px 150px 150px;
+        grid-template-columns: 120px 125px 125px 10px 10px 125px 125px 25px 25px 125px 125px 10px 10px 125px 125px 120px;
+        grid-template-rows: 40px 40px 50px 50px 50px 50px 50px 50px 50px 50px 75px 75px;
         grid-template-areas: 
-        ". . . . . . . . ."
-        ". farfar . farmor . morfar . mormor ."
-        ". . . . . . . . ."
-        ". . . far . mor . . ."
-        ". . . . . . . . ."
-        ". . . dyr dyr dyr . . .";
-
+        ". . . . . . . . . . . . . . . ."
+        ". . . . . . . . . . . . . . . ."
+        ". farfar farfar lbb lbb farmor farmor . . morfar morfar rbb rbb mormor mormor ."
+        ". farfar farfar lbr . farmor farmor . . morfar morfar . rbl mormor mormor ."
+        ". . . lbr . . . . . . . . rbl . . ."
+        ". . . . lbt lbt lbl . . rbr rbt rbt . . . ."
+        ". . . . . far far . . mor mor . . . . ."
+        ". . . . . far far . . mor mor . . . . ."
+        ". . . . . lbr2 lbb2 lbb2 lbb2 lbb2 rbl2 . . . . ."
+        ". . . . . . . rbr3 . . . . . . . ."
+        ". . . . . . dyr dyr dyr dyr . . . . . ."
+        ". . . . . . dyr dyr dyr dyr . . . . . .";
+        
     }
+
+    .lineStart {
+        opacity: 0;
+        transition: 1s;
+    }
+
+    .lbb {
+        grid-area: lbb;
+        border-bottom: 1px solid black;
+        transition: 1s;
+    }
+
+    .lbb2 {
+        grid-area: lbb2;
+        border-bottom: 1px solid black;
+        transition: 1s;
+    }
+
+    .lbr {
+        grid-area: lbr;
+        border-right: 1px solid black;
+        transition: 1s;
+    }
+    .lbr2 {
+        grid-area: lbr2;
+        border-right: 1px solid black;
+        transition: 1s;
+    }
+    .lbr3 {
+        grid-area: lbr2;
+        border-right: 1px solid black;
+        transition: 1s;
+    }
+    .lbt {
+        grid-area: lbt;
+        border-top: 1px solid black;
+        transition: 1s;
+    }
+
+    .lbl {
+        grid-area: lbl;
+        border-left: 1px solid black;
+        transition: 1s;
+    }
+
+    .rbb {
+        grid-area: rbb;
+        border-bottom: 1px solid black;
+        transition: 1s;
+    }
+
+    .rbb2 {
+        grid-area: rbb2;
+        border-bottom: 1px solid black;
+        transition: 1s;
+    }
+
+    .rbr {
+        grid-area: rbr;
+        border-right: 1px solid black;
+        transition: 1s;
+    }
+    .rbr2 {
+        grid-area: rbr2;
+        border-right: 1px solid black;
+        transition: 1s;
+    }
+    .rbr3 {
+        grid-area: rbr3;
+        border-right: 1px solid black;
+        transition: 1s;
+    }
+
+    .rbt {
+        grid-area: rbt;
+        border-top: 1px solid black;
+        transition: 1s;
+    }
+
+    .rbl {
+        grid-area: rbl;
+        border-left: 1px solid black;
+        transition: 1s;
+    }
+    .rbl2 {
+        grid-area: rbl2;
+        border-left: 1px solid black;
+        transition: 1s;
+    }
+
+
+
+
+    .item {
+        background-color: rgb(220, 220, 220);
+    }
+
+
 
     body{
         margin-top: 30px;
     }
-.valgtDyr {
+    .valgtDyr:hover {
         display: grid;
-        grid-template-columns: 150px 250px 250px;
-        grid-template-rows: 25px 25px 25px 25px 25px 25px;
+        grid-template-columns: 80px 110px 110px;
+        grid-template-rows: 10px 26px 26px 26px 26px 26px 10px;
         grid-template-areas: 
-            "img regNr innavlsgrad "
-            "img vø poeng "
-            "img fDato farge"
-            "img kullNr far"
-            "did kjønn mor"
-            "did genstam genstam";
-        border: 1px solid gray;
+            ". . ."
+            "img regNr vø "
+            "img poeng innavlsgrad "
+            "img kullNr farge"
+            "did fDato kjønn"
+            "did genstam genstam"
+            ". . .";
+    
+
+        /* border: 1px solid gray; */
+        font-size: x-small;
+    }
+
+    .valgtDyr {
+        display: grid;
+        grid-template-columns: 125px 175px;
+        grid-template-rows: 30px 30px 30px 30px 30px;
+        grid-template-areas: 
+            "img ."
+            "img did2"
+            "img regNr"
+            "img vø"
+            "img .";
+        /* border: 1px solid gray; */
         cursor: pointer;
-        padding-top: 10px;
-        background-color: bisque;
+        font-size: medium;
+    }
+
+    .valgtDyrFamilie {
+        display: grid;
+        grid-template-columns: 100px 150px;
+        grid-template-rows: 12.5px 25px 25px 25px 12.5px;
+        grid-template-areas: 
+            "img ."
+            "img did2"
+            "img regNr"
+            "img vø"
+            "img .";
+        /* border: 1px solid gray; */
+        cursor: pointer;
         font-size: small;
+    }
+
+    .valgtDyrFamilie:hover {
+        display: grid;
+        grid-template-columns: 70px 90px 90px;
+        grid-template-rows: 25px 25px 25px 25px;
+        grid-template-areas: 
+            "img regNr vø "
+            "img poeng innavlsgrad "
+            "img kullNr farge"
+            "did fDato kjønn";
+    
+
+        /* border: 1px solid gray; */
+        cursor: pointer;
+        padding-top: 5px;
+        font-size: xx-small;
     }
 
     /* #valgtDyr {
@@ -211,7 +376,7 @@
     }
 
     .bg-2 {
-        background-color: whitesmoke;
+        background-color: white;
     }
 
 #container {
@@ -221,7 +386,10 @@
 }
 
 .sidebar {
-    width: 140px;
+    width: 180px;
+    background-color: rgb(220, 220, 220);
+    /* border-right: 1px solid grey; */
+    
 }
 
 .item1 {grid-area: img;
@@ -231,44 +399,48 @@
         justify-self: center;}
 
 .item2 {grid-area: did;
-        align-self: center;
-        justify-self: center;
-        font-weight: bold;}
+        /* align-self: center;
+        justify-self: center; */
+        /* font-weight: bold; */}
+
+.item2hover {grid-area: did2;
+    align-self: center;
+        /* font-weight: bold; */}
+
+.item3 {grid-area: regNr;}
+.item4 {grid-area: vø;}
+.item5 {grid-area: fDato;}
+.item6 {grid-area: kullNr;}
+.item7 {grid-area: kjønn;}
+.item8 {grid-area: innavlsgrad;}
+.item9 {grid-area: poeng;}
+.item10 {grid-area: farge;}
+.item11 {grid-area: far;}
+.item12 {grid-area: mor;}
+.slett {grid-area: slett;
+    margin: auto;}
+.rediger {grid-area: rediger;
+    margin: auto;}
+.genstam {grid-area: genstam;
+    font-size: xx-small;
+    width: 200px;
+    } 
 
 .mineDyr {
-        display: grid;
-        /* grid-template-columns: 200px 200px 200px 35px; */
-        grid-template-rows: 35px;
-        grid-template-areas: 
-            "img did";
-        border-bottom: 1px solid gray;
-        cursor: pointer;
-        padding-bottom: 5px;
-        padding-top: 5px;
-    }
+    display: grid;
+    grid-template-columns: 60px 140px; 
+    grid-template-rows: 35px ;
+    grid-template-areas: 
+        "img did";
+    border-bottom: 1px solid gray;
+    cursor: pointer;
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
 
-    .mineDyr:hover {
-        background-color: grey;
-    }
-
-    /* .sidebar {
-        list-style-type: none;
-        margin-top: 0;
-        padding-top: 30;
-        width: 200px;
-        background-color: #f1f1f1;
-        }
-    .sidebar a {
-        display: block;
-        color: #000;
-        padding: 8px 16px;
-        text-decoration: none;
-    }
-
-    .sidebar a:hover {
-        background-color: #555;
-        color: white;
-    } */
+.mineDyr:hover {
+    background-color: grey;
+}
 </style>
     
     <script src="js/popper.min.js"></script>

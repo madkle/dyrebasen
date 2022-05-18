@@ -1,29 +1,11 @@
-const { all, set } = require("express/lib/application");
-const { get } = require("express/lib/response");
+import {getAllAnimals} from "./dyr.js"
+let fam = {};
+let animationInOut = false; 
 
-async function getAllAnimals() {
-    let url = "/dyr";
-        try {
-            let response = await fetch(url);
-            let data = await response.json();
-
-            if (response.status != 200) {
-                throw data.error;
-            }
-
-            return data                
-        }
-        catch(error) {
-            console.log(error);
-        }
-}
-
-async function listAnimals() {
+export async function listAnimals() {
     let data = await getAllAnimals();
-    let valgtFarFar = document.getElementById('valgtFarFar');
-    let allAnimals = document.querySelectorAll(".item");
 
-    container.innerHTML = "Velg dyr:<hr>";
+    container.innerHTML = "<h3 class='text-center'>Velg dyr:</h3><hr class='m-1'>";
 
     for (let value of data) {
         let testBilde = "bilder/kanin_standardbilde.jpeg";
@@ -58,7 +40,7 @@ async function listAnimals() {
 
         let html1 = 
             `<img class="item1" src="${value.bilde}" alt="bilde av kanin"/>
-            <p class="item2">ID: ${value.did} </p>`
+            <p class="item2" style="padding-top: 5px;">Reg.nr: ${value.regnr} </p>`
 
 
             
@@ -66,85 +48,159 @@ async function listAnimals() {
         div.innerHTML = html1;
         container.appendChild(div);
         div.classList.add("mineDyr"); 
-
-        div.draggable = true;
         
         let valgtDID = value.did;
         div.addEventListener('click',  function(evt) {
-            //valgtFarFar.classList.remove("valgtFarFarStart");
-            console.log(allAnimals);
-
-            //let allAnimals = document.querySelectorAll(".item");
-            if (!allAnimals[0].classList.contains("stamtavleStart")) {
-                    /* valgtDyr.classList.remove("valgtDyr"); */
-
-                    
-                        allAnimals[0].classList.add("stamtavleStart");
-                        allAnimals[1].classList.add("stamtavleStart");
-                        allAnimals[2].classList.add("stamtavleStart");
-                        allAnimals[3].classList.add("stamtavleStart");
-                        allAnimals[4].classList.add("stamtavleStart");
-                        allAnimals[5].classList.add("stamtavleStart");
-                        allAnimals[6].classList.add("stamtavleStart");
-                    
-            };
-
-            setTimeout (function() {
-                allAnimals[0].classList.remove("stamtavleStart");
-            }, 1000)
-            
-
-            setTimeout(function(){
-                allAnimals[1].classList.remove("stamtavleStart");
-                allAnimals[2].classList.remove("stamtavleStart");
-            }, 1300);
-
-            setTimeout(function(){
-                allAnimals[3].classList.remove("stamtavleStart");
-                allAnimals[4].classList.remove("stamtavleStart");
-                allAnimals[5].classList.remove("stamtavleStart");
-                allAnimals[6].classList.remove("stamtavleStart");
-            }, 1850);
-            
-            setTimeout (function() {
-            chooseAnimal(valgtDID);
-            }, 1000);
-
-            /* for (const animal of allAnimals) {
-                
-                
-                if (animal.classList.contains("valgtFar")||animal.classList.contains("valgtMor")) {
-                    setTimeout(function() {
-                        animal.classList.remove("stamtavleStart");
-                    },500);
-                } else if (animal.classList.contains("valgtFarFar")||animal.classList.contains("valgtFarMor") || animal.classList.contains("valgtMorFar")||animal.classList.contains("valgtMorMor")) {
-                    setTimeout(function() {
-                        animal.classList.remove("stamtavleStart");
-                    },1000);
-                } else {
-                    animal.classList.remove("stamtavleStart");
-                }
-                
-            } */
+            animation(valgtDID);
         });
     }
 }
 
+function animation(ID) {
+    let allAnimals = document.querySelectorAll(".item");
+    let stamLinjer = document.querySelectorAll(".itemLine");
+   
+    let timer = 0;
+    
+    
+    if (!allAnimals[0].classList.contains("stamtavleStart")) {
+        for (let i = 0; i <= 6; i++) {
+            allAnimals[i].classList.add("stamtavleStart");
+        }
+        
+        timer = 1000;
+        animationInOut = true;
+        setTimeout(function() {
+            allAnimals.forEach(item =>{
+                item.remove();
+            });
+            
+        },timer);
+    }
+
+    if (!stamLinjer[0].classList.contains("lineStart")) {
+        for (let i = 0; i <= 13; i++) {
+            stamLinjer[i].classList.add("lineStart");
+        }
+    }
+
+    if (animationInOut) {
+        setTimeout(function() {
+            let itemArr = generateBoxes();
+            const stamtavle =  document.getElementById("stamtavle");
+
+            itemArr.forEach(item =>{
+                stamtavle.appendChild(item)
+            });
+        },timer)
+    }
+    
+    setTimeout (function() {
+        fam = {};
+        chooseAnimal(ID);
+        showBoxAnimation(timer)
+    }, timer);
+    
+}
+function showBoxAnimation(timer) {
+    let allAnimals = document.querySelectorAll(".item");
+    let stamLinjer = document.querySelectorAll(".itemLine");
+
+    setTimeout (function() {
+        allAnimals[0].classList.remove("stamtavleStart");
+    }, timer)
+        
+    setTimeout(function(){
+        for (let i = 1; i <= 2; i++) {
+            allAnimals[i].classList.remove("stamtavleStart");
+        }
+    }, timer + 300);
+
+    setTimeout(function(){
+        for (let i = 3; i <= 6; i++) {
+            allAnimals[i].classList.remove("stamtavleStart");
+        }
+    }, timer + 500);
+
+    setTimeout (function() {
+        for (let i = 0; i <= 13; i++) {
+            stamLinjer[i].classList.remove("lineStart");
+        }
+    }, timer + 1000)
+}
 async function chooseAnimal(incomingID) {
     let data = await getAllAnimals();
-    
-
-
-
-    
-
-
-    for (let value of data) {
-        console.log(value);
-        if (value.did !== incomingID) {
+    fam = genFam(incomingID,data);
+    let boxIndex = 0;
+    for (const key in fam) {
+        let animal = fam[key];
+        
+        if (key === "child") {
+            drawAnmial(animal,boxIndex);
+            boxIndex++
             continue;
-        } 
+        }
+        for (const value of animal) {
+            drawAnmial(value,boxIndex);
+            boxIndex++
+        }
+        
+    }
     
+}
+
+function generateBoxes() {
+
+    let divListArr = []
+    let familyArr = ["far","mor","farfar","farmor","morfar","mormor"]
+    for (let i = 0; i < 7; i++) {
+        let div = document.createElement("div");
+        div.classList.add("item");
+        div.classList.add("shadow");
+        div.classList.add("rounded");
+        
+        let valgtDyrXTxt = "valgtDyrFamilie"
+        if (i === 0) {
+            valgtDyrXTxt = "valgtDyr"
+        }
+        div.classList.add(valgtDyrXTxt);
+        let valgtXTxt = "valgt"
+        let genderTxt = "male";
+        let genderGenerationTxt = ""
+        if (i !== 0) {
+            valgtXTxt+=familyArr[i-1];
+            div.classList.add(valgtXTxt);
+
+            let lastThreeCharacters = valgtXTxt.substring(valgtXTxt.length-3);
+            if(lastThreeCharacters === "mor"){
+                genderTxt = "female"
+            }
+            div.classList.add(genderTxt);
+
+            if (valgtXTxt.length === 8) {
+                genderGenerationTxt = genderTxt + "1"
+            }else{
+                genderGenerationTxt = genderTxt + "2"
+            }
+            div.classList.add(genderGenerationTxt);
+            div.id = familyArr[i-1].toLowerCase();
+            div.innerHTML = familyArr[i-1]
+        }else{
+            div.id = "valgtDyr"
+        }
+        div.classList.add("stamtavleStart");
+        divListArr.push(div);
+    }
+    return divListArr
+}
+
+function drawAnmial(value,box) {
+    
+    let html = "";
+    let html2 = "";
+    const item = document.querySelectorAll(".item")[box];
+
+    if (value !== undefined) {
         let testBilde = "bilder/kanin_standardbilde.jpeg";
         if (value.bilde === null) {
             value.bilde = testBilde
@@ -157,38 +213,100 @@ async function chooseAnimal(incomingID) {
             let d = new Date(fdato)
             dateFormatert = `${d.getDate()}/${d.getMonth()}/${d.getFullYear()}`
         }
-        let morID = "";
-        let farID = "";
-        
-        for (const parent of data) {
-            if(value.mor !== null && value.mor === parent.did){
-                morID = parent.regnr;
-            }
-            if(value.far !== null && value.far === parent.did){
-                farID = parent.regnr;
-            }
-        }
             
-        let html = `
+        html = `
             <img class="stamtavlebilde" src="${value.bilde}" width="100px" alt="bilde av kanin"/>
-            <p class="item2">ID: ${incomingID} </p>
-            <p class="item3">Reg.nr: ${value.regnr}</p>
+            <p class="item2 text-center">ID: ${value.did} </p>
+            <p class="item3" style="font-weight: bold;">Reg.nr: ${value.regnr}</p>
             <p class="item4">V.Ø.: ${value.vø}</p>
-            <p class="item5">Fødselsdato: ${dateFormatert} </p>
-            <p class="item6">Kullnummer: ${value.kullnr} </p>
+            <p class="item5">Født: ${dateFormatert} </p>
+            <p class="item6">Kull.nr: ${value.kullnr} </p>
             <p class="item7">Kjønn: ${value.kjønn} </p>
             <p class="item8">Innavlsgrad: ${value.innavlsgrad}</p>
             <p class="item9">Poeng: ${value.poeng} </p>
             <p class="item10">Farge: ${value.farge}</p>
-            <p class="item11">Far: ${value.far} </p>
-            <p class="item12">Mor: ${value.mor} </p>
         `
 
-    
-        valgtDyr.innerHTML = html;
-    
-        valgtDyr.classList.add("valgtDyr"); 
+        html2 = `
+            <img class="stamtavlebilde" src="${value.bilde}" width="100px" alt="bilde av kanin"/>
+            <p class="item2hover bold">ID: ${value.did} </p>
+            <p class="item3">Reg.nr: ${value.regnr}</p>
+            <p class="item4">V.Ø.: ${value.vø}</p>
+        `
 
+        let genStam = document.createElement("button");
+        genStam.classList.add("genstam");
+        genStam.classList.add("btn");
+        genStam.classList.add("btn-sm");
+        genStam.classList.add("btn-secondary")
+        genStam.innerText ="Generer stamtavle";
+        genStam.addEventListener('click', function(){
+            generatePDF(value.did);
+        })
+
+        
+        item.innerHTML = html2;
+        
+        item.addEventListener("mouseenter", mouseOver);
+        item.addEventListener("mouseleave", mouseOut);
+
+        function mouseOver(evt) {
+            evt.preventDefault();
+            item.innerHTML = " ";
+            if (evt.currentTarget.id === "valgtDyr") {
+                item.innerHTML = html
+                item.appendChild(genStam);
+            } else {
+                item.innerHTML = html;
+            }
+        }
     
+        function mouseOut(evt) {
+            item.innerHTML = " ";
+            item.innerHTML = html2;
+        }
+
+        item.addEventListener('click', function(evt) {
+            if (evt.currentTarget.id !== "valgtDyr") {
+                far.innerHTML = "Far";
+                mor.innerHTML = "Mor";
+                farfar.innerHTML = "Farfar";
+                farmor.innerHTML = "Farmor";
+                morfar.innerHTML = "Morfar";
+                mormor.innerHTML = "Mormor";
+                animation(value.did);
+            }
+        });
     }
+    //item.innerHTML = html;
+}
+
+function genFam(chosenId,animalList) {
+    let currentAnimal = {};
+    let parentsArr = [];
+    let grandParentsArr = [];
+    animalList.forEach(element => {
+        if (element.did === chosenId) {
+            currentAnimal = element
+        }
+    });
+    animalList.forEach(allAnimal => {
+        if (currentAnimal.far === allAnimal.did || currentAnimal.mor === allAnimal.did) {
+            parentsArr.push(allAnimal)
+        }
+    });
+    parentsArr.forEach(parent => {
+        animalList.forEach(allAnimals => {
+            if (parent.far === allAnimals.did || parent.mor === allAnimals.did) {
+                grandParentsArr.push(allAnimals)
+            }
+        });
+    });
+    let family = {
+        child: currentAnimal,
+        parents: parentsArr,
+        fathersParents: [grandParentsArr[0],grandParentsArr[1]],
+        mothersParents: [grandParentsArr[2],grandParentsArr[3]]
+    }
+    return family
 }

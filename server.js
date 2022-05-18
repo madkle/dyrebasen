@@ -1,6 +1,7 @@
 const express = require("express");
 const routes = require("./routes/routing.js")
 const server = express();
+const auth = require("./modules/auth.js");
 const PORT = process.env.PORT || 8080;
 server.set("port", PORT);
 
@@ -8,6 +9,7 @@ server.set("port", PORT);
 server.use(express.static("public"));
 server.use(express.json());
 server.use(routes);
+
 //general error handlogig----------------
 server.use(function(err, req, res, next){
 	res.status(500).json({
