@@ -68,10 +68,15 @@
                                 <input id="inpEpost" type="email" class="form-control" /><br>
                             </div>
                         </div>
+                        <div class="row">
+                          <div class="col">
+                            <p class="text-center">Endre passord</p>    
+                          </div>
+                      </div>
 
                         <div class="row">
                           <div class="col">
-                              <label for="inpOldPwd" class="form-label">gammelt passord:</label>
+                              <label for="inpOldPwd" class="form-label">Gammelt passord:</label>
                               <input id="inpOldPwd" type="password" class="form-control"/><br>
                           </div>
                           <div class="col">
@@ -81,11 +86,11 @@
 
                         <div class="row" id="changePwd" hidden>
                           <div class="col">
-                              <label for="inpNewPwd" class="form-label">nytt passord:</label>
+                              <label for="inpNewPwd" class="form-label">Nytt passord:</label>
                               <input id="inpNewPwd" type="password" class="form-control"/><br>
                           </div>
                           <div class="col">
-                            <label for="checkNewPwd" class="form-label">bekreft passord:</label>
+                            <label for="checkNewPwd" class="form-label">Bekreft passord:</label>
                             <input id="checkNewPwd" type="password" class="form-control"/><br>
                           </div>
                         </div>
@@ -104,14 +109,13 @@
     </div> 
 
     <div class="index mt-2">
-      <h1 class="text-center velkommen">Velkommen til Dyrebasen!</h1>
       <div class="container-fluid justify-self-center logregcard">    
         <!-- CARD -->
         <div class="container align-self-end" id="cardSignup">
           <div class="card bg-" style="border: none;">
             <div class="card-body rounded shadow">
               <div class="container" >
-                <h2 class="text-center">Din bruker</h2><br>
+                <h2 class="text-center">Min bruker</h2><br>
                 <!--<form>--><!-- action="login.js" for å kjøre innloggingsfilen med inputen fra skjemaet -->
                 <div class="row">
                   <div class="col" id="card-body">
@@ -206,6 +210,10 @@
       
       btnOpenEditUser.addEventListener("click", async function(evt){
         evt.preventDefault();
+        inpOldPwd.value = "";
+        inpNewPwd.value = "";
+        checkNewPwd.value = ""; 
+        
         let user = await getUserInfo(loggedInToken.userid);
         changePwd.hidden = true;
         inpFornavn.value = user.fornavn;

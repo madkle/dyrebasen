@@ -89,6 +89,7 @@ export async function addAnimal(updata) {
         headers: {"content-type":"application/json"},
         body: JSON.stringify(updata)
     }
+    console.log(cfg.body);
     try {
         let response = await fetch(url, cfg);
         let data = await response.json();
@@ -100,7 +101,6 @@ export async function addAnimal(updata) {
         return {status: 200, msg: "added to database"}
     }
     catch(error) {
-        console.log(error);
         return {status: 500, msg: "something went wrong! Could not add to database"}
     }
   

@@ -99,7 +99,6 @@ router.delete("/dyr/:id", async function(req, res, next){
 router.post("/dyr", normalize, async function(req, res, next)  {
     
     let updata = req.body;
-    
     try{
         let sql = `INSERT INTO dyr (did, regnr, vø, fdato, kullnr, kjønn, innavlsgrad, poeng, farge, far, mor , bidfk, aidfk, bilde) 
         VALUES 
@@ -108,6 +107,7 @@ router.post("/dyr", normalize, async function(req, res, next)  {
           updata.regnr, updata.vø, updata.fdato, updata.kullnr, updata.kjønn, updata.innavlsgrad, updata.poeng, updata.farge, updata.far, updata.mor , updata.bid, updata.aid, updata.bilde
         ];
         let result= await pool.query(sql, values);
+        
         if(result.rows.length > 0){
             res.status(200).json({msg : "added to database"}).end();
         }
@@ -115,6 +115,7 @@ router.post("/dyr", normalize, async function(req, res, next)  {
             throw "could not add to database";
         }
     }catch(err){
+        console.log(err);
         res.status(500).json({error: err}).end();
     }
     
