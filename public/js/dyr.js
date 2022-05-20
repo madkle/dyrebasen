@@ -153,6 +153,7 @@ async function deleteAnimal(dyrID) {
 } 
 async function loadHTMLElements(selectedID) {      
     let clickedAnimal = "";
+    btnEditAnimal.disabled = true;
     clickedAnimal = await getSingleAnimal(selectedID)
     inpRegNr.value = clickedAnimal.regnr;
     inpVø.value = clickedAnimal.vø;
@@ -168,6 +169,7 @@ async function loadHTMLElements(selectedID) {
     if(txtResponse){
         txtResponse.innerHTML = "";
     }
+    
     originalInputValues = {
         regnr: inpRegNr.value,
         vø: inpVø.value,
@@ -261,6 +263,8 @@ export async function listAnimals(filteredList) {
         editbtn.addEventListener('click', function(){
             loadFormElements()
             loadHTMLElements(value.did);
+            
+            btnEditAnimal.disabled = false;
         })
         div.appendChild(editbtn);
 
