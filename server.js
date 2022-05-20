@@ -7,7 +7,7 @@ server.set("port", PORT);
 
 // middleware ---------------------------
 server.use(express.static("public"));
-server.use(express.json({limit: '20mb'}));
+server.use(express.json({limit: '2mb'}));
 server.use(routes);
 //general error handlogig----------------
 server.use(function(err, req, res, next){

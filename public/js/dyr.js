@@ -89,7 +89,6 @@ export async function addAnimal(updata) {
         headers: {"content-type":"application/json"},
         body: JSON.stringify(updata)
     }
-    console.log(cfg.body);
     try {
         let response = await fetch(url, cfg);
         let data = await response.json();
@@ -98,10 +97,10 @@ export async function addAnimal(updata) {
             throw data.error;
         }
 
-        return {status: 200, msg: "added to database"}
+        return {status: 200, msg: "Added to database"}
     }
     catch(error) {
-        return {status: 500, msg: "something went wrong! Could not add to database"}
+        return {status: 500, msg: "Something went wrong! Could not add to database"}
     }
   
 }
@@ -118,11 +117,10 @@ export async function updateAnimal(updata) {
     
     try {
         let response = await fetch(url, cfg);
-        listAnimals();
-
         if (response.status != 200) {
             throw data.error;
         }
+        listAnimals();
     }
     catch(error) {
         console.log(error);
@@ -156,7 +154,6 @@ async function deleteAnimal(dyrID) {
 async function loadHTMLElements(selectedID) {      
     let clickedAnimal = "";
     clickedAnimal = await getSingleAnimal(selectedID)
-            
     inpRegNr.value = clickedAnimal.regnr;
     inpVø.value = clickedAnimal.vø;
     inpFdato.value = clickedAnimal.fdato;
@@ -167,8 +164,10 @@ async function loadHTMLElements(selectedID) {
     inpFarge.value = clickedAnimal.farge;
     inpFar.value = clickedAnimal.far;
     inpMor.value = clickedAnimal.mor;
-    //inpBilde.value = clickedAnimal.bilde;
-
+    inpBilde.value = null;
+    if(txtResponse){
+        txtResponse.innerHTML = "";
+    }
     originalInputValues = {
         regnr: inpRegNr.value,
         vø: inpVø.value,
@@ -203,7 +202,6 @@ export async function listAnimals(filteredList) {
     container.innerHTML = " ";
     for (let value of data) {
         let testBilde = "bilder/kanin_standardbilde.jpeg";
-        //console.log(value);
         if (value.bilde === null) {
             value.bilde = testBilde
         }

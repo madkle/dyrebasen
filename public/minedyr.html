@@ -136,6 +136,11 @@
                                     <input class="form-control" type="file" id="inpBilde"><br>
                                 </div>
                            </div>
+                           <div class="row">
+                                <div class="col">
+                                    <p id="txtResponse" class="text-center text-danger"></p>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -226,13 +231,20 @@
         let dropOperator = document.getElementById('dropOperator');
         let searchRes = document.getElementById('searchRes');
         let btnClear = document.getElementById('btnClear');
-
+        let txtResponse = document.getElementById('txtResponse');
         inpBilde.addEventListener("change", function (evt) {
             let fr = new FileReader();
             fr.addEventListener("load", function (evt) {
                 bildeData = fr.result;
             });
-            fr.readAsDataURL(inpBilde.files[0]);
+            if (inpBilde.files[0].size < 2000000) {
+                fr.readAsDataURL(inpBilde.files[0]);
+                txtResponse.innerHTML = "";
+                btnEditAnimal.disabled = false;
+            }else{
+                txtResponse.innerHTML = "Filen er for stor. Max 2MB";
+                btnEditAnimal.disabled = true;
+            }
         })
         /* 
         function loadDropdown() {
@@ -276,7 +288,7 @@
                 await listAnimals(filteredList);
             }else{
                 searchRes.hidden = false
-                searchRes.innerHTML = "noe gikk galt, kunne ikke finne det du søkte på"
+                searchRes.innerHTML = "Noe gikk galt, kunne ikke finne det du søkte på";
             }
         });
 
@@ -310,7 +322,7 @@
                 
                 await updateAnimal(updata);
             }else{
-                throw "nothing changed"
+                throw "Nothing changed";
             }
             
             
