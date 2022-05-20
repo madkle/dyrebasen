@@ -172,7 +172,7 @@ function generateBoxes() {
             valgtXTxt+=familyArr[i-1];
             div.classList.add(valgtXTxt);
 
-            let lastThreeCharacters = valgtXTxt.substring(valgtXTxt.length-3);
+            let lastThreeCharacters = valgtXTxt.substring(valgtXTxt.length-3).toLocaleLowerCase();
             if(lastThreeCharacters === "mor"){
                 genderTxt = "female"
             }
