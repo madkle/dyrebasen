@@ -87,7 +87,7 @@ export async function generatePDF(clickedAnimal){
     function rowOne(x,y,r) {
         let startTextLine = 2;
         let headAlignRight = r - 40;
-        let bodyAlignRight = r - 15;
+        let bodyAlignRight = r - 25;
         let cellPadding = 7;
         const imgWidth = 50;
         const imgHeight = 50;
@@ -133,7 +133,7 @@ export async function generatePDF(clickedAnimal){
             doc.text(`${contentRightText[i]}`,  headAlignRight, y + lineSpacing*(i+startTextLine));
 
         }
-        startTextLine = contentRightText.length + 1;
+        startTextLine = contentRightText.length
         if (mainAnimal.farge !== "N/A") {
             let colourInformation = lookupColour(mainAnimal.farge)
             if (colourInformation !== null) {
@@ -145,9 +145,9 @@ export async function generatePDF(clickedAnimal){
                 doc.setFillColor(colourInformation.rgb.red, colourInformation.rgb.green, colourInformation.rgb.blue)
                 doc.roundedRect(rectX, rectY, rectW, rectH, 1,1, "FD");
             }
-            
+            startTextLine = startTextLine + 2;
             doc.setFont("helvetica", "bold");
-            doc.text(mainAnimal.farge, bodyAlignRight, y + lineSpacing * startTextLine);
+            doc.text(mainAnimal.farge, headAlignRight, y + lineSpacing * startTextLine);
             doc.setFont("helvetica", "normal");
         }        
     }
@@ -166,7 +166,7 @@ export async function generatePDF(clickedAnimal){
 
         let startTextLine = 1;
         let headAlignRight = r - 40;
-        let bodyAlignRight = r - 15;
+        let bodyAlignRight = r - 25;
 
         
         let parentArr = ["Far","Mor"];
@@ -189,7 +189,7 @@ export async function generatePDF(clickedAnimal){
 
         }
 
-        startTextLine = contentRightText.length + 1;
+        startTextLine = contentRightText.length;
 
         if (currentAnimal.farge !== "N/A") {
             let colourInformation = lookupColour(currentAnimal.farge)
@@ -202,8 +202,9 @@ export async function generatePDF(clickedAnimal){
                 doc.setFillColor(colourInformation.rgb.red, colourInformation.rgb.green, colourInformation.rgb.blue)
                 doc.roundedRect(rectX, rectY, rectW, rectH,1,1, "FD");
             }
+            startTextLine = startTextLine + 2;
             doc.setFont("helvetica", "bold");
-            doc.text(currentAnimal.farge, bodyAlignRight, y + lineSpacing * startTextLine);
+            doc.text(currentAnimal.farge, headAlignRight, y + lineSpacing * startTextLine);
             doc.setFont("helvetica", "normal");
         }
     }
