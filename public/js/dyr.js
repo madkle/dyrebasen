@@ -1,10 +1,36 @@
-const { del } = require("express/lib/application");
+import {getToken} from "./user.js";
+import {colourArr} from "./colour.js";
+import {generatePDF} from "/js/pdf.js";
+import {storForbokstav} from "/js/form.js";
+//import {loadHTMLElements} from "../minedyr.html"
+
+export let activeID = null;
+export let originalInputValues = {
+    regnr: null,
+    vø: null,
+    fdato: null,
+    kullnr: null,
+    kjønn: null,
+    innavlsgrad: null,
+    poeng: null,
+    farge: null,
+    far: null,
+    mor: null,
+    bilde: null
+};
 
 
-async function getAllAnimals() {
+export async function getAllAnimals() {
+    let loggedInToken = await getToken();
     let url = "/dyr";
+    
+    let cfg = {
+        headers:{
+            "userid":loggedInToken.userid
+        }
+    }
         try {
-            let response = await fetch(url);
+            let response = await fetch(url, cfg);
             let data = await response.json();
 
             if (response.status != 200) {
@@ -17,7 +43,7 @@ async function getAllAnimals() {
             console.log(error);
         }
 }
-async function getSingleAnimal(id) {
+export async function getSingleAnimal(id) {
 
     let url = `/dyr/${id}`;
 
@@ -54,16 +80,15 @@ async function getSingleAnimal(id) {
         console.log(error);
     }
 };
-async function addAnimal(updata) {
+export async function addAnimal(updata) {
+    let loggedInToken = await getToken();
     let url = "/dyr";
-
-   
+    updata.bid = loggedInToken.userid;
     let cfg = {
         method: "POST",
         headers: {"content-type":"application/json"},
         body: JSON.stringify(updata)
     }
-    
     try {
         let response = await fetch(url, cfg);
         let data = await response.json();
@@ -71,13 +96,15 @@ async function addAnimal(updata) {
         if (response.status != 200) {
             throw data.error;
         }
+
+        return {status: 200, msg: "Added to database"}
     }
     catch(error) {
-        console.log(error);
-        txtResult.innerHTML = "Noe gikk galt - sjekk konsollvinduet"
+        return {status: 500, msg: "Something went wrong! Could not add to database"}
     }
+  
 }
-async function updateAnimal(updata) {
+export async function updateAnimal(updata) {
     let url = "/dyr";
 
    
@@ -90,20 +117,18 @@ async function updateAnimal(updata) {
     
     try {
         let response = await fetch(url, cfg);
-        listAnimals();
-
         if (response.status != 200) {
             throw data.error;
         }
+        listAnimals();
     }
     catch(error) {
         console.log(error);
         txtResult.innerHTML = "Noe gikk galt - sjekk konsollvinduet"
     }
 }
-
 async function deleteAnimal(dyrID) {
-            
+    
     let url = `/dyr/${dyrID}`;
 
     
@@ -126,19 +151,72 @@ async function deleteAnimal(dyrID) {
         console.log(error);
     }
 } 
-
-async function listAnimals() {
-    let data = await getAllAnimals();
-
+async function loadHTMLElements(selectedID) {      
+    let clickedAnimal = "";
+    btnEditAnimal.disabled = true;
+    clickedAnimal = await getSingleAnimal(selectedID)
+    inpRegNr.value = clickedAnimal.regnr;
+    inpVø.value = clickedAnimal.vø;
+    inpFdato.value = clickedAnimal.fdato;
+    inpKullNr.value = clickedAnimal.kullnr;
+    dropKjønn.value = clickedAnimal.kjønn;
+    inpInnavlsgrad.value = clickedAnimal.innavlsgrad;
+    inpPoeng.value = clickedAnimal.poeng;
+    inpFarge.value = clickedAnimal.farge;
+    inpFar.value = clickedAnimal.far;
+    inpMor.value = clickedAnimal.mor;
+    inpBilde.value = null;
+    if(txtResponse){
+        txtResponse.innerHTML = "";
+    }
+    
+    originalInputValues = {
+        regnr: inpRegNr.value,
+        vø: inpVø.value,
+        fdato: inpFdato.value,
+        kullnr: inpKullNr.value,
+        kjønn: dropKjønn.value,
+        innavlsgrad: inpInnavlsgrad.value,
+        poeng: inpPoeng.value,
+        farge: inpFarge.value,
+        far: inpFar.value,
+        mor: inpMor.value,
+        bilde: inpBilde.value
+    }
+    activeID = selectedID;
+    //console.log(originalInputValues);
+}
+export async function listAnimals(filteredList) {
+    let allAnimals =  await getAllAnimals()
+    
+    let data = {}
+    let parentList = null;
+    
+    if (filteredList) {
+        data = filteredList;
+        parentList = allAnimals;
+    }else{
+        data = allAnimals;
+        parentList = data;
+    }
+    
     container.innerHTML = " ";
-
     for (let value of data) {
+        let morID = "";
+        let farID = "";
         let testBilde = "bilder/kanin_standardbilde.jpeg";
-        //console.log(value);
         if (value.bilde === null) {
             value.bilde = testBilde
         }
         
+        for (const parent of parentList) {
+            if(value.mor !== null && value.mor === parent.did){        
+                morID = parent.did;
+            }
+            if(value.far !== null && value.far === parent.did){
+                farID = parent.did;
+            }
+        }
         let fdato = value.fdato ;
         let dateFormatert = "";
         
@@ -147,18 +225,6 @@ async function listAnimals() {
             dateFormatert = `${d.getDate()}/${d.getMonth()}/${d.getFullYear()}`
         }
         
-        let morID = "";
-        let farID = "";
-        
-        for (const parent of data) {
-            if(value.mor !== null && value.mor === parent.did){
-                morID = parent.regnr;
-            }
-            if(value.far !== null && value.far === parent.did){
-                farID = parent.regnr;
-            }
-        }
-
         for (const item in value) {
             if (value[item] === null) {
                 value[item] = "";
@@ -175,17 +241,37 @@ async function listAnimals() {
             <p class="item8">Innavlsgrad: ${value.innavlsgrad}</p>
             <p class="item9">Poeng: ${value.poeng} </p>
             <p class="item10">Farge: ${value.farge}</p>
-            <p class="item11">Far: ${farID} </p>
-            <p class="item12">Mor: ${morID} </p><br>
+            <p class="item11">Far (ID): ${farID} </p>
+            <p class="item12">Mor (ID): ${morID} </p><br>
         `
-            
 
         let div = document.createElement("div");
         div.innerHTML = html;
-        container.appendChild(div);
+        
         div.classList.add("mineDyr"); 
         div.classList.add("rounded");
         div.classList.add("shadow");
+        
+        let editbtn = document.createElement("button");
+        editbtn.classList.add("rediger");
+        editbtn.classList.add("btn");
+        editbtn.classList.add("btn-outline-secondary");
+        editbtn.classList.add("fa-solid");
+        editbtn.classList.add("fa-pen");
+        editbtn.setAttribute("data-bs-toggle", "modal");
+        editbtn.setAttribute("data-bs-target", "#editDyrModal");
+        editbtn.addEventListener('click', function(){
+            loadFormElements()
+            loadHTMLElements(value.did);
+            
+            btnEditAnimal.disabled = false;
+        })
+        div.appendChild(editbtn);
+
+
+        //div.innerHTML += editbtn;
+
+        container.appendChild(div);
 
         let delbtn = document.createElement("button");
         delbtn.classList.add("slett");
@@ -193,25 +279,11 @@ async function listAnimals() {
         delbtn.classList.add("btn-outline-secondary");
         delbtn.classList.add("fa-solid");
         delbtn.classList.add("fa-trash-can");
-        div.appendChild(delbtn);
-        /* let span = document.createElement("span");
-        span.classList.add("glyphicon");
-        span.classList.add("glyphicon-trash");
-                delbtn.appendChild(span); */
-
         delbtn.addEventListener('click', function(){
             deleteAnimal(value.did);
-        });
+        })
+        div.appendChild(delbtn);
 
-        
-        /* div.insertBefore(delbtn, div.lastElementChild); */
-            
-        let editbtn = `<button class="rediger btn btn-outline-secondary fa-solid fa-pen" onclick="loadHTMLElements(${value.did});" data-bs-toggle="modal" data-bs-target="#exampleModal"></button>`
-        
-        /*document.createElement("button");
-        editbtn.classList.add("rediger");
-        editbtn.innerText ="✏️";*/
-        //div.appendChild(editbtn);
         let genStam = document.createElement("button");
         genStam.classList.add("genstam");
         genStam.classList.add("btn");
@@ -220,14 +292,64 @@ async function listAnimals() {
         genStam.addEventListener('click', function(){
             generatePDF(value.did);
         })
-
-        
-        div.innerHTML += editbtn
         div.appendChild(genStam);
     }
 }
+export async function dbSearch(key,input,operator) {
+    let loggedInToken = await getToken();
+    let url = "/search";
+    let sql = ""
+    switch (key) {
+        case "far":
+            sql = `${key} ${operator} ${input}`;
+            break
+        case "mor":
+            sql = `${key} ${operator} ${input}`;
+            break
+        case "farge":
+            sql = `${key} LIKE '${input}%'`;
+            break
+        case "regnr":
+            sql = `${key} ${operator} ${input}`;
+            break
+        case "vø":
+            sql = `${key} LIKE '${input}%'`;
+            break
+        case "innavlsgrad":
+            sql = `${key} ${operator} ${input}`;
+            break
+        case "kullnr":
+            sql = `${key} ${operator} ${input}`;
+            break
+        case "poeng":
+            sql = `${key} ${operator} ${input}`;
+            break
+    }
 
-async function loadFormElements() {
+
+
+    let cfg = {
+        headers:{
+            "userid":loggedInToken.userid,
+            "sql":sql
+        }
+    }
+        try {
+            let response = await fetch(url, cfg);
+            let data = await response.json();
+
+           if (response.status != 200) {
+                throw data.error;
+            }
+
+            return data;
+        }
+        catch(error) {
+            return {msg: "failed to get", error:error};
+        }
+}
+export async function loadFormElements() {
+    fargeValg.innerHTML = ""
     colourArr.forEach(currColour => {
       let option = document.createElement("option");
       option.innerHTML = currColour.colour;
@@ -236,6 +358,8 @@ async function loadFormElements() {
     });
 
     let alleDyr = await getAllAnimals();
+    valgFar.innerHTML = "";
+    valgMor.innerHTML = "";    
     alleDyr.forEach(currDyr => {
       let option = document.createElement("option");
       option.innerHTML = `regnr: ${currDyr.regnr}`;
@@ -246,4 +370,6 @@ async function loadFormElements() {
         valgMor.appendChild(option);
       }
     });
-  }
+
+    
+}

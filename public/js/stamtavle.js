@@ -1,24 +1,9 @@
-
+import {getAllAnimals} from "./dyr.js"
+import {generatePDF} from "./pdf.js"
 let fam = {};
 let animationInOut = false; 
-async function getAllAnimals() {
-    let url = "/dyr";
-        try {
-            let response = await fetch(url);
-            let data = await response.json();
 
-            if (response.status != 200) {
-                throw data.error;
-            }
-
-            return data                
-        }
-        catch(error) {
-            console.log(error);
-        }
-}
-
-async function listAnimals() {
+export async function listAnimals() {
     let data = await getAllAnimals();
 
     container.innerHTML = "<h3 class='text-center'>Velg dyr:</h3><hr class='m-1'>";
@@ -75,21 +60,15 @@ async function listAnimals() {
 function animation(ID) {
     let allAnimals = document.querySelectorAll(".item");
     let stamLinjer = document.querySelectorAll(".itemLine");
-    /* allAnimals.forEach(item =>{
-        item.classList.add("stamtavleStart");
-    })  */
+   
     let timer = 0;
     
     
     if (!allAnimals[0].classList.contains("stamtavleStart")) {
-        console.log("start");
-        allAnimals[0].classList.add("stamtavleStart");
-        allAnimals[1].classList.add("stamtavleStart");
-        allAnimals[2].classList.add("stamtavleStart");
-        allAnimals[3].classList.add("stamtavleStart");
-        allAnimals[4].classList.add("stamtavleStart");
-        allAnimals[5].classList.add("stamtavleStart");
-        allAnimals[6].classList.add("stamtavleStart");
+        for (let i = 0; i <= 6; i++) {
+            allAnimals[i].classList.add("stamtavleStart");
+        }
+        
         timer = 1000;
         animationInOut = true;
         setTimeout(function() {
@@ -101,21 +80,9 @@ function animation(ID) {
     }
 
     if (!stamLinjer[0].classList.contains("lineStart")) {
-        stamLinjer[0].classList.add("lineStart");
-        stamLinjer[1].classList.add("lineStart");
-        stamLinjer[2].classList.add("lineStart");
-        stamLinjer[3].classList.add("lineStart");
-        stamLinjer[4].classList.add("lineStart");
-        stamLinjer[5].classList.add("lineStart");
-        stamLinjer[6].classList.add("lineStart");
-        stamLinjer[7].classList.add("lineStart");
-        stamLinjer[8].classList.add("lineStart");
-        stamLinjer[9].classList.add("lineStart");
-        stamLinjer[10].classList.add("lineStart");
-        stamLinjer[11].classList.add("lineStart");
-        stamLinjer[12].classList.add("lineStart");
-        stamLinjer[13].classList.add("lineStart");
-        
+        for (let i = 0; i <= 13; i++) {
+            stamLinjer[i].classList.add("lineStart");
+        }
     }
 
     if (animationInOut) {
@@ -125,7 +92,6 @@ function animation(ID) {
 
             itemArr.forEach(item =>{
                 stamtavle.appendChild(item)
-                console.log("box added");
             });
         },timer)
     }
@@ -146,32 +112,21 @@ function showBoxAnimation(timer) {
     }, timer)
         
     setTimeout(function(){
-        allAnimals[1].classList.remove("stamtavleStart");
-        allAnimals[2].classList.remove("stamtavleStart");
+        for (let i = 1; i <= 2; i++) {
+            allAnimals[i].classList.remove("stamtavleStart");
+        }
     }, timer + 300);
 
     setTimeout(function(){
-        allAnimals[3].classList.remove("stamtavleStart");
-        allAnimals[4].classList.remove("stamtavleStart");
-        allAnimals[5].classList.remove("stamtavleStart");
-        allAnimals[6].classList.remove("stamtavleStart");
+        for (let i = 3; i <= 6; i++) {
+            allAnimals[i].classList.remove("stamtavleStart");
+        }
     }, timer + 500);
 
     setTimeout (function() {
-        stamLinjer[0].classList.remove("lineStart");
-        stamLinjer[1].classList.remove("lineStart");
-        stamLinjer[2].classList.remove("lineStart");
-        stamLinjer[3].classList.remove("lineStart");
-        stamLinjer[4].classList.remove("lineStart");
-        stamLinjer[5].classList.remove("lineStart");
-        stamLinjer[6].classList.remove("lineStart");
-        stamLinjer[7].classList.remove("lineStart");
-        stamLinjer[8].classList.remove("lineStart");
-        stamLinjer[9].classList.remove("lineStart");
-        stamLinjer[10].classList.remove("lineStart");
-        stamLinjer[11].classList.remove("lineStart");
-        stamLinjer[12].classList.remove("lineStart");
-        stamLinjer[13].classList.remove("lineStart");
+        for (let i = 0; i <= 13; i++) {
+            stamLinjer[i].classList.remove("lineStart");
+        }
     }, timer + 1000)
 }
 async function chooseAnimal(incomingID) {
@@ -198,7 +153,7 @@ async function chooseAnimal(incomingID) {
 function generateBoxes() {
 
     let divListArr = []
-    let familyArr = ["far","mor","farfar","farmor","morfar","mormor"]
+    let familyArr = ["Far","Mor","Farfar","Farmor","Morfar","Mormor"]
     for (let i = 0; i < 7; i++) {
         let div = document.createElement("div");
         div.classList.add("item");
@@ -217,7 +172,7 @@ function generateBoxes() {
             valgtXTxt+=familyArr[i-1];
             div.classList.add(valgtXTxt);
 
-            let lastThreeCharacters = valgtXTxt.substring(valgtXTxt.length-3);
+            let lastThreeCharacters = valgtXTxt.substring(valgtXTxt.length-3).toLocaleLowerCase();
             if(lastThreeCharacters === "mor"){
                 genderTxt = "female"
             }
@@ -238,14 +193,6 @@ function generateBoxes() {
         divListArr.push(div);
     }
     return divListArr
-}
-
-function resetStamtavle() {
-
-    const items =  document.querySelectorAll(".item");
-    items.forEach(item =>{
-        item.classList.add("stamtavleStart");
-    }) 
 }
 
 function drawAnmial(value,box) {

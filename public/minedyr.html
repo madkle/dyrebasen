@@ -8,9 +8,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/1523d962df.js" crossorigin="anonymous"></script>
 
-    <script src="js/pdf.js"></script>
-    <script src="js/dyr.js"></script>
-    <script src="js/colour.js"></script>
+    <script type="module" src="js/pdf.js"></script>
+    <script type="module" src="js/dyr.js"></script>
+    <script type="module" src="js/colour.js"></script>
     <title>Dyrebasen - Mine dyr</title>
 </head>
 <body>
@@ -41,11 +41,11 @@
       </nav>
     
     <!-- Edit Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="editDyrModal" tabindex="-1" aria-labelledby="editDyrModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Rediger kanin</h5>
+                    <h5 class="modal-title" id="editDyrModalLabel">Rediger kanin</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -89,7 +89,7 @@
                                 <div class="col">
     
                                     <label for="inpInnavlsgrad" class="form-label">Innavlsgrad:</label>
-                                    <input id="inpInnavlsgrad" type="number" class="form-control" /><br>
+                                    <input id="inpInnavlsgrad" type="number" class="form-control" min="0" max="100" /><br>
                             
                                 </div>
                             </div>
@@ -97,7 +97,7 @@
                                 <div class="col">
     
                                     <label for="inpPoeng" class="form-label">Poeng:</label>
-                                    <input id="inpPoeng" type="number" max="100" class="form-control" /><br>
+                                    <input id="inpPoeng" type="number" class="form-control" min="0" max="100"/><br>
                             
                                 </div>
                                 <div class="col">
@@ -132,10 +132,15 @@
                            </div>
                             <div class="row">
                                 <div class="col">
-                                    <label for="inpBilde" class="form-label">Last opp bilde:</label>
+                                    <label for="inpBilde" class="form-label">Last opp bilde: (ratio: 1x1)</label>
                                     <input class="form-control" type="file" id="inpBilde"><br>
                                 </div>
                            </div>
+                           <div class="row">
+                                <div class="col">
+                                    <p id="txtResponse" class="text-center text-danger"></p>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -144,59 +149,151 @@
                 <button type="button" id="btnEditAnimal" class="btn btn-primary" data-bs-dismiss="modal">Lagre endringer</button>
                 </div>
             </div>
-        </div>
+        </div> 
     </div>    
     <!----------- HTML-elements -------------->
-
-    <h1 class="text-center m-5" >MINE DYR</h1>
-
-    <div id="container" class="container"></div>
+    <div class="container-fluid">
+        <h1 class="text-center m-5" >MINE DYR</h1>
+        <div class="row justify-content-center text-center mt-3">
+            <div class="col-2">
+                <select id="dropKey" class="form-control ">
+                    <option value="regnr">Regnr</option>
+                    <option value="vø">V.Ø.</option>
+                    <option value="kullnr">Kullnummer</option>
+                    <option value="innavlsgrad">Innavlsgrad</option>
+                    <option value="poeng">Poeng</option>
+                    <option value="farge">Farge</option>
+                    <option value="far">Far (id)</option>
+                    <option value="mor">Mor (id)</option>
+                </select>
+            </div>
+            <div class="col-1">
+                <select id="dropOperator" class="form-control ">
+                    <option value="=">=</option>
+                    <option value=">">></option>
+                    <option value="<"><</option>
+                    <option value=">=">>=</option>
+                    <option value="<="><=</option>
+                </select>
+            </div>
+            <div class="col-4">
+                <input id="inpSearch" type="text" class="form-control" placeholder="Søk..."/>
+            </div>
+            
+            <div class="col-2">
+                <button id="btnSearch" class="btn btn-secondary shadow justify-self-start text-light">Søk</button>
+                <button id="btnClear" class="btn btn-secondary shadow justify-self-start text-light">Clear</button>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p id="searchRes"></p>
+                </div>
+            </div>
+        </div>
+        <div id="container" class="container mt-3"></div>
+        <div class="col text-center pb-4 mt-4">
+            <a class="regKanin btn btn-secondary shadow justify-self-center text-light" href="regdyr.html">Registrer ny kanin</a>
+        </div>
+    </div>
+    
 
     
     <!------------- JavaScript --------------->
-    <script>
+    <script type="module">
+        import {getToken} from "/js/user.js";
         
+        import {storForbokstav} from "/js/form.js";
+        import {dbSearch, activeID, originalInputValues, listAnimals, updateAnimal} from "/js/dyr.js";
+        import {generatePDF} from "/js/pdf.js";
+        let loggedInToken = await getToken();
         let container = document.getElementById('container');
         let btnEditAnimal = document.getElementById('btnEditAnimal');
         let testBilde = document.getElementById('testBilde'); 
-        let activeID = null;
-        listAnimals(); 
-        let originalInputValues = {};
-        async function loadHTMLElements(selectedID) {
-            
-
-            let clickedAnimal = "";
-            clickedAnimal = await getSingleAnimal(selectedID)
-            
-            inpRegNr.value = clickedAnimal.regnr;
-            inpVø.value = clickedAnimal.vø;
-            inpFdato.value = clickedAnimal.fdato;
-            inpKullNr.value = clickedAnimal.kullnr;
-            dropKjønn.value = clickedAnimal.kjønn;
-            inpInnavlsgrad.value = clickedAnimal.innavlsgrad;
-            inpPoeng.value = clickedAnimal.poeng;
-            inpFarge.value = clickedAnimal.farge;
-            inpFar.value = clickedAnimal.far;
-            inpMor.value = clickedAnimal.mor;
-            //inpBilde.value = clickedAnimal.bilde;
-
-            originalInputValues = {
-                regnr: inpRegNr.value,
-                vø: inpVø.value,
-                fdato: inpFdato.value,
-                kullnr: inpKullNr.value,
-                kjønn: dropKjønn.value,
-                innavlsgrad: inpInnavlsgrad.value,
-                poeng: inpPoeng.value,
-                farge: inpFarge.value,
-                far: inpFar.value,
-                mor: inpMor.value,
-                bilde: inpBilde.value
+        
+        let inpRegNr = document.getElementById('inpRegNr');
+        let inpVø = document.getElementById('inpVø');
+        let inpFdato = document.getElementById('inpFdato');
+        let inpKullNr = document.getElementById('inpKullNr');
+        let dropKjønn = document.getElementById('dropKjønn');
+        let inpInnavlsgrad = document.getElementById('inpInnavlsgrad');
+        let inpPoeng = document.getElementById('inpPoeng');
+        let inpFarge = document.getElementById('inpFarge');
+        let fargeValg = document.getElementById('fargeValg')
+        let inpFar = document.getElementById('inpFar');
+        let valgFar = document.getElementById('valgFar');
+        let inpMor = document.getElementById('inpMor');
+        let valgMor = document.getElementById('valgMor');
+        let inpBilde = document.getElementById('inpBilde');
+        let bildeData = null;
+        let dropKey = document.getElementById('dropKey');
+        let inpSearch = document.getElementById('inpSearch');
+        let btnSearch = document.getElementById('btnSearch');
+        let dropOperator = document.getElementById('dropOperator');
+        let searchRes = document.getElementById('searchRes');
+        let btnClear = document.getElementById('btnClear');
+        let txtResponse = document.getElementById('txtResponse');
+        inpBilde.addEventListener("change", function (evt) {
+            let fr = new FileReader();
+            fr.addEventListener("load", function (evt) {
+                bildeData = fr.result;
+            });
+            if (inpBilde.files[0].size < 2000000) {
+                fr.readAsDataURL(inpBilde.files[0]);
+                txtResponse.innerHTML = "";
+                btnEditAnimal.disabled = false;
+            }else{
+                txtResponse.innerHTML = "Filen er for stor. Max 2MB";
+                btnEditAnimal.disabled = true;
             }
-            activeID = selectedID;
-            //console.log(originalInputValues);
-        }
-        function filterUpdata(params) {
+        })
+        /* 
+        function loadDropdown() {
+            let animalObject = originalInputValues;
+            delete(animalObject.bilde);
+            delete(animalObject.kjønn);
+            delete(animalObject.fdato)
+            for (const key in animalObject) {
+                let option = document.createElement("option");
+                option.value = key;
+                option.innerHTML = key; 
+                dropKey.appendChild(option)
+            }
+        } 
+        */
+        
+        listAnimals();
+
+        btnClear.addEventListener('click', async function(){
+            inpSearch.value = ""
+            await listAnimals();
+        });
+        dropKey.addEventListener('change', function(evt) {
+            let selectedOption = evt.currentTarget.value
+            if (selectedOption === "vø" || selectedOption === "farge") {
+                dropOperator.hidden = true             
+            }else{
+                dropOperator.hidden = false  
+            }
+        })
+        btnSearch.addEventListener('click', async function(){
+            let key = dropKey.value;
+            let searchbar = inpSearch.value;
+            let operator = dropOperator.value;
+            if (key === "farge") {
+                searchbar = storForbokstav(searchbar);
+            }
+            let filteredList = await dbSearch(key,searchbar,operator);
+            if (!filteredList.error) {
+                searchRes.hidden = true
+                await listAnimals(filteredList);
+            }else{
+                searchRes.hidden = false
+                searchRes.innerHTML = "Noe gikk galt, kunne ikke finne det du søkte på";
+            }
+        });
+
+        function filterUpdata() {
+            let fargeVerdi = storForbokstav(inpFarge.value)
             let updata = {
                 did: activeID,
                 regnr: inpRegNr.value,
@@ -206,13 +303,13 @@
                 kjønn: dropKjønn.value,
                 innavlsgrad: inpInnavlsgrad.value,
                 poeng: inpPoeng.value,
-                farge: inpFarge.value,
+                farge: fargeVerdi,
                 far: inpFar.value,
                 mor: inpMor.value,
                 bilde: bildeData
             }
             for (const key in updata) {
-                if (updata[key] === originalInputValues[key] || key === "bilde") {
+                if (updata[key] === originalInputValues[key] || updata[key] === null) {
                     delete updata[key]
                 }
             }
@@ -220,11 +317,15 @@
         }
         btnEditAnimal.addEventListener('click', async function (evt) {
             evt.preventDefault();
+            if (inpBilde.files.length === 0) {
+                bildeData = null;
+            }
             let updata = filterUpdata();
             if (Object.keys(updata).length > 1) {
+                
                 await updateAnimal(updata);
             }else{
-                throw "nothing changed"
+                throw "Nothing changed";
             }
             
             
@@ -233,8 +334,12 @@
     </script>
 
     <!---------------- CSS ------------------->
-    <style>    
-
+    <style>
+    .regKanin{
+        width: 50%;
+        height: 50px;
+        font-size: larger;
+    }
 .container {
     display: grid;
   grid-template-columns: 1fr 1fr;
@@ -358,7 +463,7 @@
 
     <script src="js/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
-    <script src="js/form.js"></script> <!-- Håndterer alt av forms-->
+    <script type="module" src="js/form.js"></script> <!-- Håndterer alt av forms-->
 </body>
 
 </html>

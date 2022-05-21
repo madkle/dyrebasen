@@ -29,8 +29,8 @@
             <div class="card" style="border: none;">
                 <div class="card-body shadow">
                     <div class="container" >
-                        <h2 class="text-center">Logg inn:</h2><br>
-                        <form ><!-- action="login.js" for å kjøre innloggingsfilen med inputen fra skjemaet -->
+                        <h2 class="text-center">Login</h2><br>
+                            <form><!-- action="login.js" for å kjøre innloggingsfilen med inputen fra skjemaet -->
 
                             <div class="row">
                                 <div class="col">
@@ -38,28 +38,21 @@
                                     <input type="text" class="form-control rounded-pill" id="username" placeholder="Skriv inn brukernavn" name="brukernavn">
                                 </div>
                             
-                            
-                    
                                 <div class="col">
                                     <label for="pwd" class="form-label">Passord:</label>
                                     <input type="password" class="form-control rounded-pill" id="pwd" placeholder="Skriv inn passord" name="pswd">
                                 </div>
-                               
                             </div><br>
                                 
                             <div class="text-center mt-2">
-                                <button formaction="minedyr.html" type="submit" class="btn btn-secondary rounded-pill" id="btnLogin">Logg inn</button>
-                            </div>
-                        
-                            <div class="form-check mt-2">
-                                <label class="form-check-label">
-                                    <input class="form-check-input text-body" type="checkbox" name="remember"> Husk meg
-                                </label>
+                                <button type="submit" class="btn btn-secondary rounded-pill" id="btnLogin">Logg inn</button><!--  formaction="minedyr.html" -->
                             </div>
 
-                                <a href="regbruker.html" class="card-link text-body text-center" id="loginLink">Opprett ny bruker</a>
+                            <div class="text-center mt-2">
+                                <p id="txtResult" class="text-danger"></p>
+                            </div>
 
-                            
+                            <a href="regbruker.html" class="card-link text-body text-center" id="loginLink">Opprett ny bruker</a>
                         </form>
                     </div>
                 </div>
@@ -67,20 +60,57 @@
         </div>
     </div>
 </div>
-
-
       
-<!-- <button class="btn "">
-    <i class="fa-solid fa-trash-can"></i>
-</button> -->
+    <script type="module">
+        import {createCredentialString, getToken} from "/js/user.js"
+        
+        let inpUsername = document.getElementById("username");
+        let inpPwd = document.getElementById("pwd");
+        let chkRemember = document.getElementById("chkRemember");
+        let btnLogin = document.getElementById("btnLogin");
+        let txtResult = document.getElementById("txtResult");
+        checkToken()
+           
+        async function checkToken(params) {
+            let token = await getToken()
+            if (token) {
+                let expirationTime = token.iat  + 24 * 60 * 60 * 1000; //sjekker om det er over ett døgn siden token ble laget
 
-    <!-- <ol>
-        <li><a href="generatepdf.html">generatepdf</a></li>
-        <li><a href="minedyr.html">minedyr</a></li>
-        <li><a href="regdyr.html">regdyr</a></li>
-        <li><a href="loadImg.html">test</a></li>
-    </ol> -->
-
+                if (expirationTime < Date.now() ) {
+                    return false
+                }
+                window.location.href = "/minedyr.html";
+            }
+        }
+        
+        btnLogin.addEventListener("click", async function (evt) {
+            evt.preventDefault()
+            let url = "/bruker/login";
+            let credString = createCredentialString(inpUsername.value, inpPwd.value)
+                
+            let cfg = {
+                method: "POST",
+                headers: {
+                    "authorization": credString
+                }
+            };
+                
+            try {
+                let response = await fetch(url, cfg);
+                let data = await response.json();
+                if (response.status != 200) {
+                    throw data.error;
+                }
+                
+                localStorage.setItem("token",data.token)
+                location.href = "minedyr.html"
+            }
+            catch(error) {
+                console.log(error);
+                txtResult.innerHTML = error
+            }
+        })
+    </script>
     <script src="js/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
 

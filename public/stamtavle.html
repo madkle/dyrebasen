@@ -7,8 +7,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script>
     
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <script src="js/stamtavle.js"></script>
-    <script src="js/pdf.js"></script>
+    <script type="module" src="js/stamtavle.js"></script>
+    <script type="module" src="js/pdf.js"></script>
     <title>Dyrebasen - Stamtavle</title>
 </head>
 <body class="bg-2">
@@ -37,28 +37,16 @@
         </div>
       </div>
     </nav>
-
-      <!-- <nav id="container" class="nav flex-column mt-5 border-end w-25">
-        <a class="nav-link" href="#"></a>
-        
-      </nav> -->
       <nav id="container" class="sidebar shadow rounded pt-5 pb-5 bold"></nav>
 
       <div id="stamtavle" class="container">
           <div class="item shadow rounded valgtDyr stamtavleStart" id="valgtDyr">Velg en kanin</div>
-
           <div class="item shadow rounded valgtDyrFamilie valgtFar stamtavleStart male male1" id="far">Far</div>
-
           <div class="item shadow rounded valgtDyrFamilie valgtMor stamtavleStart female female1" id="mor">Mor</div>
-          
           <div class="item shadow rounded valgtDyrFamilie valgtFarFar stamtavleStart male male2" id="farfar">Farfar</div>
-
           <div class="item shadow rounded valgtDyrFamilie valgtFarMor stamtavleStart female female2" id="farmor">Farmor</div>
-
           <div class="item shadow rounded valgtDyrFamilie valgtMorFar stamtavleStart male male2" id="morfar">Morfar</div>
-
           <div class="item shadow rounded valgtDyrFamilie valgtMorMor stamtavleStart female female2" id="mormor">Mormor</div>
-
           <div class="itemLine fadeIn lineStart lbb2"></div>
           <div class="itemLine fadeIn lineStart lbb"></div>
           <div class="itemLine fadeIn lineStart lbr"></div>
@@ -75,8 +63,8 @@
           <div class="itemLine fadeIn lineStart rbt"></div>
       </div>
 
-<script>
-      
+<script type="module">
+    import {listAnimals} from "/js/stamtavle.js"
     let container = document.getElementById('container');
     
     let testBilde = document.getElementById('testBilde'); 
@@ -117,20 +105,17 @@
         transition: none;
         z-index: 1;
     }
-
     .male1:hover {
         width: 550px;
         transition: none;
         z-index: 1;
     }
-
     .female2:hover {
         width: 520px;
         transform: scale(2,2);
         transition: none;
         z-index: 1;
     }
-
     .male2:hover {
         width: 520px;
         transition: none;

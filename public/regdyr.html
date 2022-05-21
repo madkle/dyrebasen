@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">    
     <title>AlleDyr</title>
 
-    <script src="./js/dyr.js"></script>
-    <script src="./js/colour.js"></script>
+    <script type="module" src="./js/dyr.js"></script>
+    <script type="module" src="./js/colour.js"></script>
     <link rel="stylesheet" href="css/bootstrap.min.css">
 
 </head>
@@ -44,103 +44,142 @@
     
 
     <div class="container-fluid justify-self-center regdyr">
+      <div class="card card-body shadow">
+        <form class="m-5">
+          <h2 class="text-center pb-5">Registrer ny kanin</h2>
+          <div class="row">
+            <div class="col">
 
-    <div class="card card-body shadow">
-    <form class="m-5">
-      <h2 class="text-center pb-5">Registrer ny kanin</h2>
-      <div class="row">
+              <label for="inpRegNr" class="form-label">Reg.nr:</label><br>
+              <input id="inpRegNr" type="number" class="form-control" /><br>
 
-        <div class="col">
+              <label for="inpFarge" class="form-label">Farge:</label>
+              <input class="form-control" list="fargeValg" id="inpFarge" placeholder="Skriv inn en farge...">
+              <datalist id="fargeValg">
+              </datalist><br>
+              
+              <label for="inpFdato" class="form-label">Fødselsdato:</label>
+              <input id="inpFdato" type="date"  class="form-control"/><br>
 
-          <label for="inpRegNr" class="form-label">Reg.nr:</label><br>
-          <input id="inpRegNr" type="number" class="form-control" /><br>
-
-          <label for="inpFarge" class="form-label">Farge:</label>
-          <input class="form-control" list="fargeValg" id="inpFarge" placeholder="Skriv inn en farge...">
-          <datalist id="fargeValg">
-          </datalist><br>
-          
-          <label for="inpFdato" class="form-label">Fødselsdato:</label>
-          <input id="inpFdato" type="date"  class="form-control"/><br>
-
-          <label for="inpKullNr" class="form-label">Kullnummer</label>
-          <input id="inpKullNr" type="number" class="form-control" /><br>
-    
-          
-
-          <label for="inpFar" class="form-label">Far:</label>
-          <input class="form-control" list="valgFar" id="inpFar" placeholder="Finn foreldre (regnr)...">
-          <datalist id="valgFar">
-          </datalist>
+              <label for="inpKullNr" class="form-label">Kullnummer</label>
+              <input id="inpKullNr" type="number" class="form-control" /><br>
         
-        </div>
+              
 
-        <div class="col">
-          <label for="inpVø" class="form-label">V.Ø:</label>
-          <input id="inpVø" type="text" class="form-control" /><br>
+              <label for="inpFar" class="form-label">Far:</label>
+              <input class="form-control" list="valgFar" id="inpFar" placeholder="Finn foreldre (regnr)...">
+              <datalist id="valgFar">
+              </datalist>
+            
+            </div>
 
-          <label for="inpInnavlsgrad" class="form-label">Innavlsgrad:</label>
-          <input id="inpInnavlsgrad" type="number" class="form-control" /><br>
+            <div class="col">
+              <label for="inpVø" class="form-label">V.Ø:</label>
+              <input id="inpVø" type="text" class="form-control" /><br>
 
-          <label for="dropKjønn" class="form-label">Kjønn:</label><br>
-          <select id="dropKjønn" class="form-control">
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-          </select><br>
+              <label for="inpInnavlsgrad" class="form-label">Innavlsgrad:</label>
+              <input id="inpInnavlsgrad" type="number" class="form-control" min="0" max="100"/><br>
+
+              <label for="dropKjønn" class="form-label">Kjønn:</label><br>
+              <select id="dropKjønn" class="form-control">
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select><br>
+              
+              
+              <label for="inpPoeng" class="form-label">Poeng:</label>
+              <input id="inpPoeng" type="number" class="form-control" min="0" max="100"/><br>
+
+              <label for="inpMor" class="form-label">Mor:</label>
+              <input class="form-control" list="valgMor" id="inpMor" placeholder="Finn foreldre (regnr)...">
+              <datalist id="valgMor">
+              </datalist>
+              <br>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <label for="inpBilde" class="form-label">Last opp bilde: (ratio: 1x1)</label>
+              <input class="form-control" type="file" id="inpBilde">
+              <button id="btnClearInput" type="button" class="form-control mt-4 btn btn-secondary" hidden>fjern fil</button><br>
+            </div>
+          </div> 
+          <button id="btnAddAnimal" class="form-control mt-4 btn btn-secondary">Legg til dyr</button>
+          <p class="text-center mt-2" id="resultTxt"></p><br>
           
-          
-          <label for="inpPoeng" class="form-label">Poeng:</label>
-          <input id="inpPoeng" type="number" max="100" class="form-control" /><br>
-
-          <!-- <label for="inpFarge" class="form-label">Farge:</label><br>
-          <select id="inpFarge" class="form-control" >
-            <option>Velg farge</option>
-            <option value="">Viltgul</option>
-            <option value="">Madagaskar</option>
-          </select> -->
-
-          <label for="inpMor" class="form-label">Mor:</label>
-          <input class="form-control" list="valgMor" id="inpMor" placeholder="Finn foreldre (regnr)...">
-          <datalist id="valgMor">
-          </datalist>
-          <br>
-        </div>
+        </form>
       </div>
-<div class="row">
-  <div class="col">
-      <label for="inpBilde" class="form-label">Last opp bilde:</label>
-      <input class="form-control" type="file" id="inpBilde"><br>
-    </div>
-  </div>
-      <button id="btnAddAnimal" class="form-control mt-4 btn btn-secondary">Legg til dyr</button>
-
-
-    </form>
-  </div>
     </div>
     <!------------- JavaScript --------------->
-    <script>
-      let btnAddAnimal = document.getElementById('btnAddAnimal');
-      btnAddAnimal.addEventListener('click', async function (evt) {
-            evt.preventDefault();
-            let updata = {
-                regnr: inpRegNr.value,
-                vø: inpVø.value,
-                fdato: inpFdato.value,
-                kullnr: inpKullNr.value,
-                kjønn: dropKjønn.value,
-                innavlsgrad: inpInnavlsgrad.value,
-                poeng: inpPoeng.value,
-                farge: inpFarge.value,
-                far: inpFar.value,
-                mor: inpMor.value,
-                bid: null,
-                aid: null,
-                bilde: bildeData
-            }
-            console.log(updata);
-            await addAnimal(updata);
+    <script type="module">
+      import {addAnimal, loadFormElements} from "/js/dyr.js";
+      import {storForbokstav} from "/js/form.js";
 
+      let inpRegNr = document.getElementById('inpRegNr');
+      let inpVø = document.getElementById('inpVø');
+      let inpFdato = document.getElementById('inpFdato');
+      let inpKullNr = document.getElementById('inpKullNr');
+      let dropKjønn = document.getElementById('dropKjønn');
+      let inpInnavlsgrad = document.getElementById('inpInnavlsgrad');
+      let inpPoeng = document.getElementById('inpPoeng');
+      let inpFarge = document.getElementById('inpFarge');
+      let fargeValg = document.getElementById('fargeValg')
+      let inpFar = document.getElementById('inpFar');
+      let valgFar = document.getElementById('valgFar');
+      let inpMor = document.getElementById('inpMor');
+      let valgMor = document.getElementById('valgMor');
+      let inpBilde = document.getElementById('inpBilde');
+      let resultTxt = document.getElementById('resultTxt');
+      let bildeData = null;
+      loadFormElements()
+      btnClearInput.addEventListener("click", function(params) {
+        inpBilde.value = null
+        btnClearInput.hidden = true;
+        btnAddAnimal.disabled = false;
+        resultTxt.innerHTML = "";
+      })
+        inpBilde.addEventListener("change", function (evt) {
+          
+            btnClearInput.hidden = false;
+            let fr = new FileReader();
+            fr.addEventListener("load", function (evt) {
+                bildeData = fr.result;
+                
+            });
+            if (inpBilde.files[0].size < 2000000) {
+              fr.readAsDataURL(inpBilde.files[0]);
+              resultTxt.innerHTML = "";
+              btnAddAnimal.disabled = false;
+            }else{
+                resultTxt.innerHTML = "Filen er for stor. Max 2MB";
+                btnAddAnimal.disabled = true;
+            }
+        })
+      let btnAddAnimal = document.getElementById('btnAddAnimal');
+      
+      btnAddAnimal.addEventListener('click', async function (evt) {
+            //evt.preventDefault();
+            resultTxt.innerHTML = "";
+            let fargeVerdi = storForbokstav(inpFarge.value);
+            let updata = {
+              regnr: inpRegNr.value,
+              vø: inpVø.value,
+              fdato: inpFdato.value,
+              kullnr: inpKullNr.value,
+              kjønn: dropKjønn.value,
+              innavlsgrad: inpInnavlsgrad.value,
+              poeng: inpPoeng.value,
+              farge: fargeVerdi,
+              far: inpFar.value,
+              mor: inpMor.value,
+              bid: null,
+              aid: null,
+              bilde: bildeData
+            };
+            //console.log(updata);
+            
+            let response = await addAnimal(updata);
+            resultTxt.innerHTML = response.msg;
         })
         </script>
 
@@ -183,7 +222,7 @@
     </style>
  <script src="js/popper.min.js"></script>
  <script src="js/bootstrap.min.js"></script>
- <script src="js/form.js"></script>  <!-- Håndterer alt av forms/inputs-->
+ <!--<script  type="module"  src="js/form.js"></script>   Håndterer alt av forms/inputs-->
 </body>
 
 </html>
