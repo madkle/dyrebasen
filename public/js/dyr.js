@@ -358,6 +358,8 @@ export async function loadFormElements() {
     });
 
     let alleDyr = await getAllAnimals();
+    valgFar.innerHTML = "";
+    valgMor.innerHTML = "";    
     alleDyr.forEach(currDyr => {
       let option = document.createElement("option");
       option.innerHTML = `regnr: ${currDyr.regnr}`;
