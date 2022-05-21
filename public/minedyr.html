@@ -317,6 +317,9 @@
         }
         btnEditAnimal.addEventListener('click', async function (evt) {
             evt.preventDefault();
+            if (inpBilde.files.length === 0) {
+                bildeData = null;
+            }
             let updata = filterUpdata();
             if (Object.keys(updata).length > 1) {
                 

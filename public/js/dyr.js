@@ -191,8 +191,7 @@ export async function listAnimals(filteredList) {
     
     let data = {}
     let parentList = null;
-    let morID = "";
-    let farID = "";
+    
     if (filteredList) {
         data = filteredList;
         parentList = allAnimals;
@@ -203,11 +202,13 @@ export async function listAnimals(filteredList) {
     
     container.innerHTML = " ";
     for (let value of data) {
+        let morID = "";
+        let farID = "";
         let testBilde = "bilder/kanin_standardbilde.jpeg";
         if (value.bilde === null) {
             value.bilde = testBilde
         }
-
+        
         for (const parent of parentList) {
             if(value.mor !== null && value.mor === parent.did){        
                 morID = parent.did;
@@ -215,8 +216,7 @@ export async function listAnimals(filteredList) {
             if(value.far !== null && value.far === parent.did){
                 farID = parent.did;
             }
-        } 
-
+        }
         let fdato = value.fdato ;
         let dateFormatert = "";
         
@@ -370,4 +370,6 @@ export async function loadFormElements() {
         valgMor.appendChild(option);
       }
     });
+
+    
 }
