@@ -99,7 +99,7 @@
         let txtResult = document.getElementById("txtResult");
         btnRegUser.addEventListener("click", async function(evt){   
             if (regpwd.value !== confirmpwd.value) {
-                txtResult.innerHTML = "ikke samme password";
+                txtResult.innerHTML = "Ikke samme password";
             }
             let fornavn = storForbokstav(regfirstname.value)
             let etternavn = storForbokstav(reglastname.value)

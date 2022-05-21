@@ -84,7 +84,7 @@ export async function generatePDF(clickedAnimal){
     const lineSpacing = 10;
     
 
-    function rowOne(x,y,r,h,it,row) {
+    function rowOne(x,y,r) {
         let startTextLine = 2;
         let headAlignRight = r - 40;
         let bodyAlignRight = r - 15;
@@ -136,20 +136,23 @@ export async function generatePDF(clickedAnimal){
         startTextLine = contentRightText.length + 1;
         if (mainAnimal.farge !== "N/A") {
             let colourInformation = lookupColour(mainAnimal.farge)
-            let rectW = 15;
-            let rectH = 10;
-            let rectX = bodyAlignRight;
-            let rectY =  y + PADDING/2 + lineSpacing * startTextLine;
+            if (colourInformation !== null) {
+                let rectW = 15;
+                let rectH = 10;
+                let rectX = bodyAlignRight;
+                let rectY =  y + PADDING/2 + lineSpacing * startTextLine;
+                
+                doc.setFillColor(colourInformation.rgb.red, colourInformation.rgb.green, colourInformation.rgb.blue)
+                doc.roundedRect(rectX, rectY, rectW, rectH, 1,1, "FD");
+            }
             
-            doc.setFillColor(colourInformation.rgb.red, colourInformation.rgb.green, colourInformation.rgb.blue)
-            doc.roundedRect(rectX, rectY, rectW, rectH, 1,1, "FD");
             doc.setFont("helvetica", "bold");
-            doc.text(colourInformation.colour, bodyAlignRight, y + lineSpacing * startTextLine);
+            doc.text(mainAnimal.farge, bodyAlignRight, y + lineSpacing * startTextLine);
             doc.setFont("helvetica", "normal");
         }        
     }
 
-    async function rowTwo(x,y,r,h,it,row) {
+    async function rowTwo(x,y,r,it) {
         
         let currentAnimal = family.parents[it%2]
         let user = null;
@@ -190,20 +193,22 @@ export async function generatePDF(clickedAnimal){
 
         if (currentAnimal.farge !== "N/A") {
             let colourInformation = lookupColour(currentAnimal.farge)
-            let rectW = 15;
-            let rectH = 10;
-            let rectX = bodyAlignRight;
-            let rectY =  y + PADDING/2 + lineSpacing * startTextLine;
-            
-            doc.setFillColor(colourInformation.rgb.red, colourInformation.rgb.green, colourInformation.rgb.blue)
-            doc.roundedRect(rectX, rectY, rectW, rectH,1,1, "FD");
+            if (colourInformation !== null) {
+                let rectW = 15;
+                let rectH = 10;
+                let rectX = bodyAlignRight;
+                let rectY =  y + PADDING/2 + lineSpacing * startTextLine;
+                
+                doc.setFillColor(colourInformation.rgb.red, colourInformation.rgb.green, colourInformation.rgb.blue)
+                doc.roundedRect(rectX, rectY, rectW, rectH,1,1, "FD");
+            }
             doc.setFont("helvetica", "bold");
-            doc.text(colourInformation.colour, bodyAlignRight, y + lineSpacing * startTextLine);
+            doc.text(currentAnimal.farge, bodyAlignRight, y + lineSpacing * startTextLine);
             doc.setFont("helvetica", "normal");
         }
     }
 
-    async function rowThree(x,y,r,h,it,row) {
+    async function rowThree(x,y,it) {
         let currentAnimal = null;
         let antCol = 4
         let parentArr = ["Far","Mor"];
@@ -251,15 +256,15 @@ export async function generatePDF(clickedAnimal){
         
         switch (rowNumber) {
             case 0:
-                await rowOne(CellLeft, CellTop, CellRight, cellHeight, iteration, rowNumber)
+                await rowOne(CellLeft, CellTop, CellRight)
                 break;
         
             case 1:
-                await rowTwo(CellLeft, CellTop, CellRight, cellHeight, iteration, rowNumber)
+                await rowTwo(CellLeft, CellTop, CellRight, iteration)
                 break;
 
             case 2:
-                await rowThree(CellLeft, CellTop, CellRight, cellHeight, iteration, rowNumber)
+                await rowThree(CellLeft, CellTop, iteration)
                 break;
         }
     
