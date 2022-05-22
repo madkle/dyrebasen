@@ -1,45 +1,7 @@
 import {lookupColour} from "./colour.js";
 import {getUserInfo} from "./user.js";
-    
-async function getSingleAnimal(id) {
-    let url = `/dyr/${id}`;
-
-    let blankFamily = {
-        aidfk: null,
-        bidfk: null,
-        did: null,
-        far: null,
-        farge: null,
-        fdato: null,
-        innavlsgrad: null,
-        kjønn: null,
-        kullnr: null,
-        mor: null,
-        poeng: null,
-        regnr: null,
-        vø: null,
-        bilde: null
-    }
-
-    try {
-        
-        if (id !== null) {
-            let response = await fetch(url);
-            let data = await response.json();
-            if (response.status === 404) {
-                return blankFamily;
-            }else if (response.status != 200) {
-                throw data.error;
-            }
-            
-            return data[0];
-        }
-        return blankFamily;
-    }
-    catch(error) {
-        console.log(error);
-    }
-};
+import {getSingleAnimal} from "./dyr.js";
+ 
 function removeNull(object) {
     for (const key in object) {
         if (object[key] === null) {
@@ -83,6 +45,41 @@ export async function generatePDF(clickedAnimal){
     
     const lineSpacing = 10;
     
+    let nmbCol = 1;
+    let row = 0;
+    let multiplyer = 2;
+    for (let i = 0; i < generations; i++){
+        let count = 0;
+        while (count < nmbCol) {                    
+            await createCell(nmbCol,count,row);
+            count++;
+        }
+        nmbCol = nmbCol * multiplyer;
+        row++;
+    }
+
+    async function createCell(numberOfCols, iteration, rowNumber){
+        const cellWidth = contentWidth/numberOfCols;
+        let CellLeft = styling.margin_x + cellWidth*iteration; //x
+        let CellTop = styling.margin_y + cellHeight*rowNumber; //y
+        let CellRight = cellWidth + cellWidth*iteration;
+        doc.rect(CellLeft, CellTop, cellWidth, cellHeight);
+        
+        switch (rowNumber) {
+            case 0:
+                rowOne(CellLeft, CellTop, CellRight)
+                break;
+        
+            case 1:
+                await rowTwo(CellLeft, CellTop, CellRight, iteration)
+                break;
+
+            case 2:
+                await rowThree(CellLeft, CellTop, iteration)
+                break;
+        }
+    
+    }
 
     function rowOne(x,y,r) {
         let startTextLine = 2;
@@ -248,41 +245,9 @@ export async function generatePDF(clickedAnimal){
         }
     }
 
-    async function createCell(numberOfCols, iteration, rowNumber){
-        const cellWidth = contentWidth/numberOfCols;
-        let CellLeft = styling.margin_x + cellWidth*iteration; //x
-        let CellTop = styling.margin_y + cellHeight*rowNumber; //y
-        let CellRight = cellWidth + cellWidth*iteration;
-        doc.rect(CellLeft, CellTop, cellWidth, cellHeight);
-        
-        switch (rowNumber) {
-            case 0:
-                await rowOne(CellLeft, CellTop, CellRight)
-                break;
-        
-            case 1:
-                await rowTwo(CellLeft, CellTop, CellRight, iteration)
-                break;
-
-            case 2:
-                await rowThree(CellLeft, CellTop, iteration)
-                break;
-        }
     
-    }
 
-    let nmbCol = 1;
-    let row = 0;
-    let multiplyer = 2;
-    for (let i = 0; i < generations; i++){
-        let count = 0;
-        while (count < nmbCol) {                    
-            await createCell(nmbCol,count,row);
-            count++;
-        }
-        nmbCol = nmbCol * multiplyer;
-        row++;
-    }
+    
 
 
     doc.save(`stamtavle-${mainAnimal.regnr}.pdf`);
