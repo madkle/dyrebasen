@@ -138,7 +138,8 @@
     </div>
     <script type="module">
       import {storForbokstav} from "/js/form.js";
-      import {updateUser, createCredentialString, getToken, getUserInfo, logOutUser} from "/js/user.js";
+      import {updateUser, createCredentialString, getToken, getUserInfo, logOutUser, checkToken} from "/js/user.js";
+      checkToken();
       let loggedInToken = await getToken();
       let btnOpenEditUser = document.getElementById("btnOpenEditUser");
       let btnLogout = document.getElementById("btnLogout");

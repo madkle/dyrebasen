@@ -4,7 +4,13 @@ export function createCredentialString(username, password) {
 
     return "basic " + b64Str;
 }
-
+export async function checkToken(){
+    let token = await getToken();
+    console.log(token);
+    if(!token){
+      window.location.href = "../index.html";
+    }
+}
 export async function getToken() {
     let url = "/auth"
     let storedToken = localStorage.getItem("token");

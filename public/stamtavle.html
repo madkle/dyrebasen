@@ -64,7 +64,9 @@
       </div>
 
 <script type="module">
-    import {listAnimals} from "/js/stamtavle.js"
+    import {listAnimals} from "/js/stamtavle.js";
+    import {checkToken} from "/js/user.js";
+    checkToken();
     let container = document.getElementById('container');
     
     let testBilde = document.getElementById('testBilde'); 

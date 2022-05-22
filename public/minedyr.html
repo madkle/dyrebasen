@@ -200,11 +200,11 @@
     
     <!------------- JavaScript --------------->
     <script type="module">
-        import {getToken} from "/js/user.js";
-        
+        import {getToken, checkToken} from "/js/user.js";
         import {storForbokstav} from "/js/form.js";
         import {dbSearch, activeID, originalInputValues, listAnimals, updateAnimal} from "/js/dyr.js";
         import {generatePDF} from "/js/pdf.js";
+        checkToken();
         let loggedInToken = await getToken();
         let container = document.getElementById('container');
         let btnEditAnimal = document.getElementById('btnEditAnimal');

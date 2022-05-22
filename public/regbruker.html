@@ -85,9 +85,9 @@
         </div>
 
         <script type="module">
-        import {addUser} from "/js/user.js"
+        import {addUser, checkToken} from "/js/user.js"
         import {storForbokstav} from "/js/form.js";
-        
+        checkToken();
         let regfirstname = document.getElementById("regfirstname")
         let reglastname = document.getElementById("reglastname")
         let regemail = document.getElementById("regemail")

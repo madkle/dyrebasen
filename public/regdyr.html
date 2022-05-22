@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">    
     <title>AlleDyr</title>
-
     <script type="module" src="./js/dyr.js"></script>
     <script type="module" src="./js/colour.js"></script>
     <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -114,6 +113,8 @@
     <script type="module">
       import {addAnimal, loadFormElements} from "/js/dyr.js";
       import {storForbokstav} from "/js/form.js";
+      import {checkToken} from "/js/user.js";
+      checkToken();
 
       let inpRegNr = document.getElementById('inpRegNr');
       let inpVø = document.getElementById('inpVø');
