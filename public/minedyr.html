@@ -132,10 +132,15 @@
                            </div>
                             <div class="row">
                                 <div class="col">
-                                    <label for="inpBilde" class="form-label">Last opp bilde:</label>
+                                    <label for="inpBilde" class="form-label">Last opp bilde: (ratio: 1x1)</label>
                                     <input class="form-control" type="file" id="inpBilde"><br>
                                 </div>
                            </div>
+                           <div class="row">
+                                <div class="col">
+                                    <p id="txtResponse" class="text-center text-danger"></p>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -171,17 +176,17 @@
                     <option value="<="><=</option>
                 </select>
             </div>
-            <div class="col-5">
+            <div class="col-4">
                 <input id="inpSearch" type="text" class="form-control" placeholder="Søk..."/>
             </div>
             
-            <div class="col-3">
+            <div class="col-2">
                 <button id="btnSearch" class="btn btn-secondary shadow justify-self-start text-light">Søk</button>
                 <button id="btnClear" class="btn btn-secondary shadow justify-self-start text-light">Clear</button>
             </div>
             <div class="row">
                 <div class="col">
-                    <p id="searchRes">Test</p>
+                    <p id="searchRes"></p>
                 </div>
             </div>
         </div>
@@ -195,11 +200,11 @@
     
     <!------------- JavaScript --------------->
     <script type="module">
-        import {getToken} from "/js/user.js";
-        
+        import {getToken, checkToken} from "/js/user.js";
         import {storForbokstav} from "/js/form.js";
         import {dbSearch, activeID, originalInputValues, listAnimals, updateAnimal} from "/js/dyr.js";
         import {generatePDF} from "/js/pdf.js";
+        checkToken();
         let loggedInToken = await getToken();
         let container = document.getElementById('container');
         let btnEditAnimal = document.getElementById('btnEditAnimal');
@@ -226,13 +231,20 @@
         let dropOperator = document.getElementById('dropOperator');
         let searchRes = document.getElementById('searchRes');
         let btnClear = document.getElementById('btnClear');
-
+        let txtResponse = document.getElementById('txtResponse');
         inpBilde.addEventListener("change", function (evt) {
             let fr = new FileReader();
             fr.addEventListener("load", function (evt) {
                 bildeData = fr.result;
             });
-            fr.readAsDataURL(inpBilde.files[0]);
+            if (inpBilde.files[0].size < 2000000) {
+                fr.readAsDataURL(inpBilde.files[0]);
+                txtResponse.innerHTML = "";
+                btnEditAnimal.disabled = false;
+            }else{
+                txtResponse.innerHTML = "Filen er for stor. Max 2MB";
+                btnEditAnimal.disabled = true;
+            }
         })
         /* 
         function loadDropdown() {
@@ -276,7 +288,7 @@
                 await listAnimals(filteredList);
             }else{
                 searchRes.hidden = false
-                searchRes.innerHTML = "noe gikk galt, kunne ikke finne det du søkte på"
+                searchRes.innerHTML = "Noe gikk galt, kunne ikke finne det du søkte på";
             }
         });
 
@@ -305,12 +317,15 @@
         }
         btnEditAnimal.addEventListener('click', async function (evt) {
             evt.preventDefault();
+            if (inpBilde.files.length === 0) {
+                bildeData = null;
+            }
             let updata = filterUpdata();
             if (Object.keys(updata).length > 1) {
                 
                 await updateAnimal(updata);
             }else{
-                throw "nothing changed"
+                throw "Nothing changed";
             }
             
             

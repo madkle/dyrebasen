@@ -1,4 +1,5 @@
 import {getAllAnimals} from "./dyr.js"
+import {generatePDF} from "./pdf.js"
 let fam = {};
 let animationInOut = false; 
 
@@ -152,7 +153,7 @@ async function chooseAnimal(incomingID) {
 function generateBoxes() {
 
     let divListArr = []
-    let familyArr = ["far","mor","farfar","farmor","morfar","mormor"]
+    let familyArr = ["Far","Mor","Farfar","Farmor","Morfar","Mormor"]
     for (let i = 0; i < 7; i++) {
         let div = document.createElement("div");
         div.classList.add("item");
@@ -171,7 +172,7 @@ function generateBoxes() {
             valgtXTxt+=familyArr[i-1];
             div.classList.add(valgtXTxt);
 
-            let lastThreeCharacters = valgtXTxt.substring(valgtXTxt.length-3);
+            let lastThreeCharacters = valgtXTxt.substring(valgtXTxt.length-3).toLocaleLowerCase();
             if(lastThreeCharacters === "mor"){
                 genderTxt = "female"
             }

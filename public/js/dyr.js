@@ -97,11 +97,10 @@ export async function addAnimal(updata) {
             throw data.error;
         }
 
-        return {status: 200, msg: "added to database"}
+        return {status: 200, msg: "Added to database"}
     }
     catch(error) {
-        console.log(error);
-        return {status: 500, msg: "something went wrong! Could not add to database"}
+        return {status: 500, msg: "Something went wrong! Could not add to database"}
     }
   
 }
@@ -118,11 +117,10 @@ export async function updateAnimal(updata) {
     
     try {
         let response = await fetch(url, cfg);
-        listAnimals();
-
         if (response.status != 200) {
             throw data.error;
         }
+        listAnimals();
     }
     catch(error) {
         console.log(error);
@@ -155,8 +153,8 @@ async function deleteAnimal(dyrID) {
 } 
 async function loadHTMLElements(selectedID) {      
     let clickedAnimal = "";
+    btnEditAnimal.disabled = true;
     clickedAnimal = await getSingleAnimal(selectedID)
-            
     inpRegNr.value = clickedAnimal.regnr;
     inpVø.value = clickedAnimal.vø;
     inpFdato.value = clickedAnimal.fdato;
@@ -167,8 +165,11 @@ async function loadHTMLElements(selectedID) {
     inpFarge.value = clickedAnimal.farge;
     inpFar.value = clickedAnimal.far;
     inpMor.value = clickedAnimal.mor;
-    //inpBilde.value = clickedAnimal.bilde;
-
+    inpBilde.value = null;
+    if(txtResponse){
+        txtResponse.innerHTML = "";
+    }
+    
     originalInputValues = {
         regnr: inpRegNr.value,
         vø: inpVø.value,
@@ -190,8 +191,7 @@ export async function listAnimals(filteredList) {
     
     let data = {}
     let parentList = null;
-    let morID = "";
-    let farID = "";
+    
     if (filteredList) {
         data = filteredList;
         parentList = allAnimals;
@@ -202,12 +202,13 @@ export async function listAnimals(filteredList) {
     
     container.innerHTML = " ";
     for (let value of data) {
+        let morID = "";
+        let farID = "";
         let testBilde = "bilder/kanin_standardbilde.jpeg";
-        //console.log(value);
         if (value.bilde === null) {
             value.bilde = testBilde
         }
-
+        
         for (const parent of parentList) {
             if(value.mor !== null && value.mor === parent.did){        
                 morID = parent.did;
@@ -215,8 +216,7 @@ export async function listAnimals(filteredList) {
             if(value.far !== null && value.far === parent.did){
                 farID = parent.did;
             }
-        } 
-
+        }
         let fdato = value.fdato ;
         let dateFormatert = "";
         
@@ -263,6 +263,8 @@ export async function listAnimals(filteredList) {
         editbtn.addEventListener('click', function(){
             loadFormElements()
             loadHTMLElements(value.did);
+            
+            btnEditAnimal.disabled = false;
         })
         div.appendChild(editbtn);
 
@@ -356,6 +358,8 @@ export async function loadFormElements() {
     });
 
     let alleDyr = await getAllAnimals();
+    valgFar.innerHTML = "";
+    valgMor.innerHTML = "";    
     alleDyr.forEach(currDyr => {
       let option = document.createElement("option");
       option.innerHTML = `regnr: ${currDyr.regnr}`;
@@ -366,4 +370,6 @@ export async function loadFormElements() {
         valgMor.appendChild(option);
       }
     });
+
+    
 }

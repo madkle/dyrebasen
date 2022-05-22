@@ -85,9 +85,9 @@
         </div>
 
         <script type="module">
-        import {addUser} from "/js/user.js"
+        import {addUser, checkToken} from "/js/user.js"
         import {storForbokstav} from "/js/form.js";
-        
+        checkToken();
         let regfirstname = document.getElementById("regfirstname")
         let reglastname = document.getElementById("reglastname")
         let regemail = document.getElementById("regemail")
@@ -99,7 +99,7 @@
         let txtResult = document.getElementById("txtResult");
         btnRegUser.addEventListener("click", async function(evt){   
             if (regpwd.value !== confirmpwd.value) {
-                txtResult.innerHTML = "ikke samme password";
+                txtResult.innerHTML = "Ikke samme password";
             }
             let fornavn = storForbokstav(regfirstname.value)
             let etternavn = storForbokstav(reglastname.value)
