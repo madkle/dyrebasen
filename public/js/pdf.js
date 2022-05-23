@@ -36,7 +36,6 @@ export async function generatePDF(clickedAnimal){
     let user = await getUserInfo(mainAnimal.bidfk);
     let family = await getParents(mainAnimal);
     mainAnimal = removeNull(mainAnimal);
-
     const styling = {margin_x:10, margin_y:5};
     const generations = 3;
     const A4 = {"width": 210, "height": 297};// in mm
