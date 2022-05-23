@@ -3,7 +3,7 @@ import {generatePDF} from "./pdf.js"
 let fam = {};
 let animationInOut = false; 
 
-export async function listAnimals() {
+export async function drawSidebar() {
     let data = await getAllAnimals();
 
     container.innerHTML = "<h3 class='text-center'>Velg reg.nr:</h3><hr class='m-1'>";
