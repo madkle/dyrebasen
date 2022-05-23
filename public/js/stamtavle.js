@@ -6,7 +6,7 @@ let animationInOut = false;
 export async function listAnimals() {
     let data = await getAllAnimals();
 
-    container.innerHTML = "<h3 class='text-center'>Velg dyr:</h3><hr class='m-1'>";
+    container.innerHTML = "<h3 class='text-center'>Velg reg.nr:</h3><hr class='m-1'>";
 
     for (let value of data) {
         let testBilde = "bilder/kanin_standardbilde.jpeg";
@@ -41,7 +41,7 @@ export async function listAnimals() {
 
         let html1 = 
             `<img class="item1" src="${value.bilde}" alt="bilde av kanin"/>
-            <p class="item2" style="padding-top: 5px;">Reg.nr: ${value.regnr} </p>`
+            <p class="item2" style="padding-top: 5px;">${value.regnr}</p>`
 
 
             
@@ -121,13 +121,13 @@ function showBoxAnimation(timer) {
         for (let i = 3; i <= 6; i++) {
             allAnimals[i].classList.remove("stamtavleStart");
         }
-    }, timer + 500);
+    }, timer + 600);
 
     setTimeout (function() {
         for (let i = 0; i <= 13; i++) {
             stamLinjer[i].classList.remove("lineStart");
         }
-    }, timer + 1000)
+    }, timer + 1300)
 }
 async function chooseAnimal(incomingID) {
     let data = await getAllAnimals();
