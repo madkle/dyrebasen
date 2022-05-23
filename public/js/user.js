@@ -6,7 +6,6 @@ export function createCredentialString(username, password) {
 }
 export async function checkToken(){
     let token = await getToken();
-    console.log(token);
     if(!token){
       window.location.href = "../index.html";
     }

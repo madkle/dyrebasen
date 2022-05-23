@@ -16,15 +16,16 @@ async function getParents(child) {
     
     let family = {
         parents: findParents,
-        
         fathersParents: [await getSingleAnimal(findParents[0].far), await getSingleAnimal(findParents[0].mor)],
         mothersParents:[await getSingleAnimal(findParents[1].far),await getSingleAnimal(findParents[1].mor)]
     }
+
     for (const key in family) {
         family[key].forEach(element => {
             removeNull(element);
         });
     }
+
     return family;
 };
 export async function generatePDF(clickedAnimal){
@@ -35,14 +36,13 @@ export async function generatePDF(clickedAnimal){
     let user = await getUserInfo(mainAnimal.bidfk);
     let family = await getParents(mainAnimal);
     mainAnimal = removeNull(mainAnimal);
+
     const styling = {margin_x:10, margin_y:5};
-    
     const generations = 3;
     const A4 = {"width": 210, "height": 297};// in mm
     const cellHeight = (A4.height - styling.margin_y*2 - 50)/generations;
     const PADDING = 5;
     const contentWidth = A4.width - styling.margin_x * 2;
-    
     const lineSpacing = 10;
     
     let nmbCol = 1;
@@ -244,11 +244,6 @@ export async function generatePDF(clickedAnimal){
             doc.text(`${contentLeftText[i]} `, x + PADDING, y + lineSpacing*(i+startTextLine));
         }
     }
-
-    
-
-    
-
 
     doc.save(`stamtavle-${mainAnimal.regnr}.pdf`);
 }
