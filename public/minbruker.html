@@ -125,7 +125,7 @@
                                         
                 <div class="text-center mt-2">
                   <button type="submit" class="btn btn-secondary rounded-pill" id="btnOpenEditUser" data-bs-toggle="modal" data-bs-target="#editBrukerModal" >Rediger</button>
-                  <button type="submit" class="btn btn-secondary rounded-pill" id="btnLogout">Log ut</button>
+                  <button type="submit" class="btn btn-secondary rounded-pill" id="btnLogout">Logg ut</button>
                 </div>
 
                 <p id="checksamePwdResponseTxt" class="text-center text-danger mt-2"></p>
@@ -136,6 +136,9 @@
         </div>
       </div>
     </div>
+    <footer class="navbar-dark p-4">
+      <p style="font-size: small;"> Laget av: <br> Mads Madsen Klepper <br>Dorthe Sofie B. Sletten <br> Kristian Birger Rummelhoff</p>
+  </footer>
     <script type="module">
       import {storForbokstav} from "/js/form.js";
       import {updateUser, createCredentialString, getToken, getUserInfo, logOutUser} from "/js/user.js";

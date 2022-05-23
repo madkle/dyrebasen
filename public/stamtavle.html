@@ -38,9 +38,9 @@
       </div>
     </nav>
       <nav id="container" class="sidebar shadow rounded pt-5 pb-5 bold"></nav>
-
+    
       <div id="stamtavle" class="container">
-          <div class="item shadow rounded valgtDyr stamtavleStart" id="valgtDyr">Velg en kanin</div>
+          <div class="item shadow rounded valgtDyr stamtavleStart" id="valgtDyr">Valgt kanin</div>
           <div class="item shadow rounded valgtDyrFamilie valgtFar stamtavleStart male male1" id="far">Far</div>
           <div class="item shadow rounded valgtDyrFamilie valgtMor stamtavleStart female female1" id="mor">Mor</div>
           <div class="item shadow rounded valgtDyrFamilie valgtFarFar stamtavleStart male male2" id="farfar">Farfar</div>
@@ -62,6 +62,9 @@
           <div class="itemLine fadeIn lineStart rbr3"></div>
           <div class="itemLine fadeIn lineStart rbt"></div>
       </div>
+      <footer class="navbar-dark p-4">
+        <p style="font-size: small;"> Laget av: <br> Mads Madsen Klepper <br>Dorthe Sofie B. Sletten <br> Kristian Birger Rummelhoff</p>
+    </footer>
 
 <script type="module">
     import {listAnimals} from "/js/stamtavle.js"
@@ -123,7 +126,7 @@
     } */
 
     .stamtavlebilde {grid-area: img;
-        width: 50px;
+        width: 70px;
         border-radius: 100px;
         align-self: center;
         justify-self: center;}
@@ -180,7 +183,7 @@
 
     .container {
         display: grid;
-        grid-template-columns: 120px 125px 125px 10px 10px 125px 125px 25px 25px 125px 125px 10px 10px 125px 125px 120px;
+        grid-template-columns: 220px 125px 125px 10px 10px 125px 125px 25px 25px 125px 125px 10px 10px 125px 125px 80px;
         grid-template-rows: 40px 40px 50px 50px 50px 50px 50px 50px 50px 50px 75px 75px;
         grid-template-areas: 
         ". . . . . . . . . . . . . . . ."
@@ -195,7 +198,7 @@
         ". . . . . . . rbr3 . . . . . . . ."
         ". . . . . . dyr dyr dyr dyr . . . . . ."
         ". . . . . . dyr dyr dyr dyr . . . . . .";
-        
+        float: left;
     }
 
     .lineStart {
@@ -315,7 +318,7 @@
 
         /* border: 1px solid gray; */
         font-size: x-small;
-    }
+        cursor: default;}
 
     .valgtDyr {
         display: grid;
@@ -388,7 +391,7 @@
 .sidebar {
     width: 180px;
     background-color: rgb(220, 220, 220);
-    /* border-right: 1px solid grey; */
+    z-index: 2;
     
 }
 
@@ -441,6 +444,52 @@
 .mineDyr:hover {
     background-color: grey;
 }
+
+@media screen and (min-width: 1320px) {
+    #stamtavle {
+        float: none;
+    }
+}
+
+@media screen and (max-width: 1320px) {
+    #stamtavle {
+        transform: scale(0.9);
+        
+        float: left;
+
+    }
+}
+@media screen and (max-width: 1250px) {
+    #stamtavle {
+        transform: scale(0.8);
+        float: left;
+
+    }
+}
+@media screen and (max-width: 1160px) {
+    #stamtavle {
+        transform: scale(0.7);
+        float: left;
+
+    }
+}
+
+@media screen and (max-width: 1090px) {
+    #stamtavle {
+        transform: scale(0.6);
+        float: left;
+
+    }
+}
+@media screen and (max-width: 1000px) {
+    #stamtavle {
+        transform: scale(0.4);
+        float: left;
+
+    }
+}
+
+
 </style>
     
     <script src="js/popper.min.js"></script>
