@@ -40,7 +40,7 @@
       <nav id="container" class="sidebar shadow rounded pt-5 pb-5 bold"></nav>
     
       <div id="stamtavle" class="container">
-          <div class="item shadow rounded valgtDyr stamtavleStart" id="valgtDyr">Valgt kanin</div>
+          <div class="item shadow rounded valgtDyr stamtavleStart" id="valgtDyr"></div>
           <div class="item shadow rounded valgtDyrFamilie valgtFar stamtavleStart male male1" id="far">Far</div>
           <div class="item shadow rounded valgtDyrFamilie valgtMor stamtavleStart female female1" id="mor">Mor</div>
           <div class="item shadow rounded valgtDyrFamilie valgtFarFar stamtavleStart male male2" id="farfar">Farfar</div>
@@ -62,9 +62,6 @@
           <div class="itemLine fadeIn lineStart rbr3"></div>
           <div class="itemLine fadeIn lineStart rbt"></div>
       </div>
-      <footer class="navbar-dark p-4">
-        <p style="font-size: small;"> Laget av: <br> Mads Madsen Klepper <br>Dorthe Sofie B. Sletten <br> Kristian Birger Rummelhoff</p>
-    </footer>
 
 <script type="module">
     import {listAnimals} from "/js/stamtavle.js";
@@ -328,9 +325,9 @@
         grid-template-rows: 30px 30px 30px 30px 30px;
         grid-template-areas: 
             "img ."
-            "img did2"
             "img regNr"
             "img vø"
+            "img did2"
             "img .";
         /* border: 1px solid gray; */
         cursor: pointer;
@@ -343,9 +340,9 @@
         grid-template-rows: 12.5px 25px 25px 25px 12.5px;
         grid-template-areas: 
             "img ."
-            "img did2"
             "img regNr"
             "img vø"
+            "img did2"
             "img .";
         /* border: 1px solid gray; */
         cursor: pointer;

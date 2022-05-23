@@ -28,7 +28,7 @@
                         <div class="card-body shadow">
                             <div class="container" >
                                 <h2 class="text-center">Registrer ny bruker</h2><br>
-                                <!--<form>--><!-- action="login.js" for å kjøre innloggingsfilen med inputen fra skjemaet -->
+                                <form>
                                     <div class="row">
                                         <div class="col">
                                             <label for="regfirstname" class="form-label">Navn:</label>
@@ -68,15 +68,10 @@
                                     </div>
                                     <div class="text-center mt-2">
                                         <button type="submit" class="btn btn-secondary rounded-pill" id="btnRegUser">Registrer</button>
-                                    </div>
+                                    </div><br>
                                 
-                                    <div class="form-check mt-2">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input text-body" type="checkbox" name="remember" id="chkRemember"> Husk meg
-                                        </label>
-                                    </div>
                                     <a href="index.html" class="card-link text-body text-center" id="loginLink">Tilbake til innlogging</a>
-                                <!--</form>-->
+                                </form>
                             </div>
                         </div>
                     </div> 
@@ -88,9 +83,8 @@
         </footer>
 
         <script type="module">
-        import {addUser, checkToken} from "/js/user.js"
+        import {addUser} from "/js/user.js"
         import {storForbokstav} from "/js/form.js";
-        checkToken();
         let regfirstname = document.getElementById("regfirstname")
         let reglastname = document.getElementById("reglastname")
         let regemail = document.getElementById("regemail")

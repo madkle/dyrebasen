@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">    
-    <title>AlleDyr</title>
+    <title>Dyrebasen - Ny kanin</title>
     <script type="module" src="./js/dyr.js"></script>
     <script type="module" src="./js/colour.js"></script>
     <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -42,7 +42,7 @@
 
     
 
-    <div class="container-fluid justify-self-center regdyr">
+    <div class="container-fluid justify-self-center regdyr pb-5">
       <div class="card card-body shadow">
         <form class="m-5">
           <h2 class="text-center pb-5">Registrer ny kanin</h2>
@@ -50,7 +50,7 @@
             <div class="col">
 
               <label for="inpRegNr" class="form-label">Reg.nr:</label><br>
-              <input id="inpRegNr" type="number" class="form-control" /><br>
+              <input id="inpRegNr" type="number" class="form-control" autofocus /><br>
 
               <label for="inpFarge" class="form-label">Farge:</label>
               <input class="form-control" list="fargeValg" id="inpFarge" placeholder="Skriv inn en farge...">
@@ -203,14 +203,23 @@
 
       body {
         background-color: antiquewhite;
-      }
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    footer{
+        margin-top: auto;
+        background-color: rgb(194, 192, 192);
+        display: block;
+    }
 
       .regdyr {
         
         margin: auto;
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
-        grid-template-rows: 20vh 1fr 1fr;
+        grid-template-rows: 20vh 1fr 15vh;
         grid-template-areas: 
             ". . ."
             ". card ."

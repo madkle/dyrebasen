@@ -230,9 +230,9 @@ function drawAnmial(value,box) {
 
         html2 = `
             <img class="stamtavlebilde" src="${value.bilde}" width="100px" alt="bilde av kanin"/>
-            <p class="item2hover bold">ID: ${value.did} </p>
-            <p class="item3">Reg.nr: ${value.regnr}</p>
+            <p class="item3 bold">Reg.nr: ${value.regnr}</p>
             <p class="item4">V.Ø.: ${value.vø}</p>
+            <p class="item2hover">ID: ${value.did} </p>
         `
 
         let genStam = document.createElement("button");

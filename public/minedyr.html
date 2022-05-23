@@ -15,7 +15,7 @@
 </head>
 <body>
     <!-- NAVBAR -->
-    <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
+    <nav class="navbar navbar-expand-md bg-dark navbar-dark fixed-top">
         <div class="container-fluid">
           <a class="navbar-brand" href="minedyr.html">DYREBASEN</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
@@ -177,7 +177,7 @@
                 </select>
             </div>
             <div class="col-2">
-                <input id="inpSearch" type="text" class="form-control shadow" placeholder="Søk..."/>
+                <input id="inpSearch" type="text" class="form-control shadow" placeholder="Søk..." autofocus/>
             </div>
             
             <div class="col-1">
@@ -239,6 +239,14 @@
         let searchRes = document.getElementById('searchRes');
         let btnClear = document.getElementById('btnClear');
         let txtResponse = document.getElementById('txtResponse');
+
+        inpSearch.addEventListener("keyup", function (event) {
+        if (event.keyCode === 13) {
+          event.preventDefault();
+          document.getElementById("btnSearch").click();
+        }
+      });
+
         inpBilde.addEventListener("change", function (evt) {
             let fr = new FileReader();
             fr.addEventListener("load", function (evt) {
@@ -351,7 +359,7 @@
         display: grid;
         grid-template-columns: 50% 50%;
         grid-template-rows: auto; 
-        column-gap: 10px;
+        column-gap: 15px;
         row-gap: 15px;
         width: 100%;
     }

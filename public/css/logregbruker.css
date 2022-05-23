@@ -1,3 +1,16 @@
+body {
+    background-color: antiquewhite;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+footer{
+    margin-top: auto;
+    background-color: rgb(194, 192, 192);
+    display: block;
+}
+
 .index {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
