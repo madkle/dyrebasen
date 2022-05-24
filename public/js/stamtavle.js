@@ -208,13 +208,17 @@ function drawAnmial(value,box) {
         }
         
         let fdato = value.fdato ;
-        let dateFormatert = null;
+        let dateFormatert = "";
         
         if (fdato !== null) {
             let d = new Date(fdato)
             dateFormatert = `${d.getDate()}/${d.getMonth()}/${d.getFullYear()}`
         }
-            
+        for (const item in value) {
+            if (value[item] === null) {
+                value[item] = "";
+            }
+        }
         html = `
             <img class="stamtavlebilde" src="${value.bilde}" width="100px" alt="bilde av kanin"/>
             <p class="item2 text-center">ID: ${value.did} </p>
