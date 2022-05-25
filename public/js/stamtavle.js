@@ -9,7 +9,7 @@ export async function drawSidebar() {
     container.innerHTML = "<h3 class='text-center'>Velg reg.nr:</h3><hr class='m-1'>";
 
     for (let value of data) {
-        let testBilde = "bilder/kanin_standardbilde.jpeg";
+        let testBilde = "bilder/kanin_standardbilde.png";
         if (value.bilde === null) {
             value.bilde = testBilde
         }
@@ -202,7 +202,7 @@ function drawAnmial(value,box) {
     const item = document.querySelectorAll(".item")[box];
 
     if (value !== undefined) {
-        let testBilde = "bilder/kanin_standardbilde.jpeg";
+        let testBilde = "bilder/kanin_standardbilde.png";
         if (value.bilde === null) {
             value.bilde = testBilde
         }
