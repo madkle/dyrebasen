@@ -204,7 +204,7 @@ export async function listAnimals(filteredList) {
     for (let value of data) {
         let morID = "";
         let farID = "";
-        let testBilde = "bilder/kanin_standardbilde.jpeg";
+        let testBilde = "bilder/kanin_standardbilde.png";
         if (value.bilde === null) {
             value.bilde = testBilde
         }

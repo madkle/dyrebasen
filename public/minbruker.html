@@ -267,7 +267,7 @@
               brukernavn: inpBrukernavn.value,
               passord: inpNewPwd.value
             }
-            console.log(updata);
+            
             for (const key in updata) {
                 if (updata[key] === originalInputValues[key] || updata[key] === null || updata[key] === "") {
                   delete updata[key]
